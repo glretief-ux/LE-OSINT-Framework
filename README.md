@@ -1,5 +1,7 @@
 # LE OSINT Framework: Investigation Desk
 
+**Live site:** https://glretief-ux.github.io/LE-OSINT-Framework/  ·  **Offline copy:** download [`dist/le-osint-framework.html`](dist/le-osint-framework.html) and open it in any browser.
+
 An open-source intelligence (OSINT) desk for **law enforcement investigators**. Sources are organised by *line of enquiry* (Person, Communications, Goods & transport, Money & companies, Digital infrastructure, Places & media, General research, Procedure & reporting) instead of one alphabetical tree.
 
 - **690+ free resources** in 50 categories (reviewed September 2026: 54 new or updated sources, dead or unreliable ones removed), including law-enforcement additions (marked **LE+**). **Paid services are deliberately excluded**: every link is free, or a free tier that works without payment (some need a free account, flag `R`).
