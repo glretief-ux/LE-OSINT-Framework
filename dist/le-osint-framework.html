@@ -389,6 +389,26 @@ td.mono { font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; fo
 .hs-X, .hs-M { background: var(--accent-soft); color: var(--accent); }
 .topnav .theme-btn { margin-left: auto; border-style: dashed; }
 
+/* Shipping lines */
+.ln-combo { position: relative; }
+.ln-inputwrap { display: flex; }
+.ln-inputwrap input { flex: 1; min-width: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.ln-toggle { border: 1px solid var(--line); border-left: 0; background: var(--panel-2); color: var(--ink); padding: 0 12px; border-radius: 0 8px 8px 0; cursor: pointer; font-size: 14px; }
+.ln-list { position: absolute; z-index: 30; left: 0; right: 0; top: 100%; margin: 4px 0 0; padding: 4px; list-style: none; max-height: 340px; overflow: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.18); }
+.ln-list li { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; padding: 7px 10px; border-radius: 7px; cursor: pointer; font-size: 14px; }
+.ln-list li small { color: var(--muted); font-size: 12px; }
+.ln-list li code { font: 600 12px var(--mono); color: var(--muted); }
+.ln-list li[aria-selected="true"], .ln-list li:hover { background: var(--accent-soft); }
+.ln-list li.ln-old span { color: var(--muted); }
+.ln-ident { background: var(--accent-soft); border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; font-size: 14px; line-height: 1.6; }
+.ln-ident .ok { color: var(--ok); font-weight: 700; } .ln-ident .bad { color: var(--bad); font-weight: 700; }
+.ln-note { font-size: 12.5px; color: var(--muted); margin-top: 3px; max-width: 60ch; }
+.ln-badge { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); border: 1px solid var(--line); border-radius: 5px; padding: 0 5px; }
+.ln-al { font-size: 12px; color: var(--accent); font-weight: 600; }
+tr.ln-old td { opacity: .78; }
+.ln-combo .ln-inputwrap input { width: auto; }
+@media (min-width: 900px) { .topnav { flex-wrap: wrap; overflow: visible; row-gap: 6px; } }
+
 </style>
 </head>
 <body>
@@ -404,6 +424,7 @@ td.mono { font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; fo
       <button type="button" data-view="web">Web map</button>
       <button type="button" data-view="ports">World ports</button>
       <button type="button" data-view="hs">HS codes</button>
+      <button type="button" data-view="lines">Shipping lines</button>
       <button type="button" data-view="playbooks">Case playbooks</button>
       <button type="button" data-view="profile">Suspect profile</button>
       <button type="button" data-view="toolbox">Toolbox &amp; case log</button>
@@ -422,6 +443,7 @@ td.mono { font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; fo
         <button type="button" data-view="desk">Source list</button>
         <button type="button" data-view="ports">World ports</button>
         <button type="button" data-view="hs">HS codes</button>
+        <button type="button" data-view="lines">Shipping lines</button>
         <button type="button" data-view="playbooks">Playbooks</button>
         <button type="button" data-view="profile">Suspect profile</button>
         <button type="button" data-view="toolbox">Toolbox</button>
@@ -679,6 +701,8 @@ td.mono { font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; fo
       <section class="view" id="view-ports" hidden><div id="ports"></div></section>
 
       <section class="view" id="view-hs" hidden><div id="hs"></div></section>
+
+      <section class="view" id="view-lines" hidden><div id="lines"></div></section>
 
       <section class="view" id="view-playbooks" hidden><div id="playbooks"></div></section>
 
@@ -1951,6 +1975,7 @@ SeaRates Tracking | https://www.searates.com/container/tracking/?number={q} | | 
 Google (exact container / vessel / IMO) | https://www.google.com/search?q=%22{q}%22 | D | cont,imo,vessel,mmsi
 BIC Code Register (owner prefixes) | https://www.bic-code.org/ | R |
 ## Container Tracking (carriers)
+Shipping lines directory (in this tool) | #lines | N | | 110 ocean carriers with SCAC codes, container prefixes, alliances and tracking pages; identifies the line from a container or B/L number
 Maersk | https://www.maersk.com/tracking/{q} | | cont
 MSC | https://www.msc.com/en/track-a-shipment | |
 CMA CGM | https://www.cma-cgm.com/ebusiness/tracking | |
@@ -3144,7 +3169,7 @@ window.LE_OSINT_PLAYBOOKS = [
     if (!a) return;
     e.preventDefault();
     const id = a.getAttribute("href").slice(1);
-    if (id === "ports" || id === "hs") { showView(id); window.scrollTo(0, 0); return; }
+    if (id === "ports" || id === "hs" || id === "lines") { showView(id); window.scrollTo(0, 0); return; }
     showView("toolbox");
     const pre = a.dataset.prefill;
     const target = document.getElementById(id);
@@ -3601,7 +3626,7 @@ window.LE_OSINT_PLAYBOOKS = [
   applyTheme(theme);
   render();
   if (/^toolbox-/.test(h)) { showView("toolbox"); setTimeout(function () { const el = document.getElementById(h); if (el) el.scrollIntoView(); }, 50); }
-  else if (["toolbox", "about", "playbooks", "profile", "web", "flow", "desk", "ports", "hs"].indexOf(h) > -1) showView(h);
+  else if (["toolbox", "about", "playbooks", "profile", "web", "flow", "desk", "ports", "hs", "lines"].indexOf(h) > -1) showView(h);
   else showView("flow");
 })();
 
@@ -4365,6 +4390,310 @@ window.LE_HS = {"rows":[["01","Animals; live","I",""],["0101","Horses, asses, mu
     catch (err) { window.LE_OSINT.copy(csv); }
   });
   window.LE_OSINT.hsSearch = function (v) { $("#hs-q").value = v; st.q = v; st.browse = ""; render(); };
+  render();
+})();
+
+</script>
+<script>
+/* LE OSINT Framework: shipping lines (ocean carriers).
+   Row: [name, other names, SCAC, container owner prefixes (BIC), type, alliance, HQ country (ISO 3166), website, tracking page, status, note]
+   type:   C global container carrier · R regional container carrier · F feeder / short-sea · V ro-ro / vehicle carrier · Q reefer / fruit · P ferry / ro-pax freight · M multipurpose / project cargo
+   status: "" active · "merged" merged or brand retired · "defunct" ceased trading
+   {q} in a tracking URL is replaced by the container or B/L number.
+   SCAC and prefixes are the main published ones; carriers also use leased boxes (lessor prefixes). Confirm in the NMFTA SCAC and BIC registers. */
+window.LE_LINES = {
+  updated: "2026-09",
+  alliances: {
+    "Gemini": "Gemini Cooperation (Maersk + Hapag-Lloyd, from February 2025)",
+    "Premier": "Premier Alliance (ONE, HMM, Yang Ming, from February 2025)",
+    "Ocean": "Ocean Alliance (CMA CGM, COSCO / OOCL, Evergreen)",
+    "MSC": "MSC operates independently (2M with Maersk ended January 2025)"
+  },
+  rows: [
+    ["A.P. Moller-Maersk", "Maersk Line", "MAEU", "MSKU MRKU MRSU MAEU MNBU", "C", "Gemini", "DK", "https://www.maersk.com/", "https://www.maersk.com/tracking/{q}", "", "Second-largest container carrier (after MSC). Also operates Sealand and (former) Hamburg Süd, Safmarine brands."],
+    ["Mediterranean Shipping Company", "MSC", "MSCU", "MSCU MEDU MSDU MSMU", "C", "MSC", "CH", "https://www.msc.com/", "https://www.msc.com/en/track-a-shipment", "", "World's largest container carrier by capacity. Private, Aponte family, Geneva."],
+    ["CMA CGM", "", "CMDU", "CMAU CGMU ECMU", "C", "Ocean", "FR", "https://www.cma-cgm.com/", "https://www.cma-cgm.com/ebusiness/tracking", "", "Group brands: APL, ANL, CNC, Mercosul Line, Containerships, OPDR, Delmas (retired)."],
+    ["COSCO Shipping Lines", "China COSCO", "COSU", "CSNU CBHU CCLU CSLU", "C", "Ocean", "CN", "https://lines.coscoshipping.com/", "https://elines.coscoshipping.com/ebusiness/cargoTracking", "", "State-owned (China). Absorbed CSCL (2016) and controls OOCL (2018)."],
+    ["Orient Overseas Container Line", "OOCL", "OOLU", "OOLU OOCU", "C", "Ocean", "HK", "https://www.oocl.com/", "https://www.oocl.com/eng/ourservices/eservices/cargotracking/Pages/cargotracking.aspx", "", "Owned by COSCO Shipping since 2018; keeps its own brand."],
+    ["Hapag-Lloyd", "", "HLCU", "HLXU HLBU HLCU UACU", "C", "Gemini", "DE", "https://www.hapag-lloyd.com/", "https://www.hapag-lloyd.com/en/online-business/track/track-by-container-solution.html", "", "Merged with CSAV (2014) and UASC (2017)."],
+    ["Ocean Network Express", "ONE", "ONEY", "ONEU NYKU MOLU KKFU KKTU", "C", "Premier", "SG", "https://www.one-line.com/", "https://ecomm.one-line.com/one-ecom/manage-shipment/cargo-tracking?trakNoParam={q}", "", "Created 2018 from the container businesses of NYK, MOL and K Line (boxes with old NYK/MOL/K Line prefixes still in use)."],
+    ["Evergreen Marine", "Evergreen Line", "EGLV", "EGHU EGSU EISU EMCU EITU", "C", "Ocean", "TW", "https://www.evergreen-line.com/", "https://ct.shipmentlink.com/servlet/TDB1_CargoTracking.do", "", "Taiwan. Tracking via ShipmentLink. Includes Italia Marittima (former Lloyd Triestino)."],
+    ["HMM", "Hyundai Merchant Marine", "HDMU", "HDMU HMMU", "C", "Premier", "KR", "https://www.hmm21.com/", "https://www.hmm21.com/e-service/general/trackNTrace/TrackNTrace.do", "", "South Korea's national carrier."],
+    ["Yang Ming Marine Transport", "Yang Ming", "YMLU", "YMLU YMMU", "C", "Premier", "TW", "https://www.yangming.com/", "https://www.yangming.com/e-service/track_trace/track_trace_cargo_tracking.aspx", "", "Taiwan, state-linked."],
+    ["ZIM Integrated Shipping", "ZIM", "ZIMU", "ZIMU ZCSU", "C", "", "IL", "https://www.zim.com/", "https://www.zim.com/tools/track-a-shipment", "", "Israel. Owns Gold Star Line."],
+    ["Wan Hai Lines", "", "WHLC", "WHSU WHLU", "C", "", "TW", "https://www.wanhai.com/", "https://www.wanhai.com/", "", "Taiwan; strong in intra-Asia, growing on long-haul."],
+    ["Pacific International Lines", "PIL", "PCIU PABV", "PCIU", "C", "", "SG", "https://www.pilship.com/", "https://www.pilship.com/", "", "Singapore; majority owned by Heliconia (Temasek) since 2021."],
+    ["American President Lines", "APL", "APLU", "APLU", "C", "Ocean", "SG", "https://www.apl.com/", "https://www.apl.com/ebusiness/tracking", "", "CMA CGM brand (bought NOL/APL in 2016). US-flag services."],
+    ["ANL Container Line", "ANL", "ANNU", "ANNU", "R", "", "AU", "https://www.anl.com.au/", "https://www.anl.com.au/ebusiness/tracking", "", "CMA CGM brand for Oceania."],
+    ["CNC Line", "Cheng Lie Navigation", "", "", "R", "", "TW", "https://www.cnc-line.com/", "https://www.cnc-line.com/", "", "CMA CGM intra-Asia brand."],
+    ["Sealand (Maersk)", "Sealand Americas, Sealand Europe, Sealand Asia", "SEAU SEJJ", "", "R", "", "US", "https://www.sealandmaersk.com/", "https://www.sealandmaersk.com/tracking", "", "Maersk's regional (intra-region) container brand."],
+    ["Safmarine", "", "SAFM", "", "R", "", "ZA", "https://www.safmarine.com/", "https://www.safmarine.com/", "merged", "Maersk brand for Africa; operations integrated into Maersk."],
+    ["Hamburg Süd", "Hamburg Sud", "SUDU", "SUDU", "C", "", "DE", "https://www.hamburgsud.com/", "https://www.maersk.com/tracking/{q}", "merged", "Bought by Maersk 2017; brand retired into Maersk 2023. SUDU boxes still in service."],
+    ["Aliança Navegação", "Alianca", "", "", "R", "", "BR", "https://www.alianca.com.br/", "https://www.maersk.com/tracking/{q}", "merged", "Brazilian cabotage, part of Maersk (ex Hamburg Süd)."],
+    ["SITC International", "SITC Container Lines", "", "SITU", "R", "", "HK", "https://www.sitcline.com/", "https://www.sitcline.com/", "", "Intra-Asia container carrier."],
+    ["Korea Marine Transport Co.", "KMTC", "KMTU", "KMTU", "R", "", "KR", "https://www.ekmtc.com/", "https://www.ekmtc.com/", "", "Intra-Asia, India, Middle East."],
+    ["Sinokor Merchant Marine", "Sinokor", "", "SKLU SKHU", "R", "", "KR", "https://www.sinokor.co.kr/", "https://www.sinokor.co.kr/", "", "Intra-Asia. Owns Heung-A Line (merged 2024)."],
+    ["Heung-A Line", "", "", "", "R", "", "KR", "https://www.heungaline.com/", "https://www.heungaline.com/", "merged", "Integrated with Sinokor."],
+    ["SM Line", "", "SMLM", "", "R", "", "KR", "https://www.smlines.com/", "https://www.smlines.com/", "", "Korean carrier founded 2017 from Hanjin assets."],
+    ["Namsung Shipping", "Dongyoung", "", "", "R", "", "KR", "https://www.namsung.co.kr/", "https://www.namsung.co.kr/", "", "Korea / Japan / China services."],
+    ["Pan Continental Shipping", "Pancon", "", "", "R", "", "KR", "https://www.pancon.co.kr/", "https://www.pancon.co.kr/", "", ""],
+    ["Dongjin Shipping", "", "", "", "F", "", "KR", "https://www.djship.co.kr/", "https://www.djship.co.kr/", "", ""],
+    ["CK Line", "Chun Kyung", "", "", "F", "", "KR", "https://www.ckline.co.kr/", "https://www.ckline.co.kr/", "", ""],
+    ["T.S. Lines", "TS Lines", "TXZJ", "", "R", "", "TW", "https://www.tslines.com/", "https://www.tslines.com/", "", "Taiwan; Asia, Australia, Middle East, India, West Coast US."],
+    ["Interasia Lines", "IAL", "", "", "R", "", "TW", "https://www.interasia.cc/", "https://www.interasia.cc/", "", "Wan Hai affiliate, intra-Asia."],
+    ["China United Lines", "CU Lines", "CULU", "", "R", "", "CN", "https://www.culines.com/", "https://www.culines.com/", "", ""],
+    ["Sinotrans Container Lines", "Sinotrans", "", "", "R", "", "CN", "https://www.sinotrans.com/", "https://www.sinotrans.com/", "", "China Merchants group."],
+    ["Zhonggu Logistics", "", "", "", "F", "", "CN", "https://www.zhonggu56.com/", "https://www.zhonggu56.com/", "", "Chinese domestic container carrier."],
+    ["Antong Holdings", "Quanzhou Antong", "", "", "F", "", "CN", "https://www.antong56.com/", "https://www.antong56.com/", "", "Chinese domestic container carrier."],
+    ["Gold Star Line", "", "GOSU", "", "R", "", "HK", "https://www.gslltd.com.hk/", "https://www.gslltd.com.hk/", "", "ZIM subsidiary."],
+    ["Regional Container Lines", "RCL", "", "", "R", "", "TH", "https://www.rclgroup.com/", "https://www.rclgroup.com/", "", "Thailand; intra-Asia, Middle East, India."],
+    ["Samudera Shipping Line", "", "", "", "R", "", "SG", "https://www.samudera.com/", "https://www.samudera.com/", "", "Indonesian group, Singapore-listed."],
+    ["Meratus Line", "", "", "", "R", "", "ID", "https://www.meratusline.com/", "https://www.meratusline.com/", "", "Indonesia domestic and regional."],
+    ["Tanto Intim Line", "Tanto", "", "", "F", "", "ID", "https://www.tantonet.com/", "https://www.tantonet.com/", "", "Indonesia domestic."],
+    ["Salam Pacific Indonesia Lines", "SPIL", "", "", "F", "", "ID", "https://www.spil.co.id/", "https://www.spil.co.id/", "", "Indonesia domestic."],
+    ["Temas Line", "", "", "", "F", "", "ID", "https://www.temasline.com/", "https://www.temasline.com/", "", "Indonesia domestic."],
+    ["Hai An Transport", "Haian", "", "", "F", "", "VN", "https://www.haiants.vn/", "https://www.haiants.vn/", "", "Vietnam."],
+    ["SeaLead Shipping", "", "SQQY", "", "R", "", "SG", "https://www.sea-lead.com/", "https://www.sea-lead.com/", "", "Newer carrier; Asia, Middle East, Europe, Americas."],
+    ["Emirates Shipping Line", "ESL", "", "", "R", "", "AE", "https://www.emiratesline.com/", "https://www.emiratesline.com/", "", ""],
+    ["Global Feeder Shipping", "GFS", "", "", "F", "", "AE", "https://www.gfsship.com/", "https://www.gfsship.com/", "", "Gulf, Red Sea, Indian subcontinent feeder."],
+    ["Simatech Shipping", "", "", "", "F", "", "AE", "https://www.simatech.com/", "https://www.simatech.com/", "", "Gulf / Indian subcontinent."],
+    ["Bahri", "National Shipping Co. of Saudi Arabia", "", "", "M", "", "SA", "https://www.bahri.sa/", "https://www.bahri.sa/", "", "Ro-ro / general cargo liner service (Bahri Logistics) plus tankers."],
+    ["Shipping Corporation of India", "SCI", "", "", "R", "", "IN", "https://www.shipindia.com/", "https://www.shipindia.com/", "", "State-owned."],
+    ["Shreyas Shipping & Logistics", "", "", "", "F", "", "IN", "https://www.shreyas.co.in/", "https://www.shreyas.co.in/", "", "Indian coastal feeder."],
+    ["X-Press Feeders", "Sea Consortium", "", "", "F", "", "SG", "https://www.x-pressfeeders.com/", "https://www.x-pressfeeders.com/", "", "Largest independent feeder operator (Asia, Middle East, Europe, Americas)."],
+    ["Unifeeder", "", "", "", "F", "", "DK", "https://www.unifeeder.com/", "https://www.unifeeder.com/", "", "European feeder / short-sea; owned by DP World."],
+    ["BG Freight Line", "", "", "", "F", "", "NL", "https://www.bgfreightline.com/", "https://www.bgfreightline.com/", "", "North Europe feeder (Eimskip / Samskip region)."],
+    ["Samskip", "", "", "", "F", "", "NL", "https://www.samskip.com/", "https://www.samskip.com/", "", "European short-sea and multimodal."],
+    ["Eimskip", "", "", "", "F", "", "IS", "https://www.eimskip.com/", "https://www.eimskip.com/", "", "Iceland, Faroes, Norway, North Atlantic."],
+    ["Containerships", "", "", "", "F", "", "FI", "https://www.containershipsgroup.com/", "https://www.containershipsgroup.com/", "", "CMA CGM short-sea brand (Baltic, North Sea, Med)."],
+    ["OPDR", "Oldenburg-Portugiesische", "", "", "F", "", "DE", "https://www.opdr.com/", "https://www.opdr.com/", "", "CMA CGM short-sea brand (Iberia, Canaries, Morocco)."],
+    ["WEC Lines", "", "", "", "F", "", "NL", "https://www.weclines.com/", "https://www.weclines.com/", "", "UK / Ireland / Iberia / Med / West Africa."],
+    ["CLdN", "Cobelfret", "", "", "P", "", "LU", "https://www.cldn.com/", "https://www.cldn.com/", "", "Ro-ro freight: UK, Ireland, Belgium, Netherlands, Iberia, Scandinavia."],
+    ["DFDS", "", "", "", "P", "", "DK", "https://www.dfds.com/", "https://www.dfds.com/", "", "Ro-ro and ro-pax freight in North Europe, Baltic, Med (Turkey)."],
+    ["Stena Line Freight", "Stena Line", "", "", "P", "", "SE", "https://www.stenalinefreight.com/", "https://www.stenalinefreight.com/", "", "Ro-pax freight: North Sea, Irish Sea, Baltic."],
+    ["P&O Ferries", "P&O Ferrymasters", "", "", "P", "", "GB", "https://www.poferries.com/", "https://www.poferries.com/", "", "Ro-pax freight: Dover–Calais, North Sea, Irish Sea. DP World owned."],
+    ["Finnlines", "", "", "", "P", "", "FI", "https://www.finnlines.com/", "https://www.finnlines.com/", "", "Ro-pax / ro-ro Baltic, Grimaldi group."],
+    ["Grimaldi Group", "Grimaldi Lines, ACL parent", "GDSL", "", "V", "", "IT", "https://www.grimaldi.napoli.it/", "https://www.grimaldi.napoli.it/", "", "Ro-ro, con-ro, car carriers and ferries: Med, West Africa, North Europe, Americas."],
+    ["Atlantic Container Line", "ACL", "ACLU", "ACLU", "V", "", "US", "https://www.aclcargo.com/", "https://www.aclcargo.com/", "", "Con-ro, North Europe – North America. Grimaldi group."],
+    ["Neptune Lines", "", "", "", "V", "", "GR", "https://www.neptunelines.com/", "https://www.neptunelines.com/", "", "Short-sea car carrier, Med / Black Sea / North Europe."],
+    ["Arkas Line", "Arkas Container Transport", "ARKU", "ARKU", "R", "", "TR", "https://www.arkasline.com.tr/", "https://www.arkasline.com.tr/", "", "Turkey; Med, Black Sea, West Africa, North Europe."],
+    ["Turkon Line", "", "TRKU", "TRKU", "R", "", "TR", "https://www.turkon.com/", "https://www.turkon.com/", "", "Turkey – US East Coast."],
+    ["Messina Line", "Ignazio Messina & C.", "", "", "M", "", "IT", "https://www.messinaline.it/", "https://www.messinaline.it/", "", "Ro-ro / con-ro Med – Middle East – Africa. MSC stake."],
+    ["Marfret", "Compagnie Maritime Marfret", "", "", "R", "", "FR", "https://www.marfret.fr/", "https://www.marfret.fr/", "", "France; Med, Caribbean, South America, Pacific islands."],
+    ["Nirint Shipping", "", "", "", "M", "", "NL", "https://www.nirint.com/", "https://www.nirint.com/", "", "North Europe – Caribbean / Cuba multipurpose liner."],
+    ["Sallaum Lines", "", "", "", "V", "", "LB", "https://www.sallaumlines.com/", "https://www.sallaumlines.com/", "", "Ro-ro Europe / Americas – West Africa, Middle East."],
+    ["Wallenius Wilhelmsen", "WW Ocean, Wallenius Wilhelmsen Logistics", "", "", "V", "", "NO", "https://www.walleniuswilhelmsen.com/", "https://www.walleniuswilhelmsen.com/", "", "Global vehicle and high-and-heavy (ro-ro) carrier."],
+    ["Höegh Autoliners", "Hoegh", "", "", "V", "", "NO", "https://www.hoeghautoliners.com/", "https://www.hoeghautoliners.com/", "", "Global car carrier."],
+    ["Hyundai Glovis", "Glovis", "", "", "V", "", "KR", "https://www.glovis.net/", "https://www.glovis.net/", "", "Car carrier (Hyundai / Kia group)."],
+    ["NYK Line (car carriers)", "Nippon Yusen Kaisha", "", "NYKU", "V", "", "JP", "https://www.nyk.com/", "https://www.nyk.com/", "", "Car carriers and other shipping; container business moved to ONE (2018)."],
+    ["Mitsui O.S.K. Lines (car carriers)", "MOL", "", "MOLU", "V", "", "JP", "https://www.mol.co.jp/", "https://www.mol.co.jp/", "", "Car carriers and bulk; container business moved to ONE (2018)."],
+    ["K Line (car carriers)", "Kawasaki Kisen Kaisha", "", "KKFU KKTU", "V", "", "JP", "https://www.kline.co.jp/", "https://www.kline.co.jp/", "", "Car carriers and bulk; container business moved to ONE (2018)."],
+    ["Matson", "Matson Navigation", "MATS", "MATU", "R", "", "US", "https://www.matson.com/", "https://www.matson.com/", "", "US Jones Act (Hawaii, Alaska, Guam) and China – Long Beach express."],
+    ["Pasha Hawaii", "", "", "", "R", "", "US", "https://www.pashahawaii.com/", "https://www.pashahawaii.com/", "", "US West Coast – Hawaii."],
+    ["TOTE Maritime", "", "", "", "V", "", "US", "https://www.totemaritime.com/", "https://www.totemaritime.com/", "", "US Jones Act: Puerto Rico and Alaska."],
+    ["Crowley Maritime", "Crowley", "CLAM", "CMCU", "R", "", "US", "https://www.crowley.com/", "https://www.crowley.com/", "", "US – Caribbean, Central America, Puerto Rico."],
+    ["Seaboard Marine", "", "SMLU", "SMLU", "R", "", "US", "https://www.seaboardmarine.com/", "https://www.seaboardmarine.com/", "", "US – Caribbean, Central & South America."],
+    ["Tropical Shipping", "", "", "", "R", "", "US", "https://www.tropical.com/", "https://www.tropical.com/", "", "Florida – Caribbean / Bahamas. Saltchuk group."],
+    ["King Ocean Services", "", "", "", "R", "", "US", "https://www.kingocean.com/", "https://www.kingocean.com/", "", "US – Caribbean, Colombia, Venezuela, Central America."],
+    ["Great White Fleet", "Chiquita", "", "", "Q", "", "US", "https://www.greatwhitefleet.com/", "https://www.greatwhitefleet.com/", "", "Chiquita's reefer container line, Central America – US / Europe."],
+    ["Dole Ocean Cargo Express", "Dole", "", "", "Q", "", "US", "https://www.doleoceancargo.com/", "https://www.doleoceancargo.com/", "", "Fruit and general cargo, Central America – US / Europe."],
+    ["Seatrade", "Seatrade Reefer Chartering", "", "", "Q", "", "NL", "https://www.seatrade.com/", "https://www.seatrade.com/", "", "Reefer ships and reefer container services (fruit trades)."],
+    ["Baltic Shipping (Cool Carriers)", "Cool Carriers", "", "", "Q", "", "SE", "https://www.coolcarriers.com/", "https://www.coolcarriers.com/", "", "Specialised reefer vessels."],
+    ["Log-In Logística", "Log-In", "", "", "F", "", "BR", "https://www.loginlogistica.com.br/", "https://www.loginlogistica.com.br/", "", "Brazil cabotage and Mercosur. MSC owned."],
+    ["Mercosul Line", "", "", "", "F", "", "BR", "https://www.mercosul-line.com.br/", "https://www.mercosul-line.com.br/", "", "Brazil cabotage, CMA CGM group."],
+    ["Swire Shipping", "China Navigation Co.", "CHVW", "", "M", "", "SG", "https://www.swireshipping.com/", "https://www.swireshipping.com/", "", "Pacific islands, Australia, Asia, Americas liner and multipurpose."],
+    ["Westwood Shipping Lines", "", "WWSU", "", "M", "", "US", "https://www.westwoodshipping.com/", "https://www.westwoodshipping.com/", "", "US Pacific Northwest / Canada – Japan, Korea, China."],
+    ["Independent Container Line", "ICL", "IILU", "", "R", "", "US", "https://www.icl-ltd.com/", "https://www.icl-ltd.com/", "", "US / Canada – North Europe."],
+    ["Neptune Pacific Direct Line", "NPDL", "", "", "F", "", "FJ", "https://www.npdlship.com/", "https://www.npdlship.com/", "", "South Pacific islands."],
+    ["Ocean Africa Container Lines", "OACL", "", "", "F", "", "ZA", "https://www.oacl.co.za/", "https://www.oacl.co.za/", "", "Southern and East Africa feeder."],
+    ["Grindrod Shipping", "", "", "", "F", "", "ZA", "https://www.grindrodshipping.com/", "https://www.grindrodshipping.com/", "", "Africa-focused; bulk and container feeder (historic)."],
+    ["FESCO", "Far Eastern Shipping Company", "", "", "R", "", "RU", "https://www.fesco.ru/", "https://www.fesco.ru/", "", "Russia; Far East, rail-sea. Check current sanctions lists before dealing."],
+    ["IRISL", "Islamic Republic of Iran Shipping Lines, HDS Lines", "", "", "R", "", "IR", "https://www.irisl.net/", "https://www.irisl.net/", "", "Iran. Designated under US sanctions; uses front companies and frequent ship renaming. Check sanctions lists."],
+    ["Hanjin Shipping", "", "", "HJCU", "C", "", "KR", "", "", "defunct", "Bankrupt 2016–2017. Old B/Ls and boxes still appear in documents."],
+    ["United Arab Shipping Company", "UASC", "", "UACU", "C", "", "KW", "", "https://www.hapag-lloyd.com/", "merged", "Merged into Hapag-Lloyd 2017."],
+    ["CSAV", "Compañía Sud Americana de Vapores", "", "", "C", "", "CL", "", "https://www.hapag-lloyd.com/", "merged", "Container business merged into Hapag-Lloyd 2014."],
+    ["China Shipping Container Lines", "CSCL", "", "CCLU CSLU", "C", "", "CN", "", "https://lines.coscoshipping.com/", "merged", "Merged into COSCO Shipping Lines 2016."],
+    ["Neptune Orient Lines", "NOL", "", "", "C", "", "SG", "", "https://www.apl.com/", "merged", "Parent of APL; bought by CMA CGM 2016."],
+    ["Hyundai Merchant Marine", "", "HDMU", "HDMU", "C", "", "KR", "", "https://www.hmm21.com/", "merged", "Renamed HMM (2020)."],
+    ["CCNI", "Compañía Chilena de Navegación Interoceánica", "", "", "R", "", "CL", "", "https://www.maersk.com/", "merged", "Container business sold to Hamburg Süd 2015, now Maersk."],
+    ["Rickmers-Linie", "Rickmers", "", "", "M", "", "DE", "", "", "defunct", "Rickmers Holding insolvent 2017; line continued as Rickmers-Linie under new owners."],
+    ["Delmas", "", "", "", "R", "", "FR", "", "https://www.cma-cgm.com/", "merged", "West Africa brand retired into CMA CGM."],
+    ["MOL, NYK, K Line (container)", "", "", "MOLU NYKU KKFU KKTU", "C", "", "JP", "", "https://www.one-line.com/", "merged", "Container operations merged into ONE, April 2018."]
+  ]
+};
+
+</script>
+<script>
+/* LE OSINT Framework: shipping lines directory (searchable dropdown + table) */
+(function () {
+  "use strict";
+  const D = window.LE_LINES;
+  const host = document.getElementById("lines");
+  if (!D || !host) return;
+  const $ = function (s, r) { return (r || document).querySelector(s); };
+  const esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]; }); };
+  const norm = function (s) { return String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); };
+  let dn = null; try { dn = new Intl.DisplayNames(["en"], { type: "region" }); } catch (e) { /* older browser */ }
+  function cname(cc) { try { return (dn && dn.of(cc)) || cc; } catch (e) { return cc; } }
+
+  const TYPES = { C: "Global container", R: "Regional container", F: "Feeder / short-sea", V: "Ro-ro / vehicles", Q: "Reefer / fruit", P: "Ferry / ro-pax freight", M: "Multipurpose / project" };
+  const ROWS = D.rows.map(function (r, i) {
+    const o = { i: i, n: r[0], aka: r[1], scac: r[2] ? r[2].split(/\s+/) : [], pre: r[3] ? r[3].split(/\s+/) : [], ty: r[4], al: r[5], cc: r[6], web: r[7], trk: r[8], stt: r[9], note: r[10] };
+    o.key = norm([o.n, o.aka, o.scac.join(" "), o.pre.join(" "), cname(o.cc), TYPES[o.ty], o.al].join(" "));
+    return o;
+  }).sort(function (a, b) { return (a.stt ? 1 : 0) - (b.stt ? 1 : 0) || a.n.localeCompare(b.n); });
+
+  host.innerHTML =
+    '<header class="desk-head"><div><p class="eyebrow">Maritime reference</p><h2>Shipping lines</h2>' +
+    '<p class="hint" style="margin:4px 0 0;max-width:74ch">' + ROWS.length + " ocean carriers: global and regional container lines, feeders, ro-ro, reefer and freight ferry operators, plus merged and defunct lines that still appear on old bills of lading and boxes. " +
+    "Pick a line from the dropdown, or type a name, SCAC, container number or B/L number to identify the line.</p></div></header>" +
+    '<div class="ports-bar">' +
+    '<div class="pf ln-combo" style="flex:1 1 340px"><label for="ln-q">Shipping line, SCAC, container or B/L number</label>' +
+    '<div class="ln-inputwrap"><input id="ln-q" type="search" role="combobox" aria-expanded="false" aria-controls="ln-list" aria-autocomplete="list" placeholder="e.g. Maersk, HLCU, MSCU1234565, ONEY…" autocomplete="off">' +
+    '<button type="button" class="ln-toggle" id="ln-toggle" aria-label="Show all shipping lines" title="Show all shipping lines">▾</button></div>' +
+    '<ul id="ln-list" class="ln-list" role="listbox" hidden></ul></div>' +
+    '<label class="pf">Alliance<select id="ln-al"><option value="">All</option>' + Object.keys(D.alliances).map(function (k) { return '<option value="' + k + '">' + esc(k === "MSC" ? "MSC (independent)" : k) + "</option>"; }).join("") + '<option value="-">No alliance</option></select></label>' +
+    '<div class="pf"><span>Type</span><div class="chips" id="ln-type"><button type="button" data-ty="" aria-pressed="true">All</button>' +
+    Object.keys(TYPES).map(function (k) { return '<button type="button" data-ty="' + k + '" aria-pressed="false">' + TYPES[k] + "</button>"; }).join("") + "</div></div>" +
+    '<label class="pchk"><input type="checkbox" id="ln-old" checked> Include merged and defunct lines</label>' +
+    "</div>" +
+    '<div id="ln-ident"></div>' +
+    '<div class="ports-meta"><span id="ln-count"></span><span class="ports-actions"><button type="button" class="btn ghost" id="ln-copy">Copy list</button><button type="button" class="btn ghost" id="ln-csv">Export CSV</button></span></div>' +
+    '<div class="tbl-wrap ports-tbl"><table><thead><tr><th>Shipping line</th><th>SCAC</th><th>Box prefixes</th><th>Type · alliance</th><th>HQ</th><th style="width:190px">Look up</th></tr></thead><tbody id="ln-body"></tbody></table></div>' +
+    '<p class="hint" style="margin-top:14px;max-width:84ch">How to read a number: a <b>bill of lading</b> number usually starts with the carrier\'s SCAC (e.g. <span class="mono">MAEU</span>, <span class="mono">HLCU</span>, <span class="mono">ONEY</span>). A <b>container</b> number starts with the owner\'s 4-letter BIC prefix, which may be a <b>leasing company</b> rather than the line operating the box, so confirm the operator with the carrier\'s tracking or the terminal. ' +
+    'SCAC and prefixes shown are the main published ones, not a complete register. Official lists: <a href="https://smdg.org/documents/smdg-code-lists/smdg-liner-code-list/" target="_blank" rel="noopener">SMDG liner code list</a> (free Excel download, updated monthly), <a href="https://www.bic-code.org/" target="_blank" rel="noopener">BIC code register</a>, <a href="https://terminal49.com/tools/scac-code-lookup" target="_blank" rel="noopener">SCAC lookup</a>. Alliances as of ' + esc(D.updated) + ": " + Object.keys(D.alliances).map(function (k) { return esc(D.alliances[k]); }).join("; ") + ".</p>";
+
+  const st = { q: "", pick: -1, al: "", ty: "", old: true, open: false, hi: 0 };
+  const CONT = /^([A-Z]{3}[UJZ])\s?(\d{6})\s?-?(\d)$/;
+
+  function codeOf(q) {
+    const s = q.replace(/[\s-]/g, "").toUpperCase();
+    const m = s.match(/^([A-Z]{4})[A-Z0-9]*$/);
+    if (!m || (s.length > 4 && !/\d/.test(s))) return null;
+    return { code: m[1], full: s, isCont: CONT.test(s) };
+  }
+  function checkDigit(s) {
+    const V = {}; let v = 10;
+    for (let c = 65; c <= 90; c++) { if (v % 11 === 0) v++; V[String.fromCharCode(c)] = v; v++; }
+    let sum = 0; for (let i = 0; i < 10; i++) { const ch = s[i]; sum += (/\d/.test(ch) ? +ch : V[ch]) * Math.pow(2, i); }
+    return (sum % 11) % 10;
+  }
+  function matches() {
+    const q = norm(st.q.trim());
+    const cd = codeOf(st.q.trim());
+    return ROWS.filter(function (r) {
+      if (st.pick > -1) return r.i === st.pick;
+      if (!st.old && r.stt) return false;
+      if (st.al === "-" ? r.al : st.al && r.al !== st.al) return false;
+      if (st.ty && r.ty !== st.ty) return false;
+      if (!q) return true;
+      if (cd && (r.scac.indexOf(cd.code) > -1 || r.pre.indexOf(cd.code) > -1)) return true;
+      return q.split(/\s+/).every(function (w) { return r.key.indexOf(w) > -1; });
+    });
+  }
+  function fillTrack(r, num) {
+    if (!r.trk) return "";
+    return num && r.trk.indexOf("{q}") > -1 ? r.trk.replace("{q}", encodeURIComponent(num)) : r.trk.replace("{q}", "");
+  }
+  function looks(r, num) {
+    const out = [];
+    if (r.web) out.push('<a href="' + esc(r.web) + '" target="_blank" rel="noopener">Website</a>');
+    if (r.trk) out.push('<a href="' + esc(fillTrack(r, num)) + '" target="_blank" rel="noopener">' + (num && r.trk.indexOf("{q}") > -1 ? "Track " + esc(num) : "Tracking") + "</a>");
+    if (num) out.push('<a href="https://www.searates.com/container/tracking/?number=' + encodeURIComponent(num) + '" target="_blank" rel="noopener">SeaRates</a>');
+    out.push('<a href="https://www.opensanctions.org/search/?q=' + encodeURIComponent(r.n) + '" target="_blank" rel="noopener">Sanctions</a>');
+    out.push('<a href="https://news.google.com/search?q=' + encodeURIComponent('"' + r.n + '" (seizure OR cocaine OR smuggling OR sanctions)') + '" target="_blank" rel="noopener">Seizure news</a>');
+    return out.join(" · ");
+  }
+  function codeBtns(list) { return list.map(function (c) { return '<button type="button" class="code-btn" data-copy="' + c + '" title="Copy">' + c + "</button>"; }).join(" "); }
+  function ident() {
+    const cd = codeOf(st.q.trim()), box = $("#ln-ident");
+    if (!cd || st.pick > -1) { box.innerHTML = ""; return; }
+    const bySc = ROWS.filter(function (r) { return r.scac.indexOf(cd.code) > -1; });
+    const byPre = ROWS.filter(function (r) { return r.pre.indexOf(cd.code) > -1; });
+    let h = "";
+    if (cd.isCont) {
+      const cdg = checkDigit(cd.full), ok = cdg === +cd.full[10];
+      h += "<b>Container " + esc(cd.full) + "</b>: check digit " + (ok ? '<span class="ok">valid</span>' : '<span class="bad">invalid (expected ' + cdg + ")</span>") + ". ";
+    }
+    if (byPre.length) h += "Prefix <b>" + cd.code + "</b> belongs to " + byPre.map(function (r) { return esc(r.n); }).join(", ") + ". ";
+    if (bySc.length) h += "SCAC <b>" + cd.code + "</b> is " + bySc.map(function (r) { return esc(r.n); }).join(", ") + (cd.isCont ? "" : " (B/L numbers often start with the SCAC)") + ". ";
+    if (!byPre.length && !bySc.length) h += "<b>" + cd.code + "</b> is not in this list. It may be a leasing company or a smaller line: check the <a href=\"https://www.bic-code.org/\" target=\"_blank\" rel=\"noopener\">BIC register</a> or <a href=\"https://www.google.com/search?q=" + encodeURIComponent('"' + cd.code + '" SCAC OR "BIC code"') + '" target="_blank" rel="noopener">search the code</a>. ';
+    if (cd.isCont) h += '<a href="https://www.searates.com/container/tracking/?number=' + encodeURIComponent(cd.full) + '" target="_blank" rel="noopener">Track on SeaRates</a> · <a href="https://www.track-trace.com/container" target="_blank" rel="noopener">Track-Trace</a>';
+    box.innerHTML = '<div class="ln-ident">' + h + "</div>";
+  }
+  function render() {
+    const L = matches();
+    const cd = codeOf(st.q.trim());
+    const num = cd && cd.full.length >= 8 ? cd.full : "";
+    $("#ln-count").textContent = L.length + " shipping line" + (L.length === 1 ? "" : "s") + (st.q.trim() && st.pick < 0 ? " matching “" + st.q.trim() + "”" : "");
+    ident();
+    $("#ln-body").innerHTML = L.map(function (r) {
+      return "<tr" + (r.stt ? ' class="ln-old"' : "") + "><td><b>" + esc(r.n) + "</b>" + (r.stt ? ' <span class="ln-badge">' + (r.stt === "merged" ? "merged / brand retired" : "defunct") + "</span>" : "") +
+        (r.aka ? '<br><span class="hint">' + esc(r.aka) + "</span>" : "") + (r.note ? '<div class="ln-note">' + esc(r.note) + "</div>" : "") + "</td>" +
+        "<td>" + (r.scac.length ? codeBtns(r.scac) : '<span class="hint">–</span>') + "</td>" +
+        "<td>" + (r.pre.length ? codeBtns(r.pre) : '<span class="hint">–</span>') + "</td>" +
+        "<td>" + TYPES[r.ty] + (r.al ? '<br><span class="ln-al">' + esc(r.al === "MSC" ? "Independent" : r.al + " alliance") + "</span>" : "") + "</td>" +
+        "<td>" + esc(cname(r.cc)) + "</td><td>" + looks(r, num) + "</td></tr>";
+    }).join("") || '<tr><td colspan="6" class="hint">No shipping line matches. Try a shorter name, or check the SMDG liner code list (link below).</td></tr>';
+  }
+
+  // --- searchable dropdown (combobox) ---
+  const inp = $("#ln-q"), lb = $("#ln-list");
+  function opts() {
+    const q = norm(inp.value.trim());
+    const cd = codeOf(inp.value.trim());
+    return ROWS.filter(function (r) {
+      if (!q || st.pick > -1) return true;
+      if (cd && (r.scac.indexOf(cd.code) > -1 || r.pre.indexOf(cd.code) > -1)) return true;
+      return q.split(/\s+/).every(function (w) { return r.key.indexOf(w) > -1; });
+    });
+  }
+  function drawList() {
+    const O = opts();
+    st.hi = Math.min(st.hi, Math.max(O.length - 1, 0));
+    lb.innerHTML = O.map(function (r, k) {
+      return '<li role="option" id="ln-o' + r.i + '" data-i="' + r.i + '" aria-selected="' + (k === st.hi) + '"' + (r.stt ? ' class="ln-old"' : "") + "><span>" + esc(r.n) + (r.aka ? ' <small>' + esc(r.aka) + "</small>" : "") + "</span><code>" + esc(r.scac[0] || r.pre[0] || "") + "</code></li>";
+    }).join("") || '<li class="hint" aria-disabled="true">No match</li>';
+    const cur = lb.querySelector('[aria-selected="true"]'); if (cur) { inp.setAttribute("aria-activedescendant", cur.id); cur.scrollIntoView({ block: "nearest" }); }
+  }
+  function openList(v) { st.open = v; lb.hidden = !v; inp.setAttribute("aria-expanded", v); if (v) drawList(); }
+  function pick(i) {
+    const r = ROWS.filter(function (x) { return x.i === i; })[0]; if (!r) return;
+    st.pick = i; st.q = r.n; inp.value = r.n; openList(false); render();
+  }
+  let t = 0;
+  inp.addEventListener("input", function () {
+    st.pick = -1; st.hi = 0; openList(true);
+    clearTimeout(t); t = setTimeout(function () { st.q = inp.value; render(); }, 150);
+  });
+  inp.addEventListener("focus", function () { if (!inp.value) openList(true); });
+  inp.addEventListener("keydown", function (e) {
+    const O = opts();
+    if (e.key === "ArrowDown") { e.preventDefault(); if (!st.open) openList(true); else { st.hi = Math.min(st.hi + 1, O.length - 1); drawList(); } }
+    else if (e.key === "ArrowUp") { e.preventDefault(); st.hi = Math.max(st.hi - 1, 0); drawList(); }
+    else if (e.key === "Enter") { if (st.open && O[st.hi] && !codeOf(inp.value.trim())) { e.preventDefault(); pick(O[st.hi].i); } else { openList(false); st.q = inp.value; render(); } }
+    else if (e.key === "Escape") { if (st.open) { e.preventDefault(); openList(false); } }
+  });
+  $("#ln-toggle").addEventListener("click", function () { if (st.open) openList(false); else { if (st.pick > -1) { st.pick = -1; inp.value = ""; st.q = ""; render(); } st.hi = 0; openList(true); inp.focus(); } });
+  lb.addEventListener("mousedown", function (e) { const li = e.target.closest("li[data-i]"); if (li) { e.preventDefault(); pick(+li.dataset.i); } });
+  document.addEventListener("click", function (e) { if (st.open && !e.target.closest(".ln-combo")) openList(false); });
+
+  $("#ln-al").addEventListener("change", function () { st.al = this.value; st.pick = -1; render(); });
+  $("#ln-old").addEventListener("change", function () { st.old = this.checked; render(); });
+  $("#ln-type").addEventListener("click", function (e) {
+    const b = e.target.closest("button[data-ty]"); if (!b) return;
+    st.ty = b.dataset.ty; st.pick = -1;
+    this.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); render();
+  });
+  host.addEventListener("click", function (e) { const c = e.target.closest("[data-copy]"); if (c) window.LE_OSINT.copy(c.dataset.copy); });
+  function out() { return matches().map(function (r) { return [r.n, r.aka, r.scac.join(" "), r.pre.join(" "), TYPES[r.ty], r.al, cname(r.cc), r.web, r.stt, r.note]; }); }
+  $("#ln-copy").addEventListener("click", function () { window.LE_OSINT.copy(out().map(function (r) { return r.join("\t"); }).join("\n")); });
+  $("#ln-csv").addEventListener("click", function () {
+    const csv = "Shipping line,Other names,SCAC,Box prefixes,Type,Alliance,HQ,Website,Status,Note\n" + out().map(function (r) { return r.map(function (x) { return '"' + String(x || "").replace(/"/g, '""') + '"'; }).join(","); }).join("\n");
+    try { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" })); a.download = "shipping-lines.csv"; document.body.appendChild(a); a.click(); a.remove(); }
+    catch (err) { window.LE_OSINT.copy(csv); }
+  });
+  window.LE_OSINT.linesSearch = function (v) { inp.value = v; st.q = v; st.pick = -1; render(); };
   render();
 })();
 

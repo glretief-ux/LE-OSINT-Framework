@@ -376,3 +376,23 @@ td.mono { font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; fo
 .hs-V { background: #E8DDF6; color: #4B2A7A; }
 .hs-X, .hs-M { background: var(--accent-soft); color: var(--accent); }
 .topnav .theme-btn { margin-left: auto; border-style: dashed; }
+
+/* Shipping lines */
+.ln-combo { position: relative; }
+.ln-inputwrap { display: flex; }
+.ln-inputwrap input { flex: 1; min-width: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+.ln-toggle { border: 1px solid var(--line); border-left: 0; background: var(--panel-2); color: var(--ink); padding: 0 12px; border-radius: 0 8px 8px 0; cursor: pointer; font-size: 14px; }
+.ln-list { position: absolute; z-index: 30; left: 0; right: 0; top: 100%; margin: 4px 0 0; padding: 4px; list-style: none; max-height: 340px; overflow: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.18); }
+.ln-list li { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; padding: 7px 10px; border-radius: 7px; cursor: pointer; font-size: 14px; }
+.ln-list li small { color: var(--muted); font-size: 12px; }
+.ln-list li code { font: 600 12px var(--mono); color: var(--muted); }
+.ln-list li[aria-selected="true"], .ln-list li:hover { background: var(--accent-soft); }
+.ln-list li.ln-old span { color: var(--muted); }
+.ln-ident { background: var(--accent-soft); border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; font-size: 14px; line-height: 1.6; }
+.ln-ident .ok { color: var(--ok); font-weight: 700; } .ln-ident .bad { color: var(--bad); font-weight: 700; }
+.ln-note { font-size: 12.5px; color: var(--muted); margin-top: 3px; max-width: 60ch; }
+.ln-badge { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); border: 1px solid var(--line); border-radius: 5px; padding: 0 5px; }
+.ln-al { font-size: 12px; color: var(--accent); font-weight: 600; }
+tr.ln-old td { opacity: .78; }
+.ln-combo .ln-inputwrap input { width: auto; }
+@media (min-width: 900px) { .topnav { flex-wrap: wrap; overflow: visible; row-gap: 6px; } }

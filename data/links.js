@@ -370,6 +370,7 @@ SeaRates Tracking | https://www.searates.com/container/tracking/?number={q} | | 
 Google (exact container / vessel / IMO) | https://www.google.com/search?q=%22{q}%22 | D | cont,imo,vessel,mmsi
 BIC Code Register (owner prefixes) | https://www.bic-code.org/ | R |
 ## Container Tracking (carriers)
+Shipping lines directory (in this tool) | #lines | N | | 110 ocean carriers with SCAC codes, container prefixes, alliances and tracking pages; identifies the line from a container or B/L number
 Maersk | https://www.maersk.com/tracking/{q} | | cont
 MSC | https://www.msc.com/en/track-a-shipment | |
 CMA CGM | https://www.cma-cgm.com/ebusiness/tracking | |

@@ -26,7 +26,7 @@ def build(fragment=False):
         "assets/vendor/exifr.full.umd.js": "https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/full.umd.js",
     }
     for src in ["assets/vendor/exifr.full.umd.js",
-                "data/links.js", "data/playbooks.js", "assets/app.js", "assets/toolbox.js", "data/ports.js", "assets/ports.js", "data/hs.js", "assets/hs.js"]:
+                "data/links.js", "data/playbooks.js", "assets/app.js", "assets/toolbox.js", "data/ports.js", "assets/ports.js", "data/hs.js", "assets/hs.js", "data/shipping-lines.js", "assets/lines.js"]:
         tag = '<script src="%s"></script>' % src
         if fragment and src in cdn:
             html = html.replace(tag, '<script src="%s"></script>' % cdn[src])

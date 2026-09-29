@@ -374,7 +374,7 @@
     if (!a) return;
     e.preventDefault();
     const id = a.getAttribute("href").slice(1);
-    if (id === "ports" || id === "hs") { showView(id); window.scrollTo(0, 0); return; }
+    if (id === "ports" || id === "hs" || id === "lines") { showView(id); window.scrollTo(0, 0); return; }
     showView("toolbox");
     const pre = a.dataset.prefill;
     const target = document.getElementById(id);
@@ -831,6 +831,6 @@
   applyTheme(theme);
   render();
   if (/^toolbox-/.test(h)) { showView("toolbox"); setTimeout(function () { const el = document.getElementById(h); if (el) el.scrollIntoView(); }, 50); }
-  else if (["toolbox", "about", "playbooks", "profile", "web", "flow", "desk", "ports", "hs"].indexOf(h) > -1) showView(h);
+  else if (["toolbox", "about", "playbooks", "profile", "web", "flow", "desk", "ports", "hs", "lines"].indexOf(h) > -1) showView(h);
   else showView("flow");
 })();
