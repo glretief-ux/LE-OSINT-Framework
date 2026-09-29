@@ -16,7 +16,11 @@
     SOURCES = PROXY ? [{ name: "your live-data proxy", cs: PROXY + "/v2/callsign/", hex: PROXY + "/v2/hex/", reg: PROXY + "/v2/reg/", pt: function (a, o, r) { return PROXY + "/v2/point/" + a + "/" + o + "/" + r; } }] : [];
   }
   setSources();
-  const EMBED = "https://adsb.lol/";
+  // Live maps (all run tar1090, so the same URL options work on each). Some do not load on every device or network,
+  // so the officer can switch; the choice is remembered in this browser.
+  const LIVE = { "airplanes.live": "https://globe.airplanes.live/", "adsb.fi": "https://globe.adsb.fi/", "adsb.lol": "https://adsb.lol/", "ADS-B Exchange": "https://globe.adsbexchange.com/" };
+  let LIVEPICK = "airplanes.live"; try { const v = localStorage.getItem("leosint.livemap"); if (LIVE[v]) LIVEPICK = v; } catch (e) { /* ignore */ }
+  function liveUrl(qs, name) { return LIVE[name || LIVEPICK] + qs; }
   const SQUAWK = { "7500": "Unlawful interference (hijack)", "7600": "Radio failure", "7700": "General emergency" };
 
   host.innerHTML =
@@ -138,34 +142,36 @@
   }
   function launcher() {
     const r = st.route, cs = st.cs || (st.q && st.q.v) || "", iata = r && r.callsign_iata || "";
-    const btns = ['<a class="btn fl-go" href="' + esc(st.liveUrl) + '" target="_blank" rel="noopener">Show live position ↗</a>'];
+    const btns = ['<a class="btn fl-go" href="' + esc(liveUrl(st.liveQS)) + '" target="_blank" rel="noopener">Show live position (' + esc(LIVEPICK) + ') ↗</a>'];
     if (st.q && st.q.kind === "flight") {
       btns.push('<a class="btn ghost" href="https://www.flightradar24.com/data/flights/' + encodeURIComponent((iata || cs).toLowerCase()) + '" target="_blank" rel="noopener">Flightradar24 ↗</a>');
       btns.push('<a class="btn ghost" href="https://www.flightaware.com/live/flight/' + encodeURIComponent(cs) + '" target="_blank" rel="noopener">FlightAware ↗</a>');
     }
-    if (st.hex) btns.push('<a class="btn ghost" href="https://globe.adsbexchange.com/?icao=' + st.hex + '" target="_blank" rel="noopener">ADS-B Exchange ↗</a>');
     const el = $("#fl-launch");
-    el.innerHTML = '<div class="fl-launch-btns">' + btns.join("") + '</div><p class="hint">The live position opens in a new tab on the free, unfiltered adsb.lol map' + (st.q && st.q.kind === "flight" ? ", showing only " + esc(cs) + " (also with a suffix letter, e.g. " + esc(cs) + "F)" : "") + '. Click the aircraft there for altitude, speed and squawk. No aircraft = not airborne yet, landed or out of receiver coverage.</p>';
+    const others = Object.keys(LIVE).filter(function (k) { return k !== LIVEPICK; }).map(function (k) { return '<a href="' + esc(liveUrl(st.liveQS, k)) + '" target="_blank" rel="noopener">' + esc(k) + "</a>"; }).join(" · ");
+    el.innerHTML = '<div class="fl-launch-btns">' + btns.join("") + '</div>' +
+      '<p class="fl-alt">Same live map on: ' + others + ' <label class="fl-pick-map">Default live map <select id="fl-livemap">' + Object.keys(LIVE).map(function (k) { return '<option' + (k === LIVEPICK ? " selected" : "") + ">" + esc(k) + "</option>"; }).join("") + "</select></label></p>" +
+      '<p class="hint">The live position opens in a new tab on a free, unfiltered community ADS-B map' + (st.q && st.q.kind === "flight" ? ", showing only " + esc(cs) + " (also with a suffix letter, e.g. " + esc(cs) + "F)" : "") + '. Click the aircraft there for altitude, speed and squawk. If that map shows “Total Aircraft: 0”, it is not loading on your device or network: try another one from the list and set it as default. If the aircraft is simply missing, it is not airborne yet, has landed or is out of receiver coverage.</p>';
     el.hidden = false;
   }
   function embedTrack(q) {
     ensureMap(); clearInterval(st.timer); layer.clearLayers(); areaLayer.clearLayers();
-    Object.assign(st, { q: q, hex: "", cs: "", trail: [], route: null, acinfo: null, lastAc: null, fitDone: false, bounds: null, liveUrl: "" });
+    Object.assign(st, { q: q, hex: "", cs: "", trail: [], route: null, acinfo: null, lastAc: null, fitDone: false, bounds: null, liveQS: "" });
     status("Looking up…");
     function done() {
       let url;
-      if (st.hex) url = EMBED + "?icao=" + st.hex + "&zoom=7";
-      else if (q.kind === "reg") url = EMBED + "?reg=" + encodeURIComponent(q.v);
+      if (st.hex) url = "?icao=" + st.hex + "&zoom=7";
+      else if (q.kind === "reg") url = "?reg=" + encodeURIComponent(q.v);
       else {
         const cs = st.cs || q.v;
         // airlines often broadcast the flight number with a suffix letter (AT831 is sent as RAM831F), so allow one
-        url = EMBED + "?filterCallSign=" + encodeURIComponent("^" + cs + "[A-Z]?$");
+        url = "?filterCallSign=" + encodeURIComponent("^" + cs + "[A-Z]?$");
         if (st.route && st.route.origin && st.route.destination) {
           const o = [st.route.origin.latitude, st.route.origin.longitude], d = [st.route.destination.latitude, st.route.destination.longitude], mid = gc(o, d, 2)[1], tot = nm(o, d);
           url += "&lat=" + mid[0].toFixed(3) + "&lon=" + mid[1].toFixed(3) + "&zoom=" + (tot > 3500 ? 3 : tot > 1500 ? 4 : tot > 600 ? 5 : 6);
         } else url += "&zoom=3";
       }
-      st.liveUrl = url;
+      st.liveQS = url;
       drawRoute(); if (st.bounds) map.fitBounds(st.bounds);
       renderInfo(null); launcher();
       const found = st.route || st.acinfo;
@@ -310,7 +316,7 @@
     h += '<div class="fl-actions"><button type="button" class="btn ghost" id="fl-log">Log to case log</button></div>';
     const today = new Date().toISOString().slice(0, 10);
     const L2 = [];
-    if (st.liveUrl) L2.push(["Live position (adsb.lol)", st.liveUrl]);
+    if (st.liveQS) L2.push(["Live position (" + LIVEPICK + ")", liveUrl(st.liveQS)]);
     if (iata || cs) L2.push(["Flightradar24", "https://www.flightradar24.com/data/flights/" + encodeURIComponent((iata || cs).toLowerCase())]);
     if (cs) L2.push(["FlightAware", "https://www.flightaware.com/live/flight/" + encodeURIComponent(cs)]);
     if (hex) {
@@ -330,9 +336,9 @@
     ensureMap();
     if (!PROXY) {
       const c0 = map.getCenter();
-      const url = EMBED + "?lat=" + c0.lat.toFixed(4) + "&lon=" + c0.lng.toFixed(4) + "&zoom=" + Math.max(4, map.getZoom() + 1) + "&noIsolation";
+      const url = liveUrl("?lat=" + c0.lat.toFixed(4) + "&lon=" + c0.lng.toFixed(4) + "&zoom=" + Math.max(4, map.getZoom() + 1) + "&noIsolation");
       const w = window.open(url, "_blank", "noopener");
-      status(w === null ? "" : "Live air traffic around the map centre opened in a new tab (adsb.lol).", "ok");
+      status(w === null ? "" : "Live air traffic around the map centre opened in a new tab (" + LIVEPICK + ").", "ok");
       $("#fl-launch").innerHTML = '<div class="fl-launch-btns"><a class="btn fl-go" href="' + esc(url) + '" target="_blank" rel="noopener">Open live air traffic here ↗</a></div><p class="hint">Move this map to the place of interest first, then press <b>Aircraft in this area</b>.</p>';
       $("#fl-launch").hidden = false;
       return;
@@ -374,7 +380,7 @@
     if (e.target.id === "fl-log" && window.LE_OSINT.addLog) {
       const a = st.lastAc, r = st.route;
       const txt = "Flight check " + ((a && (a.flight || "").trim()) || st.cs || (st.q && st.q.v) || "") + (a ? " hex " + a.hex.toUpperCase() + (a.r ? " reg " + a.r : "") + " at " + (a.lat != null ? a.lat.toFixed(4) + "," + a.lon.toFixed(4) : "no position") + ", " + alt(a) + (a.squawk ? ", squawk " + a.squawk : "") : (PROXY ? " (not airborne)" : (st.hex ? " hex " + st.hex.toUpperCase() : "") + " (live position checked on adsb.lol)")) + (r && r.origin ? ", route " + r.origin.iata_code + "-" + r.destination.iata_code : "") + (st.src ? ", source " + st.src.name : "");
-      window.LE_OSINT.addLog(st.liveUrl || (st.hex ? "https://globe.adsbexchange.com/?icao=" + st.hex : ""), txt);
+      window.LE_OSINT.addLog((st.liveQS && liveUrl(st.liveQS)) || (st.hex ? "https://globe.adsbexchange.com/?icao=" + st.hex : ""), txt);
       window.LE_OSINT.toast && window.LE_OSINT.toast("Added to case log");
     }
   });
@@ -385,6 +391,11 @@
     setSources(); modeUI(); status(v ? "Proxy saved: live data will be drawn on this tool's map." : "Proxy removed: live position opens on adsb.lol.", "ok");
   });
   $("#fl-proxy-clear").addEventListener("click", function () { $("#fl-proxy").value = ""; $("#fl-proxy-save").click(); });
+  host.addEventListener("change", function (e) {
+    if (e.target.id !== "fl-livemap") return;
+    LIVEPICK = e.target.value; try { localStorage.setItem("leosint.livemap", LIVEPICK); } catch (err) { /* ignore */ }
+    if (st.liveQS) { launcher(); renderInfo(st.lastAc); }
+  });
   document.addEventListener("visibilitychange", function () { if (!document.hidden) refresh(); });
   new MutationObserver(function () {
     const v = document.getElementById("view-flights");
