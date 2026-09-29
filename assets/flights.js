@@ -33,7 +33,7 @@
     '<div class="fl-launch" id="fl-launch" hidden></div>' +
     '<div class="fl-grid"><div class="fl-mapbox"><div id="fl-map" class="fl-map" aria-label="Flight map"></div></div><aside id="fl-info" class="fl-info"><p class="hint">No flight selected yet.</p></aside></div>' +
     '<p class="hint" style="margin-top:12px;max-width:86ch">Live positions come from the free, unfiltered community ADS-B network <a href="https://adsb.lol/" target="_blank" rel="noopener">adsb.lol</a> (it also shows aircraft that are hidden on commercial trackers); route and aircraft details from <a href="https://www.adsbdb.com/" target="_blank" rel="noopener">adsbdb</a>. ' +
-    "Coverage depends on volunteer receivers: gaps over oceans and remote areas are normal. The scheduled route is from a database and can be wrong for charter, diverted or ad-hoc flights. Your searches are sent to these services, so use an approved, non-attributable environment. Map tiles © OpenStreetMap contributors, © CARTO, Esri.</p>" +
+    "Coverage depends on volunteer receivers: gaps over oceans and remote areas are normal. The scheduled route is from a database and can be wrong for charter, diverted or ad-hoc flights. Your searches are sent to these services, so use an approved, non-attributable environment. Map tiles © Esri and © OpenStreetMap contributors.</p>" +
     '<details class="fl-set" id="fl-set"><summary>Live data connection (advanced)</summary>' +
     '<p class="hint" style="max-width:80ch">By default the live position opens on the <a href="https://adsb.lol/" target="_blank" rel="noopener">adsb.lol</a> map in a new tab, because the free ADS-B services do not let other web pages read or embed their live data. ' +
     'If your unit runs a small proxy (for example the free Cloudflare Worker in <span class="mono">tools/flight-proxy/</span> of this project), enter its address here and the aircraft is drawn on this tool\'s own map with its track, altitude, speed and squawk, refreshed every 10 seconds.</p>' +
@@ -42,9 +42,11 @@
   // ---------- map ----------
   const dark = function () { const t = document.documentElement.dataset.theme; return t === "dark" || (t !== "light" && window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches); };
   const tiles = {
-    "Streets": L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", { maxZoom: 19, subdomains: "abcd", attribution: "© OpenStreetMap contributors © CARTO" }),
-    "Dark": L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", { maxZoom: 19, subdomains: "abcd", attribution: "© OpenStreetMap contributors © CARTO" }),
-    "Satellite": L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", { maxZoom: 19, attribution: "Imagery © Esri" })
+    // Esri basemaps need no API key and no Referer, so they also work from the offline file
+    "Streets": L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}", { maxZoom: 19, attribution: "Map © Esri, HERE, Garmin, © OpenStreetMap contributors" }),
+    "Dark": L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", { maxZoom: 16, attribution: "Map © Esri, HERE, Garmin, © OpenStreetMap contributors" }),
+    "Satellite": L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", { maxZoom: 19, attribution: "Imagery © Esri, Maxar, Earthstar Geographics" }),
+    "OpenStreetMap": L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, referrerPolicy: "strict-origin-when-cross-origin", attribution: "© OpenStreetMap contributors" })
   };
   let map = null, layer = null, areaLayer = null;
   function ensureMap() {
