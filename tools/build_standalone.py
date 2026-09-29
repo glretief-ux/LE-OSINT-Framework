@@ -20,6 +20,7 @@ def read(p):
 
 def build(fragment=False):
     html = read("index.html")
+    html = re.sub(r'((?:src|href)="(?:assets|data)/[^"?]+)\?v=[^"]*"', r'\1"', html)  # drop cache-busting versions
     css = read("assets/style.css")
     html = html.replace('<link rel="stylesheet" href="assets/style.css">', "<style>\n" + css + "\n</style>")
     html = html.replace('<link rel="stylesheet" href="assets/vendor/leaflet.css">', "<style>\n" + read("assets/vendor/leaflet.css") + "\n</style>")

@@ -1100,6 +1100,14 @@ tr.ln-old td { opacity: .78; }
 .fl-ap span { display: inline-block; transform: translate(-50%, -50%); background: #1c2a26; color: #fff; font: 700 11px var(--mono); padding: 2px 6px; border-radius: 5px; white-space: nowrap; }
 .leaflet-container { font: 12px var(--font); }
 @media (max-width: 900px) { .fl-grid { grid-template-columns: 1fr; } .fl-info { max-height: none; } .fl-map { height: 58vh; } }
+.fl-tabs { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; margin-bottom: 8px; }
+.fl-tabs button { font: 600 13px var(--font); border: 1px solid var(--line); background: var(--panel); color: var(--ink); padding: 6px 12px; border-radius: 999px; cursor: pointer; }
+.fl-tabs button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.fl-tabs .hint { font-size: 12.5px; }
+.fl-mapbox { min-width: 0; }
+.fl-embed iframe { width: 100%; height: 100%; border: 0; display: block; }
+.fl-set { margin-top: 14px; font-size: 13.5px; } .fl-set summary { cursor: pointer; font-weight: 600; }
+.fl-set .pf input { width: 100%; }
 
 </style>
 </head>
@@ -5422,17 +5430,21 @@ window.LE_LINES = {
   const $ = function (s, r) { return (r || document).querySelector(s); };
   const esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]; }); };
 
-  const SOURCES = [
-    { name: "adsb.lol", site: "https://adsb.lol/", cs: "https://api.adsb.lol/v2/callsign/", hex: "https://api.adsb.lol/v2/hex/", reg: "https://api.adsb.lol/v2/reg/", pt: function (a, o, r) { return "https://api.adsb.lol/v2/point/" + a + "/" + o + "/" + r; } },
-    { name: "airplanes.live", site: "https://airplanes.live/", cs: "https://api.airplanes.live/v2/callsign/", hex: "https://api.airplanes.live/v2/hex/", reg: "https://api.airplanes.live/v2/reg/", pt: function (a, o, r) { return "https://api.airplanes.live/v2/point/" + a + "/" + o + "/" + r; } },
-    { name: "adsb.fi", site: "https://adsb.fi/", cs: "https://opendata.adsb.fi/api/v2/callsign/", hex: "https://opendata.adsb.fi/api/v2/hex/", reg: "https://opendata.adsb.fi/api/v2/registration/", pt: function (a, o, r) { return "https://opendata.adsb.fi/api/v2/lat/" + a + "/lon/" + o + "/dist/" + r; } }
-  ];
+  // Browsers can only read the ADS-B APIs through a CORS-enabled proxy (the public APIs send no CORS headers).
+  // Without a proxy the tab embeds the adsb.lol live map instead.
+  let PROXY = ""; try { PROXY = (localStorage.getItem("leosint.flightproxy") || "").replace(/\/+$/, ""); } catch (e) { /* storage blocked */ }
+  let SOURCES = [];
+  function setSources() {
+    SOURCES = PROXY ? [{ name: "your live-data proxy", cs: PROXY + "/v2/callsign/", hex: PROXY + "/v2/hex/", reg: PROXY + "/v2/reg/", pt: function (a, o, r) { return PROXY + "/v2/point/" + a + "/" + o + "/" + r; } }] : [];
+  }
+  setSources();
+  const EMBED = "https://adsb.lol/";
   const SQUAWK = { "7500": "Unlawful interference (hijack)", "7600": "Radio failure", "7700": "General emergency" };
 
   host.innerHTML =
     '<header class="desk-head"><div><p class="eyebrow">Aviation · live</p><h2>Flight tracker</h2>' +
     '<p class="hint" style="margin:4px 0 0;max-width:76ch">Enter a flight number (<span class="mono">KL1001</span>), ICAO callsign (<span class="mono">KLM1001</span>), aircraft registration (<span class="mono">PH-BXA</span>) or ICAO 24-bit hex code (<span class="mono">4840D6</span>). ' +
-    "The aircraft is shown live on the map with its track, route and details, refreshed every 10 seconds. Or use <b>Aircraft in this area</b> to see everything flying over the map view.</p></div></header>" +
+    "You get the live position on a map, the scheduled route and the aircraft details (type, owner, photo). Or use <b>Aircraft in this area</b> to see everything flying over the map view.</p></div></header>" +
     '<form class="fl-bar" id="fl-form" autocomplete="off">' +
     '<label class="pf" style="flex:1 1 260px">Flight, callsign, registration or hex<input id="fl-q" type="search" placeholder="e.g. BA123, BAW123, G-XLEA, 400A0B" spellcheck="false"></label>' +
     '<label class="pf">Search as<select id="fl-mode"><option value="auto">Automatic</option><option value="flight">Flight / callsign</option><option value="reg">Registration</option><option value="hex">ICAO hex</option></select></label>' +
@@ -5440,9 +5452,14 @@ window.LE_LINES = {
     '<button class="btn ghost" type="button" id="fl-area">Aircraft in this area</button>' +
     "</form>" +
     '<div class="fl-opts"><label class="pchk"><input type="checkbox" id="fl-live" checked> Live refresh (10 s)</label><label class="pchk"><input type="checkbox" id="fl-follow" checked> Keep aircraft centred</label><span id="fl-status" class="fl-status" role="status"></span></div>' +
-    '<div class="fl-grid"><div id="fl-map" class="fl-map" aria-label="Flight map"></div><aside id="fl-info" class="fl-info"><p class="hint">No flight selected yet.</p></aside></div>' +
-    '<p class="hint" style="margin-top:12px;max-width:86ch">Live positions come from free, unfiltered community ADS-B networks (<a href="https://adsb.lol/" target="_blank" rel="noopener">adsb.lol</a>, <a href="https://airplanes.live/" target="_blank" rel="noopener">airplanes.live</a>, <a href="https://adsb.fi/" target="_blank" rel="noopener">adsb.fi</a>); route and aircraft details from <a href="https://www.adsbdb.com/" target="_blank" rel="noopener">adsbdb</a>. ' +
-    "Coverage depends on volunteer receivers: gaps over oceans and remote areas are normal, and aircraft without ADS-B (or blocked from commercial trackers) may only show on these unfiltered feeds. The scheduled route is from a database and can be wrong for charter, diverted or ad-hoc flights; the track drawn is what was actually received. Your searches are sent to these services, so use an approved, non-attributable environment. Map tiles © OpenStreetMap contributors, © CARTO, Esri.</p>";
+    '<div class="fl-tabs" id="fl-tabs" role="group" aria-label="Map view"><button type="button" data-v="live" aria-pressed="true">Live map</button><button type="button" data-v="route" aria-pressed="false">Route map</button><span class="hint" id="fl-mode-note"></span></div>' +
+    '<div class="fl-grid"><div class="fl-mapbox"><div id="fl-embed" class="fl-map fl-embed"><p class="hint" style="padding:16px">Search for a flight to load the live map.</p></div><div id="fl-map" class="fl-map" aria-label="Flight map"></div></div><aside id="fl-info" class="fl-info"><p class="hint">No flight selected yet.</p></aside></div>' +
+    '<p class="hint" style="margin-top:12px;max-width:86ch">Live positions come from the free, unfiltered community ADS-B network <a href="https://adsb.lol/" target="_blank" rel="noopener">adsb.lol</a> (it also shows aircraft that are hidden on commercial trackers); route and aircraft details from <a href="https://www.adsbdb.com/" target="_blank" rel="noopener">adsbdb</a>. ' +
+    "Coverage depends on volunteer receivers: gaps over oceans and remote areas are normal. The scheduled route is from a database and can be wrong for charter, diverted or ad-hoc flights. Your searches are sent to these services, so use an approved, non-attributable environment. Map tiles © OpenStreetMap contributors, © CARTO, Esri.</p>" +
+    '<details class="fl-set" id="fl-set"><summary>Live data connection (advanced)</summary>' +
+    '<p class="hint" style="max-width:80ch">By default the live position is shown in the embedded <a href="https://adsb.lol/" target="_blank" rel="noopener">adsb.lol</a> map, because the free ADS-B services do not allow other web pages to read their data directly. ' +
+    'If your unit runs a small proxy (for example the free Cloudflare Worker in <span class="mono">tools/flight-proxy/</span> of this project), enter its address here and the aircraft is drawn on this tool\'s own map with its track, altitude, speed and squawk, refreshed every 10 seconds.</p>' +
+    '<div class="fl-bar"><label class="pf" style="flex:1 1 320px">Proxy address<input id="fl-proxy" type="url" placeholder="https://flight-proxy.your-unit.workers.dev" spellcheck="false"></label><button type="button" class="btn ghost" id="fl-proxy-save">Save</button><button type="button" class="btn ghost" id="fl-proxy-clear">Use embedded map</button></div></details>';
 
   // ---------- map ----------
   const dark = function () { const t = document.documentElement.dataset.theme; return t === "dark" || (t !== "light" && window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches); };
@@ -5532,7 +5549,50 @@ window.LE_LINES = {
   const st = { q: null, hex: "", cs: "", trail: [], route: null, acinfo: null, timer: 0, busy: false, lastAc: null, src: null, fitDone: false };
   function status(msg, cls) { const s = $("#fl-status"); s.textContent = msg || ""; s.className = "fl-status " + (cls || ""); }
 
+  // ---------- embedded live map (default, no proxy needed) ----------
+  function showMapView(v) {
+    st.view = v;
+    $("#fl-tabs").querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.v === v); });
+    const embedLive = !PROXY && v === "live";
+    $("#fl-embed").hidden = !embedLive;
+    $("#fl-map").hidden = embedLive;
+    if (!embedLive) setTimeout(function () { ensureMap(); if (st.bounds) map.fitBounds(st.bounds); }, 30);
+  }
+  function modeUI() {
+    $("#fl-tabs").hidden = !!PROXY;
+    $("#fl-live").parentNode.hidden = !PROXY; $("#fl-follow").parentNode.hidden = !PROXY;
+    $("#fl-mode-note").textContent = PROXY ? "" : "Live positions: adsb.lol live map. Route map: scheduled route between the airports.";
+    $("#fl-proxy").value = PROXY;
+    showMapView(PROXY ? "route" : "live");
+  }
+  function embedTrack(q) {
+    ensureMap(); clearInterval(st.timer); layer.clearLayers(); areaLayer.clearLayers();
+    Object.assign(st, { q: q, hex: "", cs: "", trail: [], route: null, acinfo: null, lastAc: null, fitDone: false, bounds: null, embedUrl: "" });
+    status("Looking up…");
+    function done() {
+      let url, msg;
+      if (st.hex) { url = EMBED + "?icao=" + st.hex + "&zoom=7"; msg = "Live map follows aircraft " + st.hex.toUpperCase() + ". If it does not appear, it is on the ground or out of coverage."; }
+      else if (q.kind === "reg") { url = EMBED + "?reg=" + encodeURIComponent(q.v); msg = "Live map searches for registration " + q.v + ". If it does not appear, it is on the ground or out of coverage."; }
+      else {
+        const cs = st.cs || q.v;
+        url = EMBED + "?filterCallSign=" + encodeURIComponent("^" + cs + "$") + "&callsign=" + encodeURIComponent(cs);
+        if (st.route && st.route.origin && st.route.destination) {
+          const o = [st.route.origin.latitude, st.route.origin.longitude], d = [st.route.destination.latitude, st.route.destination.longitude], mid = gc(o, d, 2)[1], tot = nm(o, d);
+          url += "&lat=" + mid[0].toFixed(3) + "&lon=" + mid[1].toFixed(3) + "&zoom=" + (tot > 3500 ? 3 : tot > 1500 ? 4 : tot > 600 ? 5 : 6);
+        } else url += "&zoom=3";
+        msg = "Live map shows only callsign " + cs + ". Click the aircraft for altitude, speed and squawk. No aircraft shown = not airborne yet, landed or out of coverage.";
+      }
+      st.embedUrl = url;
+      $("#fl-embed").innerHTML = '<iframe src="' + esc(url) + '" title="Live flight map (adsb.lol)" referrerpolicy="no-referrer" allow="fullscreen"></iframe>';
+      drawRoute(); renderInfo(null); status(msg, "ok"); showMapView("live");
+    }
+    if (q.kind === "flight") adsbdb("callsign/" + q.v).then(function (r) { st.route = r && r.flightroute || null; st.cs = (st.route && st.route.callsign_icao) || q.v; if (!st.route && q.alsoHex) st.hex = q.v.toLowerCase(); done(); });
+    else if (q.kind === "reg") adsbdb("aircraft/" + encodeURIComponent(q.v)).then(function (r) { st.acinfo = r && r.aircraft || null; if (st.acinfo && st.acinfo.mode_s) st.hex = st.acinfo.mode_s.toLowerCase(); done(); });
+    else { st.hex = q.v; adsbdb("aircraft/" + q.v).then(function (r) { st.acinfo = r && r.aircraft || null; done(); }); }
+  }
+
   function track(q) {
+    if (!PROXY) { embedTrack(q); return; }
     ensureMap();
     clearInterval(st.timer);
     Object.assign(st, { q: q, hex: "", cs: "", trail: [], route: null, acinfo: null, lastAc: null, fitDone: false });
@@ -5594,7 +5654,8 @@ window.LE_LINES = {
     L.polyline(gc(o, d, 64), { color: "#7a8a86", weight: 2, dashArray: "6 7", opacity: .9 }).addTo(layer);
     L.marker(o, { icon: apIcon(r.origin.iata_code || r.origin.icao_code) }).bindTooltip(r.origin.name + ", " + r.origin.municipality).addTo(layer);
     L.marker(d, { icon: apIcon(r.destination.iata_code || r.destination.icao_code) }).bindTooltip(r.destination.name + ", " + r.destination.municipality).addTo(layer);
-    if (!st.lastAc && !st.fitDone) { map.fitBounds(L.latLngBounds([o, d]).pad(0.2)); st.fitDone = true; }
+    st.bounds = L.latLngBounds([o, d]).pad(0.2);
+    if (!st.lastAc && !st.fitDone && !$("#fl-map").hidden) { map.fitBounds(st.bounds); st.fitDone = true; }
   }
   function draw(ac) {
     layer.clearLayers(); drawRoute();
@@ -5616,7 +5677,7 @@ window.LE_LINES = {
     const r = st.route, i = st.acinfo;
     const cs = ac && (ac.flight || "").trim() || st.cs || (st.q && st.q.v) || "";
     const hex = ac && ac.hex || st.hex || (i && i.mode_s && i.mode_s.toLowerCase()) || "";
-    const reg = (ac && ac.r) || (i && i.registration) || "";
+    const reg = (ac && ac.r) || (i && i.registration) || (st.q && st.q.kind === "reg" ? st.q.v : "");
     const iata = r && r.callsign_iata || "";
     let h = "";
     if (ac && ac.squawk && SQUAWK[ac.squawk]) h += '<div class="fl-alert">Squawk ' + ac.squawk + ": " + SQUAWK[ac.squawk] + "</div>";
@@ -5647,6 +5708,7 @@ window.LE_LINES = {
     h += '<div class="fl-actions"><button type="button" class="btn ghost" id="fl-log">Log to case log</button></div>';
     const today = new Date().toISOString().slice(0, 10);
     const L2 = [];
+    if (st.embedUrl) L2.push(["Open live map full screen (adsb.lol)", st.embedUrl]);
     if (iata || cs) L2.push(["Flightradar24", "https://www.flightradar24.com/data/flights/" + encodeURIComponent((iata || cs).toLowerCase())]);
     if (cs) L2.push(["FlightAware", "https://www.flightaware.com/live/flight/" + encodeURIComponent(cs)]);
     if (hex) {
@@ -5663,7 +5725,15 @@ window.LE_LINES = {
 
   // ---------- area view ----------
   function area() {
-    ensureMap(); clearInterval(st.timer); st.q = null; layer.clearLayers(); areaLayer.clearLayers();
+    ensureMap();
+    if (!PROXY) {
+      const c0 = map.getCenter(); clearInterval(st.timer); st.q = null;
+      st.embedUrl = EMBED + "?lat=" + c0.lat.toFixed(4) + "&lon=" + c0.lng.toFixed(4) + "&zoom=" + Math.max(4, map.getZoom() + 1) + "&noIsolation";
+      $("#fl-embed").innerHTML = '<iframe src="' + esc(st.embedUrl) + '" title="Live air traffic (adsb.lol)" referrerpolicy="no-referrer" allow="fullscreen"></iframe>';
+      showMapView("live"); status("Live air traffic around the Route map centre. Pan and zoom in the live map; click an aircraft for details.", "ok");
+      $("#fl-info").innerHTML = '<p class="hint">Tip: to choose the area, open <b>Route map</b>, move it to the place of interest, then press <b>Aircraft in this area</b> again.</p>';
+      return;
+    } clearInterval(st.timer); st.q = null; layer.clearLayers(); areaLayer.clearLayers();
     const c = map.getCenter(), b = map.getBounds();
     const radius = Math.min(250, Math.max(5, Math.round(nm([c.lat, c.lng], [b.getNorth(), c.lng]))));
     status("Loading aircraft within " + radius + " NM of the map centre…");
@@ -5700,21 +5770,30 @@ window.LE_LINES = {
     const p = e.target.closest("[data-hex]"); if (p) { st.hex = p.dataset.hex; layer.clearLayers(); liveFirstHit("hex", st.hex).then(function (res) { handle(res, false); }); return; }
     if (e.target.id === "fl-log" && window.LE_OSINT.addLog) {
       const a = st.lastAc, r = st.route;
-      const txt = "Flight check " + ((a && (a.flight || "").trim()) || st.cs || (st.q && st.q.v) || "") + (a ? " hex " + a.hex.toUpperCase() + (a.r ? " reg " + a.r : "") + " at " + (a.lat != null ? a.lat.toFixed(4) + "," + a.lon.toFixed(4) : "no position") + ", " + alt(a) + (a.squawk ? ", squawk " + a.squawk : "") : " (not airborne)") + (r && r.origin ? ", route " + r.origin.iata_code + "-" + r.destination.iata_code : "") + (st.src ? ", source " + st.src.name : "");
-      window.LE_OSINT.addLog(st.hex ? "https://globe.adsbexchange.com/?icao=" + st.hex : "", txt);
+      const txt = "Flight check " + ((a && (a.flight || "").trim()) || st.cs || (st.q && st.q.v) || "") + (a ? " hex " + a.hex.toUpperCase() + (a.r ? " reg " + a.r : "") + " at " + (a.lat != null ? a.lat.toFixed(4) + "," + a.lon.toFixed(4) : "no position") + ", " + alt(a) + (a.squawk ? ", squawk " + a.squawk : "") : (PROXY ? " (not airborne)" : (st.hex ? " hex " + st.hex.toUpperCase() : "") + " (live position viewed on adsb.lol map)")) + (r && r.origin ? ", route " + r.origin.iata_code + "-" + r.destination.iata_code : "") + (st.src ? ", source " + st.src.name : "");
+      window.LE_OSINT.addLog(st.embedUrl || (st.hex ? "https://globe.adsbexchange.com/?icao=" + st.hex : ""), txt);
       window.LE_OSINT.toast && window.LE_OSINT.toast("Added to case log");
     }
   });
+  $("#fl-tabs").addEventListener("click", function (e) { const b = e.target.closest("button[data-v]"); if (b) showMapView(b.dataset.v); });
+  $("#fl-proxy-save").addEventListener("click", function () {
+    const v = $("#fl-proxy").value.trim().replace(/\/+$/, "");
+    if (v && !/^https:\/\//.test(v)) { status("The proxy address must start with https://", "bad"); return; }
+    PROXY = v; try { localStorage.setItem("leosint.flightproxy", v); } catch (err) { /* ignore */ }
+    setSources(); modeUI(); status(v ? "Proxy saved: live data will be drawn on this tool's map." : "Using the embedded live map.", "ok");
+  });
+  $("#fl-proxy-clear").addEventListener("click", function () { $("#fl-proxy").value = ""; $("#fl-proxy-save").click(); });
   document.addEventListener("visibilitychange", function () { if (!document.hidden) refresh(); });
   new MutationObserver(function () {
     const v = document.getElementById("view-flights");
-    if (v && !v.hidden) setTimeout(ensureMap, 30);
+    if (v && !v.hidden && !$("#fl-map").hidden) setTimeout(ensureMap, 30);
   }).observe(document.getElementById("view-flights"), { attributes: true, attributeFilter: ["hidden"] });
   new MutationObserver(function () {
     if (!map) return; const want = dark() ? tiles.Dark : tiles.Streets, other = dark() ? tiles.Streets : tiles.Dark;
     if (map.hasLayer(other)) { map.removeLayer(other); want.addTo(map); }
   }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
+  modeUI();
   if (!document.getElementById("view-flights").hidden) setTimeout(ensureMap, 30);
   window.LE_OSINT.flightSearch = function (v) { $("#fl-q").value = v; $("#fl-mode").value = "auto"; const q = classify(v, "auto"); if (q) { st.routeTried = false; track(q); } };
   const m = location.hash.match(/^#flights=(.+)$/);
