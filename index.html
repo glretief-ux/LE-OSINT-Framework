@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LE OSINT Investigation Desk</title>
+<meta name="description" content="Open-source intelligence directory and toolbox for law enforcement investigators.">
+<meta name="referrer" content="no-referrer">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Public+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<!--BODY-START-->
+<div class="app">
+  <aside class="rail">
+    <div class="brand">
+      <span class="mark" aria-hidden="true"></span>
+      <div><strong>Investigation Desk</strong><small>LE OSINT Framework</small></div>
+    </div>
+    <div class="rail-tools top">
+      <button type="button" data-view="flow">Flow chart</button>
+      <button type="button" data-view="web">Web map</button>
+      <button type="button" data-view="ports">World ports</button>
+      <button type="button" data-view="hs">HS codes</button>
+      <button type="button" data-view="playbooks">Case playbooks</button>
+      <button type="button" data-view="profile">Suspect profile</button>
+      <button type="button" data-view="toolbox">Toolbox &amp; case log</button>
+      <button type="button" data-view="about">How to use · legend</button>
+    </div>
+    <p class="rail-label">Lines of enquiry</p>
+    <nav id="rail-lanes" class="lanes"></nav>
+    <p class="rail-stats"><span id="stat-links"></span> sources · <span id="stat-search"></span> prefilled searches · <span id="stat-cats"></span> categories</p>
+  </aside>
+
+  <div class="main">
+    <div class="cmd-wrap">
+      <nav class="topnav" aria-label="Sections">
+        <button type="button" data-view="flow">Flow chart</button>
+        <button type="button" data-view="web">Web map</button>
+        <button type="button" data-view="desk">Source list</button>
+        <button type="button" data-view="ports">World ports</button>
+        <button type="button" data-view="hs">HS codes</button>
+        <button type="button" data-view="playbooks">Playbooks</button>
+        <button type="button" data-view="profile">Suspect profile</button>
+        <button type="button" data-view="toolbox">Toolbox</button>
+        <button type="button" data-view="about">Help</button>
+      </nav>
+      <div class="cmd" role="search">
+        <button type="button" id="cmd-type" class="type-chip" aria-haspopup="true" title="Selector type (click to change)">Any selector</button>
+        <input id="cmd-input" type="text" autocomplete="off" spellcheck="false" aria-label="Selector" placeholder="Paste a selector: name, @handle, email, +32…, domain, IP, MSCU1234566, IMO 9074729, wallet, hash…">
+        <button type="button" id="cmd-clear" class="cmd-clear" aria-label="Clear">&times;</button>
+        <div id="type-menu" class="type-menu" hidden></div>
+      </div>
+      <div class="examples" id="examples">
+        <span>Try</span>
+        <button type="button" data-ex="MSCU1234566">MSCU1234566</button>
+        <button type="button" data-ex="IMO 9074729">IMO 9074729</button>
+        <button type="button" data-ex="TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t">TRON wallet</button>
+        <button type="button" data-ex="+32 470 12 34 56">+32 470 12 34 56</button>
+        <button type="button" data-ex="example.com">example.com</button>
+        <button type="button" data-ex="Jan Peeters">Jan Peeters</button>
+      </div>
+      <ul class="legend" aria-label="Flag legend">
+        <li><abbr class="flag f-T">T</abbr>Local tool</li>
+        <li><abbr class="flag f-D">D</abbr>Dork</li>
+        <li><abbr class="flag f-R">R</abbr>Free login</li>
+        <li><abbr class="flag f-L">L</abbr>LE / gov only</li>
+        <li><abbr class="flag f-F">F</abbr>Free for police</li>
+        <li><span class="newb">new</span>Added Sept 2026</li>
+        <li><abbr class="flag f-A">A</abbr>May alert subject</li>
+        <li><abbr class="flag f-P">P</abbr>Privacy / legal</li>
+      </ul>
+    </div>
+
+    <main>
+      <section class="view" id="view-flow" hidden>
+        <div class="web-bar">
+          <input type="search" id="flow-find" placeholder="Find a source or category" aria-label="Find in flow chart">
+          <div class="web-btns">
+            <button type="button" class="btn ghost" id="flow-zin" aria-label="Zoom in">+</button>
+            <button type="button" class="btn ghost" id="flow-zout" aria-label="Zoom out">&minus;</button>
+            <button type="button" class="btn ghost" id="flow-fit">Fit</button>
+            <button type="button" class="btn ghost" id="flow-collapse">Collapse all</button>
+          </div>
+          <span class="hint" id="flow-hint">Click a card to open the next step · drag to move · scroll to zoom</span>
+        </div>
+        <div class="flow-wrap" id="flow-wrap"><svg id="flow" role="img" aria-label="Flow chart of all sources"></svg></div>
+      </section>
+
+      <section class="view" id="view-web" hidden>
+        <div class="web-bar">
+          <input type="search" id="web-find" placeholder="Find a source or category in the web" aria-label="Find in web">
+          <div class="web-btns">
+            <button type="button" class="btn ghost" id="web-zin" aria-label="Zoom in">+</button>
+            <button type="button" class="btn ghost" id="web-zout" aria-label="Zoom out">&minus;</button>
+            <button type="button" class="btn ghost" id="web-fit">Fit</button>
+            <button type="button" class="btn ghost" id="web-collapse">Collapse all</button>
+          </div>
+          <span class="hint" id="web-hint">Click a strand to open it · drag to move · scroll to zoom</span>
+        </div>
+        <div class="web-wrap" id="web-wrap"><svg id="web" role="img" aria-label="Spider web map of all sources"></svg></div>
+      </section>
+
+      <section class="view" id="view-desk"><div id="desk"></div></section>
+
+      <section class="view" id="view-toolbox" hidden>
+        <header class="desk-head"><div><p class="eyebrow">Runs in your browser · nothing is uploaded</p><h2>Toolbox &amp; case log</h2></div></header>
+        <nav class="tb-nav">
+      <a href="#toolbox-caselog">Case log</a>
+      <a href="#toolbox-hash">File hash</a>
+      <a href="#toolbox-exif">EXIF viewer</a>
+      <a href="#toolbox-container">Container / IMO / VIN / IBAN</a>
+      <a href="#toolbox-crypto">Crypto address</a>
+      <a href="#toolbox-phone">Phone &amp; IMEI</a>
+      <a href="#toolbox-coords">Coordinates</a>
+      <a href="#toolbox-perm">Username permutations</a>
+      <a href="#toolbox-dork">Dork builder</a>
+      <a href="#toolbox-time">Time &amp; snowflake IDs</a>
+      <a href="#toolbox-encode">Encode / decode</a>
+    </nav>
+    <div class="tools">
+
+      <article class="tool wide" id="toolbox-caselog">
+        <h2>Case log</h2>
+        <p>Record each capture with a UTC timestamp and a hash of the saved file. Entries stay in this browser only. Export to CSV or JSON at the end of each session and attach it to your case file.</p>
+        <form class="form" id="cl-form">
+          <div class="row">
+            <label>Case reference<input id="cl-case" required placeholder="e.g. BXL-2026-0412"></label>
+            <label>Officer<input id="cl-officer" required placeholder="Name / badge number"></label>
+          </div>
+          <div class="row">
+            <label>URL captured<input id="cl-url" placeholder="https://…"></label>
+            <label>Saved file (optional, hashed locally)<input id="cl-file" type="file"></label>
+          </div>
+          <label>What was seen / action taken<textarea id="cl-action" required placeholder="e.g. Screenshot of Telegram channel post offering 5 kg, posted 27/09 21:14 UTC"></textarea></label>
+          <div class="row" style="align-items:center">
+            <button class="btn primary" type="submit" style="flex:0 0 auto">Add entry</button>
+            <button class="btn" type="button" id="cl-csv" style="flex:0 0 auto">Export CSV</button>
+            <button class="btn" type="button" id="cl-json" style="flex:0 0 auto">Export JSON</button>
+            <button class="btn" type="button" id="cl-copy" style="flex:0 0 auto">Copy CSV</button>
+            <button class="btn" type="button" id="cl-clear" style="flex:0 0 auto">Clear log</button>
+            <span class="hint" id="cl-count" style="flex:1 1 auto"></span>
+          </div>
+          <p class="note" id="cl-warn" hidden>This browser is not saving the log (private mode or storage blocked). Export before you close the page.</p>
+        </form>
+        <div class="tbl-wrap" style="margin-top:12px">
+          <table>
+            <thead><tr><th>UTC</th><th>Case / officer</th><th>URL</th><th>Description</th><th>Hash</th><th></th></tr></thead>
+            <tbody id="cl-body"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="tool" id="toolbox-hash">
+        <h2>File hash</h2>
+        <p>MD5, SHA-1 and SHA-256 for evidence files, or to search a hash in VirusTotal without uploading the file.</p>
+        <div class="form">
+          <label>Files<input id="hash-file" type="file" multiple></label>
+          <label>…or text<textarea id="hash-text" style="min-height:50px"></textarea></label>
+          <div><button class="btn" type="button" id="hash-text-go">Hash text</button></div>
+          <pre class="out" id="hash-out">Choose one or more files.</pre>
+        </div>
+      </article>
+
+      <article class="tool" id="toolbox-exif">
+        <h2>EXIF viewer</h2>
+        <p>Reads camera, date and GPS metadata from a photo inside your browser. The file is never uploaded.</p>
+        <div class="form">
+          <label>Image<input id="exif-file" type="file" accept="image/*,.heic,.tif,.tiff"></label>
+          <pre class="out" id="exif-out">Choose a JPEG, HEIC, TIFF or PNG file.</pre>
+        </div>
+      </article>
+
+      <article class="tool" id="toolbox-container">
+        <h2>Container, IMO, VIN &amp; IBAN validators</h2>
+        <p>Check digits catch typos and fabricated numbers on manifests, bills of lading and payment documents.</p>
+        <div class="form">
+          <label>Container number (ISO 6346)<input id="cont-in" autocomplete="off"></label>
+          <pre class="out" id="cont-out"></pre>
+          <label>IMO (7 digits) or MMSI (9 digits)<input id="imo-in" autocomplete="off"></label>
+          <pre class="out" id="imo-out"></pre>
+          <label>VIN<input id="vin-in" autocomplete="off"></label>
+          <pre class="out" id="vin-out"></pre>
+          <label>IBAN<input id="iban-in" autocomplete="off"></label>
+          <pre class="out" id="iban-out"></pre>
+        </div>
+      </article>
+
+      <article class="tool" id="toolbox-phone">
+        <h2>Phone number &amp; IMEI analyser</h2>
+        <p>Country, number type and every format the number may appear in online. Also checks IMEI check digits.</p>
+        <div class="form">
+          <label>Phone number (with country code)<input id="ph-in" autocomplete="off"></label>
+          <pre class="out" id="ph-out"></pre>
+          <label>IMEI (15 digits)<input id="imei-in" autocomplete="off" inputmode="numeric"></label>
+          <pre class="out" id="imei-out"></pre>
+        </div>
+      </article>
+
+      <article class="tool" id="toolbox-coords">
+        <h2>Coordinate converter</h2>
+        <p>Paste decimal or degrees-minutes-seconds coordinates, e.g. from EXIF data or a screenshot, and open the spot on every map.</p>
+        <div class="form">
+          <label>Coordinates<input id="co-in" autocomplete="off" placeholder="51.2317, 4.4018 or 51°13'54.1&quot;N 4°24'06.5&quot;E"></label>
+          <pre class="out" id="co-out"></pre>
+        </div>
+      </article>
+
+      <article class="tool" id="toolbox-crypto">
+        <h2>Crypto address identifier</h2>
+        <p>Identifies the blockchain from the address format and links to the right explorer.</p>
+        <div class="form">
+          <label>Address<input id="crypto-in" autocomplete="off" spellcheck="false"></label>
+          <pre class="out" id="crypto-out"></pre>
+        </div>
+      </article>
+
+      <article class="tool" id="toolbox-perm">
+        <h2>Username &amp; email permutations</h2>
+        <p>Generates the handle and email patterns people most often use, ready to paste into WhatsMyName, Holehe or a breach search.</p>
+        <div class="form">
+          <div class="row">
+            <label>First name<input id="perm-first" value="Jan"></label>
+            <label>Last name<input id="perm-last" value="Peeters"></label>
+            <label>Year (optional)<input id="perm-year" value="1988" inputmode="numeric"></label>
+          </div>
+          <label>Email domains<input id="perm-domains" value="gmail.com, outlook.com, hotmail.com, proton.me, telenet.be"></label>
+          <label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="perm-email" style="width:auto"> Output as email addresses</label>
+          <textarea id="perm-out" readonly style="min-height:160px"></textarea>
+          <div class="row" style="align-items:center"><button class="btn" type="button" id="perm-copy" style="flex:0 0 auto">Copy list</button><span class="hint" id="perm-count"></span></div>
+        </div>
+      </article>
+
+      <article class="tool" id="toolbox-dork">
+        <h2>Dork builder</h2>
+        <p>Builds advanced search operators and runs the query on four engines.</p>
+        <form class="form" id="dork-form" onsubmit="return false">
+          <div class="row">
+            <label>Exact phrase<input id="dk-exact" value="cocaine"></label>
+            <label>Any of these (comma)<input id="dk-any" value="container, port, harbour"></label>
+          </div>
+          <div class="row">
+            <label>Site / domain<input id="dk-site" placeholder="t.me or .be"></label>
+            <label>File type<input id="dk-type" value="pdf"></label>
+          </div>
+          <div class="row">
+            <label>In title<input id="dk-title"></label>
+            <label>In URL<input id="dk-url"></label>
+            <label>Exclude words<input id="dk-not"></label>
+          </div>
+          <div class="row">
+            <label>After (YYYY-MM-DD)<input id="dk-after" value="2026-01-01"></label>
+            <label>Before (YYYY-MM-DD)<input id="dk-before"></label>
+          </div>
+          <pre class="out" id="dk-out"></pre>
+        </form>
+      </article>
+
+      <article class="tool" id="toolbox-time">
+        <h2>Time &amp; snowflake IDs</h2>
+        <p>Converts Unix, millisecond, Windows FILETIME and ISO timestamps across time zones. Decodes the creation time hidden in X / Twitter and Discord IDs.</p>
+        <div class="form">
+          <div class="row">
+            <label>Value<input id="time-in" placeholder="1790585194 or 2026-09-28T08:00:00Z or an ID"></label>
+            <label>Type<select id="time-mode"><option value="ts">Timestamp / date</option><option value="x">X / Twitter post or user ID</option><option value="discord">Discord ID</option></select></label>
+          </div>
+          <pre class="out" id="time-out"></pre>
+        </div>
+      </article>
+
+      <article class="tool" id="toolbox-encode">
+        <h2>Encode / decode</h2>
+        <p>Base64, URL, hex, ROT13 and URL defanging for safe reporting. For anything more complex use CyberChef.</p>
+        <div class="form">
+          <textarea id="enc-in"></textarea>
+          <div class="row" id="enc-btns" style="gap:6px">
+            <button class="btn" type="button" data-op="b64d" style="flex:0 0 auto">Base64 decode</button>
+            <button class="btn" type="button" data-op="b64e" style="flex:0 0 auto">Base64 encode</button>
+            <button class="btn" type="button" data-op="urld" style="flex:0 0 auto">URL decode</button>
+            <button class="btn" type="button" data-op="urle" style="flex:0 0 auto">URL encode</button>
+            <button class="btn" type="button" data-op="hexd" style="flex:0 0 auto">Hex decode</button>
+            <button class="btn" type="button" data-op="hexe" style="flex:0 0 auto">Hex encode</button>
+            <button class="btn" type="button" data-op="rot13" style="flex:0 0 auto">ROT13</button>
+            <button class="btn" type="button" data-op="rev" style="flex:0 0 auto">Reverse</button>
+            <button class="btn" type="button" data-op="defang" style="flex:0 0 auto">Defang</button>
+            <button class="btn" type="button" data-op="refang" style="flex:0 0 auto">Refang</button>
+          </div>
+          <pre class="out" id="enc-out"></pre>
+          <div><button class="btn" type="button" id="enc-swap">Use output as input</button></div>
+        </div>
+      </article>
+    </div>
+  
+      </section>
+
+      <section class="view" id="view-ports" hidden><div id="ports"></div></section>
+
+      <section class="view" id="view-hs" hidden><div id="hs"></div></section>
+
+      <section class="view" id="view-playbooks" hidden><div id="playbooks"></div></section>
+
+      <section class="view" id="view-profile" hidden>
+        <header class="desk-head"><div><p class="eyebrow">Suspect profile · saved in this browser</p><h2>Build a profile from what you know</h2></div></header>
+        <iframe id="profile-frame" class="profile-frame" title="Suspect profile" src="profiler.html"></iframe>
+      </section>
+
+      <section class="view about" id="view-about" hidden>
+    <h2>About this framework</h2>
+    <p>A directory of open-source intelligence resources organised for law enforcement investigators, organised by line of enquiry rather than as one alphabetical tree. Besides the classic OSINT categories it adds categories for maritime and container intelligence, customs and trade, drugs, sanctions, wanted persons, financial crime, platform law-enforcement portals, legal frameworks and international cooperation.</p>
+    <h3>How to use it</h3>
+    <ol>
+      <li>Type or paste a selector in the search bar. The type (email, container number, wallet…) is detected automatically; click the type chip to change it.</li>
+      <li>A <b>run sheet</b> appears: every source that accepts that selector, already filled in, grouped by line of enquiry. Opening a search ticks it off; the progress bar shows what is left.</li>
+      <li>Click <b>Log</b> next to a search to add it to the case log with a UTC timestamp. Export the log from the Toolbox.</li>
+      <li>With the search bar empty, the left rail lets you browse all sources by line of enquiry.</li>
+    </ol>
+    <h3>Flags</h3>
+    <ul>
+      <li><b>T</b> Tool you install or run locally.</li>
+      <li><b>D</b> Google dork: a pre-built search query.</li>
+      <li><b>R</b> Registration or login required.</li>
+            <li><b>L</b> Only for law-enforcement or government accounts.</li>
+      <li><b>A</b> Active: the subject may be alerted, or the platform logs your visit against your account (for example LinkedIn profile views).</li>
+      <li><b>P</b> Privacy or legal caution: facial recognition, or uploads that become visible to other users.</li>
+      <li><b>F</b> Free for verified law enforcement (you apply with your official email or ID).</li>
+      <li><b>new</b> Added or updated in the September 2026 review.</li>
+    </ul>
+    <h3>Operational security</h3>
+    <ul>
+      <li>Work from an approved, non-attributable research environment. Never use personal accounts.</li>
+      <li>Search a file's hash before you upload the file anywhere. Public sandboxes share uploads.</li>
+      <li>Do not paste case material into public translation or AI services unless your agency has approved them.</li>
+      <li>Collect only what is necessary and proportionate. Your authority, not the tool's availability, decides what you may do.</li>
+    </ul>
+    <h3>Privacy of this page</h3>
+    <p>This page makes no network requests with your selector. Searches go directly from your browser to the site you click. The Toolbox runs entirely in your browser; the case log is kept in this browser's local storage until you clear it.</p>
+    <h3>Disclaimer</h3>
+    <p>Listed sites are third-party services, not endorsed. Links are checked automatically each week, but sites change. Verify every finding against a second source before relying on it.</p>
+  </section>
+    </main>
+  </div>
+</div>
+<!--BODY-END-->
+
+<script src="assets/vendor/exifr.full.umd.js"></script>
+<script src="data/links.js"></script>
+<script src="data/playbooks.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/toolbox.js"></script>
+<script src="data/ports.js"></script>
+<script src="assets/ports.js"></script>
+<script src="data/hs.js"></script>
+<script src="assets/hs.js"></script>
+</body>
+</html>

@@ -1,0 +1,849 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="referrer" content="no-referrer">
+<title>Subject Profiler</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root {
+  --bg: #F2F4F7;
+  --panel: #FFFFFF;
+  --panel-2: #F7F8FA;
+  --ink: #1C2530;
+  --muted: #5D6A78;
+  --line: #DCE2E9;
+  --accent: #2456A6;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #E3ECF8;
+  --warm: #C9821C;
+  --warm-soft: #FBF0DD;
+  --ok: #1E7A4C;
+  --ok-soft: #DDF1E6;
+  --bad: #B3261E;
+  --chip: #EAEEF3;
+  --font: "Figtree", "Segoe UI", Roboto, Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0F141A; --panel: #161D25; --panel-2: #1B242E; --ink: #E4EAF0; --muted: #98A6B5; --line: #293441;
+    --accent: #7FA8EC; --accent-ink: #0C1830; --accent-soft: #1C2B45; --warm: #E9AE55; --warm-soft: #3A2D16;
+    --ok: #62C992; --ok-soft: #173327; --bad: #F2867D; --chip: #222C38;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0F141A; --panel: #161D25; --panel-2: #1B242E; --ink: #E4EAF0; --muted: #98A6B5; --line: #293441;
+  --accent: #7FA8EC; --accent-ink: #0C1830; --accent-soft: #1C2B45; --warm: #E9AE55; --warm-soft: #3A2D16;
+  --ok: #62C992; --ok-soft: #173327; --bad: #F2867D; --chip: #222C38;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { background: var(--bg); color: var(--ink); }
+body { margin: 0; font: 15px/1.5 var(--font); }
+a { color: var(--accent); }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.wrap { max-width: 1320px; margin: 0 auto; padding-inline: 20px; padding-block: 0 60px; }
+
+/* top */
+.top { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; padding: 22px 0 14px; }
+.brand { display: flex; align-items: center; gap: 12px; }
+.badge {
+  width: 42px; height: 42px; border-radius: 12px; background: var(--accent); flex: 0 0 auto;
+  display: grid; place-items: center; color: var(--accent-ink); font: 800 18px var(--font); letter-spacing: -.02em;
+}
+.brand h1 { margin: 0; font: 800 24px/1.1 var(--font); letter-spacing: -.01em; }
+.brand p { margin: 2px 0 0; color: var(--muted); font-size: 13.5px; }
+.top-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn {
+  border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 10px;
+  padding: 8px 14px; font-weight: 600; font-size: 14px; cursor: pointer;
+}
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.small { padding: 5px 10px; font-size: 13px; border-radius: 8px; }
+.btn.danger { color: var(--bad); }
+.opsec {
+  display: flex; gap: 10px; align-items: flex-start; background: var(--warm-soft); color: var(--ink);
+  border-radius: 12px; padding: 10px 14px; font-size: 13.5px; margin-bottom: 16px;
+}
+.opsec b { color: var(--warm); }
+.example-banner { background: var(--accent-soft); border-radius: 12px; padding: 10px 14px; font-size: 13.5px; margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+
+/* gaps strip */
+.gaps { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; margin-bottom: 18px; }
+.gaps-head { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
+.gaps-head h2 { margin: 0; font: 700 18px var(--font); }
+.gaps-head span { color: var(--muted); font-size: 13.5px; }
+.meter { display: flex; gap: 4px; height: 8px; margin-bottom: 14px; }
+.meter i { flex: 1; border-radius: 99px; background: var(--chip); }
+.meter i.partial { background: var(--warm); }
+.meter i.confirmed { background: var(--ok); }
+.gap-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
+.gap { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: var(--panel-2); display: grid; gap: 6px; }
+.gap.partial { border-color: var(--warm); background: var(--warm-soft); }
+.gap.confirmed { border-color: var(--ok); background: var(--ok-soft); }
+.gap-top { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.gap h3 { margin: 0; font: 700 14.5px/1.25 var(--font); }
+.gap p { margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.4; }
+.gap select { border: 1px solid var(--line); border-radius: 8px; background: var(--panel); padding: 3px 6px; font-size: 12.5px; }
+.gap .have { font-size: 12px; color: var(--accent); font-weight: 600; }
+
+/* layout */
+.cols { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 18px; align-items: start; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+.step { display: flex; gap: 10px; align-items: center; margin: 0 0 4px; }
+.step .n { width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font: 800 13px var(--font); flex: 0 0 auto; }
+.step h2 { margin: 0; font: 700 19px var(--font); }
+.lede { margin: 0 0 14px 36px; color: var(--muted); font-size: 13.5px; }
+.file { position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow-y: auto; }
+
+/* form */
+.fgroup { border-top: 1px solid var(--line); padding: 12px 0 4px; }
+.fgroup:first-of-type { border-top: 0; padding-top: 0; }
+.fgroup > h3 { margin: 0 0 8px; font: 700 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.row { display: flex; flex-wrap: wrap; gap: 8px; }
+.row > label { flex: 1 1 150px; min-width: 0; }
+label.f { display: grid; gap: 3px; font-size: 12.5px; color: var(--muted); font-weight: 500; margin-bottom: 8px; }
+label.f input, label.f select, label.f textarea {
+  border: 1px solid var(--line); border-radius: 10px; background: var(--panel-2); padding: 8px 10px; color: var(--ink); width: 100%; font-size: 14.5px;
+}
+label.f textarea { min-height: 60px; resize: vertical; }
+.multi { margin-bottom: 10px; }
+.multi-label { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted); font-weight: 500; margin-bottom: 3px; }
+.multi-box {
+  display: flex; flex-wrap: wrap; gap: 6px; align-items: center; border: 1px solid var(--line); border-radius: 10px;
+  background: var(--panel-2); padding: 6px;
+}
+.multi-box:focus-within { border-color: var(--accent); }
+.multi-box input { flex: 1 1 140px; min-width: 0; border: 0; background: transparent; padding: 4px; outline: none; font-size: 14.5px; }
+.tag {
+  display: inline-flex; align-items: center; gap: 4px; background: var(--accent-soft); color: var(--ink);
+  border-radius: 8px; padding: 3px 4px 3px 8px; font: 13px var(--mono); max-width: 100%; overflow-wrap: anywhere;
+}
+.tag button { border: 0; background: none; cursor: pointer; color: var(--muted); font-size: 16px; line-height: 1; padding: 0 4px; }
+.tag.new { background: var(--ok-soft); }
+
+/* where to look */
+.look-filter { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px 36px; }
+.look-filter button { border: 1px solid var(--line); background: var(--panel); border-radius: 99px; padding: 4px 11px; font-size: 13px; cursor: pointer; }
+.look-filter button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.ident { border: 1px solid var(--line); border-radius: 14px; margin-bottom: 12px; overflow: hidden; }
+.ident-head { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; padding: 12px 14px; background: var(--panel-2); border-bottom: 1px solid var(--line); }
+.ident-type { font: 700 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.ident-val { font: 600 15px var(--mono); overflow-wrap: anywhere; }
+.ident-body { padding: 10px 14px 12px; }
+.lookfor { font-size: 13px; color: var(--muted); margin: 0 0 8px; }
+.lookfor b { color: var(--ink); }
+.links { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 6px 14px; }
+.links li { display: flex; gap: 6px; align-items: baseline; min-width: 0; font-size: 14px; padding: 3px 0; }
+.links a { font-weight: 600; text-decoration: none; }
+.links a:hover { text-decoration: underline; }
+.links a.visited-mark { color: var(--muted); }
+.links .why { font-size: 12.5px; color: var(--muted); }
+.fl { font: 600 10px/1 var(--mono); padding: 3px 4px; border-radius: 4px; background: var(--chip); color: var(--muted); flex: 0 0 auto; }
+.fl.A, .fl.P { background: var(--warm-soft); color: var(--warm); }
+.fl.L { background: var(--ink); color: var(--bg); }
+.pivot { margin-top: 8px; font-size: 12.5px; color: var(--muted); background: var(--panel-2); border-radius: 8px; padding: 6px 10px; }
+.pivot b { color: var(--ok); }
+.empty-look { text-align: center; color: var(--muted); padding: 30px 10px; }
+
+/* findings */
+.findings { margin-top: 18px; }
+.find-form { display: grid; gap: 8px; margin-bottom: 12px; }
+.find-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.find-list li { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; display: grid; gap: 3px; }
+.find-meta { font: 12px var(--mono); color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.find-text { font-size: 14.5px; }
+.find-src { font: 12.5px var(--mono); overflow-wrap: anywhere; }
+.pill { font: 600 11px var(--mono); padding: 2px 7px; border-radius: 99px; background: var(--ok-soft); color: var(--ok); }
+.report { width: 100%; min-height: 220px; font: 12.5px/1.5 var(--mono); border: 1px solid var(--line); border-radius: 10px; background: var(--panel-2); padding: 10px; color: var(--ink); }
+
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 9px 16px; border-radius: 10px; font-size: 13.5px; z-index: 30; }
+
+@media (max-width: 980px) {
+  .cols { grid-template-columns: minmax(0, 1fr); }
+  .file { position: static; max-height: none; }
+  .lede, .look-filter { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="badge" aria-hidden="true">SP</div>
+      <div>
+        <h1>Subject Profiler</h1>
+        <p>Build an open-source profile of a suspect, one lead at a time.</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button class="btn" type="button" id="btn-report">Report</button>
+      <button class="btn" type="button" id="btn-save">Save file</button>
+      <label class="btn" for="file-open" style="display:inline-flex;align-items:center">Open file</label>
+      <input type="file" id="file-open" accept=".json,application/json" hidden>
+      <button class="btn danger" type="button" id="btn-new">New subject</button>
+    </div>
+  </header>
+
+  <div class="opsec"><b>OpSec</b><span>Search only from an approved, non-attributable environment. Links marked <span class="fl A">A</span> can alert the subject or log your visit. Links marked <span class="fl P">P</span> carry legal restrictions (e.g. facial recognition). Your authority decides what you may search, not the tool.</span></div>
+
+  <div class="example-banner" id="example-banner" hidden>
+    <span><b>This is a fictional example subject</b> so you can see how the page works. Start your own with <b>New subject</b>.</span>
+  </div>
+
+  <section class="gaps" aria-labelledby="gaps-h">
+    <div class="gaps-head">
+      <h2 id="gaps-h">Intelligence gaps</h2>
+      <span id="gaps-sum"></span>
+    </div>
+    <div class="meter" id="meter"></div>
+    <div class="gap-grid" id="gap-grid"></div>
+  </section>
+
+  <div class="cols">
+    <section class="card file" aria-labelledby="s1">
+      <div class="step"><span class="n">1</span><h2 id="s1">Subject file</h2></div>
+      <p class="lede">Enter what you already know. Press Enter after each phone, email, handle etc. Everything saves automatically in this browser.</p>
+
+      <div class="fgroup">
+        <h3>Case</h3>
+        <div class="row">
+          <label class="f">Case reference<input id="caseRef" data-k="caseRef"></label>
+          <label class="f">Officer<input id="officer" data-k="officer"></label>
+        </div>
+      </div>
+
+      <div class="fgroup">
+        <h3>Identity</h3>
+        <label class="f">Full name<input id="fullName" data-k="fullName" placeholder="First and last name"></label>
+        <div class="multi" data-multi="aliases"></div>
+        <div class="row">
+          <label class="f">Date of birth<input id="dob" data-k="dob" placeholder="YYYY-MM-DD or year"></label>
+          <label class="f">Nationality<select id="nationality" data-k="nationality"></select></label>
+        </div>
+        <div class="row">
+          <label class="f">Country of residence<select id="residence" data-k="residence"></select></label>
+          <label class="f">City / area<input id="city" data-k="city"></label>
+        </div>
+        <div class="multi" data-multi="photos"></div>
+      </div>
+
+      <div class="fgroup">
+        <h3>Contact &amp; online</h3>
+        <div class="multi" data-multi="phones"></div>
+        <div class="multi" data-multi="emails"></div>
+        <div class="multi" data-multi="usernames"></div>
+        <div class="multi" data-multi="websites"></div>
+      </div>
+
+      <div class="fgroup">
+        <h3>Places, vehicles &amp; money</h3>
+        <div class="multi" data-multi="addresses"></div>
+        <div class="multi" data-multi="vehicles"></div>
+        <div class="multi" data-multi="companies"></div>
+        <div class="multi" data-multi="wallets"></div>
+        <div class="multi" data-multi="associates"></div>
+      </div>
+
+      <div class="fgroup">
+        <h3>Notes</h3>
+        <label class="f"><span class="sr" hidden>Notes</span><textarea id="notes" data-k="notes" placeholder="Background, modus operandi, known associates' roles…"></textarea></label>
+      </div>
+    </section>
+
+    <div>
+      <section class="card" aria-labelledby="s2">
+        <div class="step"><span class="n">2</span><h2 id="s2">Where to look</h2></div>
+        <p class="lede">Searches built from the subject file, with the value already filled in. Start with the leads that fill your biggest gaps.</p>
+        <div class="look-filter" id="look-filter"></div>
+        <div id="look"></div>
+      </section>
+
+      <section class="card findings" aria-labelledby="s3">
+        <div class="step"><span class="n">3</span><h2 id="s3">Findings &amp; pivots</h2></div>
+        <p class="lede">Log what you find and where. If it is a new identifier, add it to the file: the new searches appear in step 2.</p>
+        <form class="find-form" id="find-form">
+          <label class="f">What did you find?<textarea id="f-text" required placeholder="e.g. Instagram account @jd_antwerp posts gym check-ins at Kiel, Antwerp, weekdays 07:00"></textarea></label>
+          <div class="row">
+            <label class="f">Source URL<input id="f-src" placeholder="https://…"></label>
+            <label class="f">Answers gap<select id="f-gap"></select></label>
+          </div>
+          <div class="row">
+            <label class="f">New identifier? (optional)<select id="f-type"></select></label>
+            <label class="f">Value<input id="f-val" placeholder="e.g. jd_antwerp"></label>
+          </div>
+          <div><button class="btn primary" type="submit">Log finding</button></div>
+        </form>
+        <ul class="find-list" id="find-list"></ul>
+      </section>
+
+      <section class="card findings" id="report-card" hidden aria-labelledby="s4">
+        <div class="step"><span class="n">4</span><h2 id="s4">Profile report</h2></div>
+        <p class="lede">Plain-text summary for your case file. Copy it, or use Save file to keep the full profile.</p>
+        <textarea class="report" id="report" readonly></textarea>
+        <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" type="button" id="copy-report">Copy report</button><button class="btn" type="button" id="close-report">Close</button></div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  const $ = (s, r) => (r || document).querySelector(s);
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  const E = encodeURIComponent;
+  const q = s => '"' + s + '"';
+  function toast(m) { const t = document.createElement("div"); t.className = "toast"; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 2200); }
+  function copy(text) {
+    const fb = () => { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); toast("Copied"); } catch (e) { toast("Select the text and copy it"); } ta.remove(); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(() => toast("Copied"), fb); else fb();
+  }
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* storage unavailable */ } }
+  };
+  const nowUtc = () => new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
+
+  // ----------------------------------------------------------------
+  // What a profile needs (intelligence requirements)
+  // ----------------------------------------------------------------
+  const GAPS = [
+    { id: "identity", name: "Confirmed identity", hint: "Full name, date of birth, photo, aliases. Is this the right person?", have: s => !!(s.fullName && (s.dob || s.photos.length)) },
+    { id: "where", name: "Current whereabouts", hint: "Home address, work, places visited, country of residence.", have: s => s.addresses.length > 0 },
+    { id: "contact", name: "Contact details", hint: "Phone numbers and email addresses in use now.", have: s => s.phones.length + s.emails.length > 0 },
+    { id: "online", name: "Online presence", hint: "Social media, messaging handles, forums, marketplaces.", have: s => s.usernames.length + s.websites.length > 0 },
+    { id: "associates", name: "Associates & family", hint: "Partners, relatives, co-offenders, frequent contacts.", have: s => s.associates.length > 0 },
+    { id: "mobility", name: "Vehicles & travel", hint: "Cars, plates, flights, border crossings, travel patterns.", have: s => s.vehicles.length > 0 },
+    { id: "money", name: "Money, companies & assets", hint: "Directorships, businesses, property, crypto, lifestyle vs income.", have: s => s.companies.length + s.wallets.length > 0 },
+    { id: "legal", name: "Legal exposure", hint: "Wanted notices, sanctions, court cases, gazette entries.", have: () => false },
+    { id: "routine", name: "Lifestyle & routine", hint: "Gym, clubs, check-ins, posting times, habits.", have: () => false },
+    { id: "risk", name: "Risk & weapons", hint: "Violence, firearms, dogs, counter-surveillance awareness.", have: () => false }
+  ];
+
+  // ----------------------------------------------------------------
+  // Multi-value identifier fields
+  // ----------------------------------------------------------------
+  const MULTI = {
+    aliases:    { label: "Aliases / nicknames", ph: "e.g. Johnny D", gap: "identity" },
+    photos:     { label: "Photo URLs (for reverse image search)", ph: "https://…/photo.jpg", gap: "identity" },
+    phones:     { label: "Phone numbers", ph: "+32 470 12 34 56", gap: "contact" },
+    emails:     { label: "Email addresses", ph: "name@example.com", gap: "contact" },
+    usernames:  { label: "Usernames / handles", ph: "@handle", gap: "online" },
+    websites:   { label: "Websites / domains", ph: "example.com", gap: "online" },
+    addresses:  { label: "Addresses / places", ph: "Street 1, 2000 Antwerp", gap: "where" },
+    vehicles:   { label: "Vehicle plates / VINs", ph: "1-ABC-123 or 17-character VIN", gap: "mobility" },
+    companies:  { label: "Companies / businesses", ph: "Company name or registration no.", gap: "money" },
+    wallets:    { label: "Crypto wallets", ph: "bc1…, 0x…, T…", gap: "money" },
+    associates: { label: "Associates (names)", ph: "Name of partner, relative, co-offender", gap: "associates" }
+  };
+
+  const COUNTRIES = [
+    ["", "Not known"], ["BE", "Belgium"], ["NL", "Netherlands"], ["FR", "France"], ["DE", "Germany"], ["LU", "Luxembourg"],
+    ["UK", "United Kingdom"], ["IE", "Ireland"], ["ES", "Spain"], ["PT", "Portugal"], ["IT", "Italy"], ["PL", "Poland"],
+    ["RO", "Romania"], ["AL", "Albania"], ["TR", "Türkiye"], ["MA", "Morocco"], ["NG", "Nigeria"], ["AE", "United Arab Emirates"],
+    ["CO", "Colombia"], ["EC", "Ecuador"], ["BR", "Brazil"], ["US", "United States"], ["CN", "China"], ["RU", "Russia"], ["XX", "Other"]
+  ];
+
+  // ----------------------------------------------------------------
+  // Search builders. Each returns { look, pivot, links:[[name,url,flags,why]] }
+  // ----------------------------------------------------------------
+  const g = s => "https://www.google.com/search?q=" + E(s);
+
+  const BUILD = {
+    name(v, s) {
+      const city = s.city ? " " + s.city : "";
+      const yr = (s.dob.match(/\d{4}/) || [""])[0];
+      return {
+        look: "confirmation of identity (photos, age, city), <b>social media accounts</b>, family members, employer, <b>company directorships</b>, news coverage, court or sanctions entries.",
+        pivot: "Usernames, photos, employer, relatives' names, companies → add them to the file.",
+        links: [
+          ["Google exact name" + (city ? " + city" : ""), g(q(v) + city), "D", "Pages that mention the full name"],
+          yr && ["Google name + birth year", g(q(v) + " " + yr), "D", "Filters out namesakes"],
+          ["Google social media", g(q(v) + " (site:facebook.com OR site:instagram.com OR site:tiktok.com OR site:x.com OR site:vk.com)"), "D", "Profiles indexed by Google"],
+          ["LinkedIn via Google", g("site:linkedin.com/in " + q(v)), "D", "Employer and CV without alerting the subject"],
+          ["Google documents", g(q(v) + " (filetype:pdf OR filetype:docx OR filetype:xlsx)"), "D", "CVs, lists, minutes, invoices"],
+          ["Google News", "https://news.google.com/search?q=" + E(q(v)), "", "Press coverage, previous cases"],
+          ["Facebook search", "https://www.facebook.com/search/people/?q=" + E(v), "R", "Profiles, friends, photos"],
+          ["Webmii", "https://webmii.com/people?n=" + E(q(v)), "", "People search across the web"],
+          ["Yandex", "https://yandex.com/search/?text=" + E(q(v)), "", "Stronger for Eastern Europe / Russia"],
+          ["OpenCorporates officers", "https://opencorporates.com/officers?q=" + E(v), "", "Directorships worldwide"],
+          ["OpenSanctions", "https://www.opensanctions.org/search/?q=" + E(v), "", "Sanctions, PEPs, wanted lists"],
+          ["ICIJ Offshore Leaks", "https://offshoreleaks.icij.org/search?q=" + E(v), "", "Offshore companies & trusts"],
+          ["OCCRP Aleph", "https://aleph.occrp.org/search?q=" + E(v), "R", "Leaks, registries, court records"],
+          ["Interpol Red Notices", "https://www.interpol.int/How-we-work/Notices/Red-Notices/View-Red-Notices", "", "Search by name on the page"],
+          ["EU Most Wanted", "https://eumostwanted.eu/", "", "Europe's most wanted fugitives"]
+        ]
+      };
+    },
+    aliases(v) {
+      return {
+        look: "the alias used as a <b>handle</b>, in forums, music, gang or marketplace contexts.",
+        pivot: "If the alias looks like a handle, add it under Usernames too.",
+        links: [
+          ["Google exact alias", g(q(v)), "D", ""],
+          ["WhatsMyName (as username)", "https://whatsmyname.app/?q=" + E(v.replace(/\s+/g, "")), "", "600+ sites"],
+          ["Instagram hashtag", "https://www.instagram.com/explore/tags/" + E(v.replace(/\W+/g, "")) + "/", "R", ""],
+          ["TikTok search", "https://www.tiktok.com/search?q=" + E(v), "", ""]
+        ]
+      };
+    },
+    phones(v) {
+      const d = v.replace(/\D/g, "").replace(/^00/, "");
+      return {
+        look: "the <b>name</b> the number is saved under (caller-ID apps), a <b>WhatsApp / Telegram profile photo</b>, adverts or marketplace listings using the number, and the carrier / country.",
+        pivot: "Profile photo → reverse image search. Name → add as alias. Telegram username → add under Usernames.",
+        links: [
+          ["Google (all formats)", g(q("+" + d) + " OR " + q(d) + " OR " + q("0" + d.slice(2))), "D", "Adverts, forums, listings"],
+          ["WhatsApp profile", "https://wa.me/" + d, "A", "Photo & about text. Do not send a message"],
+          ["Telegram by number", "https://t.me/+" + d, "A", "Shows the account if the privacy setting allows"],
+          ["Truecaller", "https://www.truecaller.com/", "R", "Caller-ID name, spam reports"],
+          ["Sync.me", "https://sync.me/", "R", "Caller-ID name"],
+          ["libphonenumber", "https://libphonenumber.appspot.com/phonenumberparser?number=%2B" + d, "", "Validity, country, mobile or fixed"],
+          ["Epieos", "https://epieos.com/", "", "Linked Google / other accounts (free basic search)"],
+          ["Intelligence X", "https://intelx.io/?s=" + E(d), "R", "Leaks and pastes (free account)"]
+        ]
+      };
+    },
+    emails(v) {
+      const dom = v.split("@")[1] || "";
+      return {
+        look: "which <b>services the address is registered with</b>, <b>data breaches</b> (old passwords, phone numbers, addresses), the Google account name and photo, and mentions on the web.",
+        pivot: "Breach data often gives phone numbers, usernames and addresses → add them.",
+        links: [
+          ["Google exact email", g(q(v)), "D", ""],
+          ["Epieos", "https://epieos.com/?q=" + E(v) + "&t=email", "", "Google account, linked services (free basic search)"],
+          ["Have I Been Pwned", "https://haveibeenpwned.com/", "", "Which breaches include it"],
+          ["Intelligence X", "https://intelx.io/?s=" + E(v), "R", "Leaks, pastes, dark web (free account)"],
+          ["Holehe (tool)", "https://github.com/megadose/holehe", "T", "Checks 120+ sites for registration"],
+          dom && !/^(gmail|googlemail|outlook|hotmail|live|yahoo|icloud|proton|protonmail|gmx|aol|mail|yandex|telenet|skynet)\./i.test(dom) && ["Own domain: WHOIS", "https://lookup.icann.org/en/lookup?name=" + E(dom), "", "Custom domain may reveal owner"]
+        ]
+      };
+    },
+    usernames(v) {
+      const u = v.replace(/^@/, "");
+      return {
+        look: "the same handle on other platforms, <b>photos</b> (faces, cars, homes, tattoos), <b>friends and followers</b>, check-ins and posting times, and links in the bio.",
+        pivot: "Bio links, tagged friends, locations in photos → add as websites, associates, addresses.",
+        links: [
+          ["WhatsMyName", "https://whatsmyname.app/?q=" + E(u), "", "Checks 600+ sites at once"],
+          ["Instagram", "https://www.instagram.com/" + E(u) + "/", "", ""],
+          ["TikTok", "https://www.tiktok.com/@" + E(u), "", ""],
+          ["X / Twitter", "https://x.com/" + E(u), "", ""],
+          ["Facebook", "https://www.facebook.com/" + E(u), "", ""],
+          ["Telegram", "https://t.me/" + E(u), "", ""],
+          ["Snapchat", "https://www.snapchat.com/add/" + E(u), "", "Public profile / Bitmoji"],
+          ["YouTube", "https://www.youtube.com/@" + E(u), "", ""],
+          ["Reddit", "https://www.reddit.com/user/" + E(u), "", ""],
+          ["GitHub", "https://github.com/" + E(u), "", ""],
+          ["Google exact handle", g(q(u)), "D", "Forums, marketplaces"],
+          ["Sherlock (tool)", "https://github.com/sherlock-project/sherlock", "T", "Command-line username search"]
+        ]
+      };
+    },
+    websites(v) {
+      const d = v.replace(/^https?:\/\//i, "").replace(/\/.*$/, "").toLowerCase();
+      return {
+        look: "the <b>registrant</b> (WHOIS history), the hosting IP and other sites on it, <b>shared analytics IDs</b> linking other sites to the same owner, and old versions of the site.",
+        pivot: "Registrant email, phone, other domains → add them.",
+        links: [
+          ["ICANN WHOIS", "https://lookup.icann.org/en/lookup?name=" + E(d), "", "Registrar, dates"],
+          ["DomainTools WHOIS", "https://whois.domaintools.com/" + E(d), "", ""],
+          ["ViewDNS reverse IP", "https://viewdns.info/reverseip/?host=" + E(d) + "&t=1", "", "Other sites on the same server"],
+          ["crt.sh certificates", "https://crt.sh/?q=" + E(d), "", "Subdomains"],
+          ["Wayback Machine", "https://web.archive.org/web/*/" + d + "*", "", "Old versions, old contact pages"],
+          ["urlscan.io", "https://urlscan.io/domain/" + E(d), "", "Screenshots, hosting"],
+          ["BuiltWith", "https://builtwith.com/" + E(d), "", "Analytics / ad IDs"],
+          ["SpyOnWeb", "https://spyonweb.com/" + E(d), "", "Sites sharing the same IDs"],
+          ["VirusTotal", "https://www.virustotal.com/gui/domain/" + E(d), "", "Relations, passive DNS"],
+          ["Google site:", g("site:" + d), "D", "Indexed pages"]
+        ]
+      };
+    },
+    addresses(v) {
+      return {
+        look: "the <b>building</b> (house, flat, business), <b>vehicles parked</b> in Street View history, cameras, access routes, businesses registered at the address, and other people linked to it.",
+        pivot: "Companies at the address, other residents' names → add as companies / associates.",
+        links: [
+          ["Google Maps", "https://www.google.com/maps/search/?api=1&query=" + E(v), "", "Satellite & Street View (check the history dates)"],
+          ["OpenStreetMap", "https://www.openstreetmap.org/search?query=" + E(v), "", ""],
+          ["Bing Maps", "https://www.bing.com/maps?q=" + E(v), "", "Different imagery dates"],
+          ["Yandex Maps", "https://yandex.com/maps/?text=" + E(v), "", ""],
+          ["Mapillary", "https://www.mapillary.com/app/", "", "Crowd-sourced street photos"],
+          ["Google exact address", g(q(v)), "D", "Companies, adverts, listings at the address"],
+          ["OpenCorporates (address)", "https://opencorporates.com/companies?q=" + E(v), "", "Companies registered there"],
+          ["Snap Map", "https://map.snapchat.com/", "", "Recent public posts near the location"]
+        ]
+      };
+    },
+    vehicles(v) {
+      const t = v.replace(/\s+/g, "").toUpperCase();
+      const isVin = /^[A-HJ-NPR-Z0-9]{17}$/.test(t);
+      const L = isVin ? [
+        ["NHTSA VIN decoder", "https://vpic.nhtsa.dot.gov/decoder/", "", "Make, model, year, plant"],
+        ["NICB VINCheck", "https://www.nicb.org/vincheck", "", "US stolen / salvage"],
+        ["Google exact VIN", g(q(t)), "D", "Sales adverts, auctions, damage records"]
+      ] : [
+        ["Google exact plate", g(q(v) + " OR " + q(t)), "D", "Photos, adverts, forums"],
+        ["Platesmania", "https://platesmania.com/", "", "Photos of plates, spotted locations"],
+        ["UK DVLA (UK plates)", "https://vehicleenquiry.service.gov.uk/", "", "Make, colour, tax"],
+        ["UK MOT history (UK plates)", "https://www.check-mot.service.gov.uk/", "", "Mileage history, test locations"]
+      ];
+      L.push(["Interpol SMV", "https://www.interpol.int/Crimes/Vehicle-crime/Our-response", "L", "Stolen vehicles (via your NCB)"], ["EUCARIS", "https://www.eucaris.net/", "L", "EU registration data"]);
+      return {
+        look: "the <b>registered keeper</b> (via your national systems), photos of the vehicle online, <b>sales adverts</b>, and where it has been seen.",
+        pivot: "Keeper, other addresses, sellers → add them.",
+        links: L
+      };
+    },
+    companies(v) {
+      return {
+        look: "<b>directors and shareholders</b>, registered address, filing history, <b>links to other companies</b>, offshore structures, and sanctions.",
+        pivot: "Co-directors → associates. Registered address → addresses. Company website → websites.",
+        links: [
+          ["OpenCorporates", "https://opencorporates.com/companies?q=" + E(v), "", "140+ registries"],
+          ["OpenSanctions", "https://www.opensanctions.org/search/?q=" + E(v), "", "Sanctioned entities"],
+          ["ICIJ Offshore Leaks", "https://offshoreleaks.icij.org/search?q=" + E(v), "", ""],
+          ["OCCRP Aleph", "https://aleph.occrp.org/search?q=" + E(v), "R", ""],
+          ["GLEIF LEI", "https://search.gleif.org/", "", "Legal entity identifiers & parents"],
+          ["UK Companies House", "https://find-and-update.company-information.service.gov.uk/search?q=" + E(v), "", ""],
+          ["Google exact company", g(q(v)), "D", "Website, reviews, news"],
+          ["VIES VAT check", "https://ec.europa.eu/taxation_customs/vies/", "", "EU VAT number valid?"],
+          ["EORI validation", "https://ec.europa.eu/taxation_customs/dds2/eos/eori_validation.jsp?Lang=en", "", "EU importer / exporter number"]
+        ]
+      };
+    },
+    wallets(v) {
+      const chains = [];
+      if (/^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,62}$/.test(v)) chains.push(["Mempool.space (Bitcoin)", "https://mempool.space/address/" + v], ["WalletExplorer (Bitcoin clusters)", "https://www.walletexplorer.com/address/" + v]);
+      if (/^0x[a-fA-F0-9]{40}$/.test(v)) chains.push(["Etherscan", "https://etherscan.io/address/" + v], ["BscScan", "https://bscscan.com/address/" + v]);
+      if (/^T[1-9A-HJ-NP-Za-km-z]{33}$/.test(v)) chains.push(["Tronscan (USDT-TRC20)", "https://tronscan.org/#/address/" + v]);
+      const L = chains.map(c => [c[0], c[1], "", "Balance, transactions, counterparties"]);
+      L.push(["Blockchair (any chain)", "https://blockchair.com/search?q=" + E(v), "", ""],
+        ["Chainabuse", "https://www.chainabuse.com/address/" + E(v), "", "Scam / fraud reports"],
+        ["Arkham", "https://intel.arkm.com/explorer/address/" + E(v), "R", "Entity labels (exchanges)"],
+        ["OpenSanctions", "https://www.opensanctions.org/search/?q=" + E(v), "", "Sanctioned addresses"],
+        ["Google exact address", g(q(v)), "D", "Posted in forums or adverts"]);
+      return {
+        look: "<b>exchange deposits</b> (the exchange can identify the customer with legal process), volumes and dates matching the offence, and links to other wallets.",
+        pivot: "Exchange identified → LE request to that exchange (Binance, Coinbase, etc.).",
+        links: L
+      };
+    },
+    photos(v) {
+      return {
+        look: "the <b>same photo elsewhere</b> (other profiles, dating sites, news), the original upload, and background details for geolocation.",
+        pivot: "Other profiles using the photo → add their usernames.",
+        links: [
+          ["Google Lens", "https://lens.google.com/uploadbyurl?url=" + E(v), "", ""],
+          ["Yandex Images", "https://yandex.com/images/search?rpt=imageview&url=" + E(v), "", "Best for faces & Eastern Europe"],
+          ["Bing Visual Search", "https://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:" + E(v), "", ""],
+          ["TinEye", "https://tineye.com/search?url=" + E(v), "", "Oldest copy of the image"],
+          ["FotoForensics", "https://fotoforensics.com/", "P", "Edits / manipulation"]
+        ]
+      };
+    },
+    associates(v, s) {
+      const r = BUILD.name(v, s);
+      r.look = "their own social media (often less private than the subject's), <b>photos showing the subject</b>, shared addresses, companies and vehicles.";
+      r.pivot = "Photos and tags of the subject on the associate's accounts are often the best lead.";
+      r.links = r.links.slice(0, 8);
+      return r;
+    }
+  };
+
+  // Always-useful checks for the legal / risk gaps
+  const GENERAL = [
+    ["Interpol Red Notices", "https://www.interpol.int/How-we-work/Notices/Red-Notices/View-Red-Notices", "", "legal"],
+    ["EU Most Wanted", "https://eumostwanted.eu/", "", "legal"],
+    ["OpenSanctions", "https://www.opensanctions.org/", "", "legal"],
+    ["EU Sanctions Map", "https://www.sanctionsmap.eu/", "", "legal"],
+    ["UN Sanctions List", "https://search.sanctions.un.org/", "", "legal"],
+    ["Snap Map (live public posts)", "https://map.snapchat.com/", "", "routine"],
+    ["SunCalc (time from shadows)", "https://www.suncalc.org/", "", "routine"],
+    ["Google: name + weapons terms", "", "D", "risk"],
+    ["Small Arms Survey", "https://www.smallarmssurvey.org/", "", "risk"],
+    ["Interpol iARMS", "https://www.interpol.int/en/Crimes/Firearms-trafficking/Illicit-Arms-Records-and-tracing-Management-System-iARMS", "L", "risk"]
+  ];
+
+  // Country packs (nationality and residence)
+  const COUNTRY_PACK = {
+    BE: [["KBO / BCE company search", "https://kbopub.economie.fgov.be/kbopub/zoeknaamfonetischform.html", "Directors, addresses"], ["Belgian Official Gazette", "https://www.ejustice.just.fgov.be/", "Company publications, appointments"], ["Federal Police wanted persons", "https://www.police.be/wanted/en/wanted/wanted-persons", ""], ["2dehands / 2ememain", "https://www.2dehands.be/", "Marketplace"], ["FSMA warnings", "https://www.fsma.be/en/warnings", "Fraud platforms"]],
+    NL: [["KVK company search", "https://www.kvk.nl/zoeken/", ""], ["Rechtspraak uitspraken", "https://uitspraken.rechtspraak.nl/", "Court rulings"], ["Politie gezocht", "https://www.politie.nl/gezocht", "Wanted persons"], ["Marktplaats", "https://www.marktplaats.nl/", "Marketplace"]],
+    FR: [["Annuaire des Entreprises", "https://annuaire-entreprises.data.gouv.fr/", "Companies & directors"], ["Pappers", "https://www.pappers.fr/", "Directors, filings"], ["BODACC", "https://www.bodacc.fr/", "Legal announcements"], ["Leboncoin", "https://www.leboncoin.fr/", "Marketplace"], ["PagesBlanches", "https://www.pagesjaunes.fr/pagesblanches", "Phone directory"]],
+    DE: [["Handelsregister", "https://www.handelsregister.de/", ""], ["North Data", "https://www.northdata.com/", "Directors & networks"], ["Das Telefonbuch", "https://www.dastelefonbuch.de/", "Phone directory"], ["Kleinanzeigen", "https://www.kleinanzeigen.de/", "Marketplace"]],
+    LU: [["North Data (RCS data)", "https://www.northdata.com/", "Companies & directors"], ["OpenCorporates", "https://opencorporates.com/", ""]],
+    UK: [["Companies House officers", "https://find-and-update.company-information.service.gov.uk/search/officers", "Directorships"], ["The Gazette", "https://www.thegazette.co.uk/", "Insolvency, notices"], ["BAILII", "https://www.bailii.org/", "Court judgments"], ["NCA Most Wanted", "https://www.nationalcrimeagency.gov.uk/most-wanted", ""], ["UK MOT history", "https://www.check-mot.service.gov.uk/", ""]],
+    IE: [["CRO company search (CORE)", "https://cro.ie/post-registration/company-search/", ""], ["DoneDeal", "https://www.donedeal.ie/", "Marketplace"]],
+    ES: [["BORME (company gazette)", "https://www.boe.es/diario_borme/", ""], ["Wallapop", "https://es.wallapop.com/", "Marketplace"]],
+    PT: [["Portal da Justiça (publicações)", "https://publicacoes.mj.pt/", "Company acts"], ["OLX Portugal", "https://www.olx.pt/", "Marketplace"]],
+    IT: [["Registro Imprese", "https://www.registroimprese.it/", ""], ["Subito", "https://www.subito.it/", "Marketplace"]],
+    PL: [["KRS court register", "https://prs.ms.gov.pl/krs", "Companies & directors"], ["Allegro", "https://allegro.pl/", "Marketplace"], ["OLX Poland", "https://www.olx.pl/", ""]],
+    RO: [["ONRC trade register", "https://www.onrc.ro/index.php/en/", "Company register"], ["OLX Romania", "https://www.olx.ro/", ""]],
+    AL: [["QKB business register", "https://qkb.gov.al/en/business-register/", ""], ["OpenCorporates Albania", "https://opencorporates.com/", ""]],
+    TR: [["Ticaret Sicil Gazetesi", "https://www.ticaretsicil.gov.tr/", "Trade registry gazette"], ["sahibinden", "https://www.sahibinden.com/", "Marketplace"]],
+    MA: [["OMPIC / Direct Info", "https://www.directinfo.ma/", "Company info"], ["Avito.ma", "https://www.avito.ma/", "Marketplace"]],
+    NG: [["CAC public search", "https://icrp.cac.gov.ng/public-search/", "Company register"], ["Jiji", "https://jiji.ng/", "Marketplace"]],
+    AE: [["Dubizzle", "https://dubai.dubizzle.com/", "Marketplace"]],
+    CO: [["RUES (company register)", "https://www.rues.org.co/", ""], ["Procuraduría antecedentes", "https://www.procuraduria.gov.co/", ""]],
+    EC: [["Superintendencia de Compañías", "https://www.supercias.gob.ec/", "Company register"]],
+    BR: [["Receita Federal CNPJ", "https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/cnpjreva_solicitacao.asp", ""], ["JusBrasil", "https://www.jusbrasil.com.br/", "Court cases"]],
+    US: [["TruePeopleSearch", "https://www.truepeoplesearch.com/", "Addresses, relatives"], ["FastPeopleSearch", "https://www.fastpeoplesearch.com/", ""], ["CourtListener", "https://www.courtlistener.com/", "Court records"], ["Federal Inmate Locator", "https://www.bop.gov/inmateloc/", ""], ["NSOPW", "https://www.nsopw.gov/", "Sex-offender registries"], ["FBI Most Wanted", "https://www.fbi.gov/wanted", ""]],
+    CN: [["Baidu", "https://www.baidu.com/", "Search in Chinese"], ["Weibo", "https://weibo.com/", "Social media"]],
+    RU: [["Rusprofile", "https://www.rusprofile.ru/", "Companies & directors"], ["VK", "https://vk.com/", "Social media"], ["Yandex", "https://yandex.com/", ""]]
+  };
+
+  const ORDER = ["name", "aliases", "photos", "phones", "emails", "usernames", "websites", "addresses", "vehicles", "companies", "wallets", "associates"];
+  const TYPE_LABEL = { name: "Full name", aliases: "Alias", photos: "Photo", phones: "Phone", emails: "Email", usernames: "Username", websites: "Website", addresses: "Address", vehicles: "Vehicle", companies: "Company", wallets: "Crypto wallet", associates: "Associate" };
+
+  // ----------------------------------------------------------------
+  // State
+  // ----------------------------------------------------------------
+  const KEY = "subjectProfiler.v1";
+  function blank() {
+    const s = { caseRef: "", officer: "", fullName: "", dob: "", nationality: "", residence: "", city: "", notes: "", gaps: {}, findings: [], example: false };
+    Object.keys(MULTI).forEach(k => s[k] = []);
+    return s;
+  }
+  function example() {
+    const s = blank();
+    Object.assign(s, {
+      example: true, caseRef: "EXAMPLE-0001", officer: "Your name", fullName: "Jan Peeters", dob: "1988", nationality: "BE", residence: "BE", city: "Antwerp",
+      aliases: ["JP Kiel"], phones: ["+32 470 12 34 56"], emails: ["jan.peeters88@gmail.com"], usernames: ["jp_kiel"],
+      addresses: ["Kielpark, Antwerpen"], vehicles: ["1-ABC-123"], companies: ["Peeters Logistics BV"],
+      notes: "Fictional example. Suspected of arranging container pick-ups at the Port of Antwerp."
+    });
+    s.gaps = { identity: { status: "partial" } };
+    s.findings = [{ utc: "2026-09-28T08:12:00Z", text: "Instagram account @jp_kiel shows the subject at a gym in Kiel, posts weekdays around 07:00.", src: "https://www.instagram.com/jp_kiel/", gap: "routine", type: "", val: "" }];
+    return s;
+  }
+  let S = store.get(KEY, null) || example();
+  Object.keys(MULTI).forEach(k => { if (!Array.isArray(S[k])) S[k] = []; });
+  S.gaps = S.gaps || {}; S.findings = S.findings || [];
+  const save = () => store.set(KEY, S);
+  let lookFilter = "all";
+  let justAdded = {};
+
+  // ----------------------------------------------------------------
+  // Render: form
+  // ----------------------------------------------------------------
+  ["nationality", "residence"].forEach(id => { $("#" + id).innerHTML = COUNTRIES.map(c => '<option value="' + c[0] + '">' + c[1] + "</option>").join(""); });
+  $("#f-gap").innerHTML = '<option value="">—</option>' + GAPS.map(x => '<option value="' + x.id + '">' + x.name + "</option>").join("");
+  $("#f-type").innerHTML = '<option value="">No, just a note</option>' + Object.keys(MULTI).map(k => '<option value="' + k + '">' + MULTI[k].label + "</option>").join("");
+
+  function fillForm() {
+    document.querySelectorAll("[data-k]").forEach(el => { el.value = S[el.dataset.k] || ""; });
+    document.querySelectorAll("[data-multi]").forEach(renderMulti);
+    $("#example-banner").hidden = !S.example;
+  }
+  function renderMulti(box) {
+    const k = box.dataset.multi, m = MULTI[k];
+    box.innerHTML = '<div class="multi-label"><span>' + esc(m.label) + '</span><span>' + (S[k].length || "") + '</span></div><div class="multi-box">' +
+      S[k].map((v, i) => '<span class="tag' + (justAdded[k + v] ? " new" : "") + '">' + esc(v) + '<button type="button" aria-label="Remove ' + esc(v) + '" data-rm="' + i + '">&times;</button></span>').join("") +
+      '<input id="in-' + k + '" placeholder="' + esc(m.ph) + '" aria-label="' + esc(m.label) + '"></div>';
+  }
+  document.addEventListener("input", e => {
+    const el = e.target.closest("[data-k]"); if (!el) return;
+    S[el.dataset.k] = el.value; S.example = false; save(); renderSoon();
+  });
+  document.addEventListener("change", e => {
+    const el = e.target.closest("select[data-k]"); if (!el) return;
+    S[el.dataset.k] = el.value; save(); renderSoon();
+  });
+  function addValue(k, v) {
+    v = v.trim(); if (!v || S[k].indexOf(v) > -1) return false;
+    S[k].push(v); justAdded[k + v] = 1; S.example = false; save(); return true;
+  }
+  document.addEventListener("keydown", e => {
+    const inp = e.target.closest(".multi-box input"); if (!inp) return;
+    const box = inp.closest("[data-multi]"), k = box.dataset.multi;
+    if (e.key === "Enter" && inp.value.trim()) {
+      e.preventDefault();
+      inp.value.split(/[\n;]+/).forEach(v => addValue(k, v));
+      renderMulti(box); $("#in-" + k).focus(); renderAll(false);
+    } else if (e.key === "Backspace" && !inp.value && S[k].length) {
+      S[k].pop(); save(); renderMulti(box); $("#in-" + k).focus(); renderAll(false);
+    }
+  });
+  document.addEventListener("focusout", e => {
+    const inp = e.target.closest && e.target.closest(".multi-box input"); if (!inp || !inp.value.trim()) return;
+    const box = inp.closest("[data-multi]"); addValue(box.dataset.multi, inp.value); renderMulti(box); renderAll(false);
+  });
+  document.addEventListener("click", e => {
+    const b = e.target.closest("button[data-rm]"); if (!b) return;
+    const box = b.closest("[data-multi]"), k = box.dataset.multi;
+    S[k].splice(+b.dataset.rm, 1); save(); renderMulti(box); renderAll(false);
+  });
+
+  // ----------------------------------------------------------------
+  // Render: gaps
+  // ----------------------------------------------------------------
+  function gapStatus(x) {
+    const st = (S.gaps[x.id] || {}).status;
+    if (st) return st;
+    const fromFindings = S.findings.some(f => f.gap === x.id);
+    return (x.have(S) || fromFindings) ? "partial" : "open";
+  }
+  function renderGaps() {
+    let conf = 0, part = 0;
+    $("#gap-grid").innerHTML = GAPS.map(x => {
+      const st = gapStatus(x);
+      if (st === "confirmed") conf++; else if (st === "partial") part++;
+      const nFind = S.findings.filter(f => f.gap === x.id).length;
+      return '<div class="gap ' + st + '"><div class="gap-top"><h3>' + esc(x.name) + '</h3><select data-gap="' + x.id + '" aria-label="Status of ' + esc(x.name) + '">' +
+        ["open", "partial", "confirmed"].map(o => '<option value="' + o + '"' + (o === st ? " selected" : "") + ">" + ({ open: "Open", partial: "Partly known", confirmed: "Confirmed" })[o] + "</option>").join("") +
+        "</select></div><p>" + esc(x.hint) + "</p>" + (x.have(S) || nFind ? '<span class="have">' + (x.have(S) ? "Data in file" : "") + (x.have(S) && nFind ? " · " : "") + (nFind ? nFind + " finding" + (nFind > 1 ? "s" : "") : "") + "</span>" : "") + "</div>";
+    }).join("");
+    $("#meter").innerHTML = GAPS.map(x => '<i class="' + gapStatus(x) + '"></i>').join("");
+    $("#gaps-sum").textContent = conf + " confirmed · " + part + " partly known · " + (GAPS.length - conf - part) + " open";
+  }
+  $("#gap-grid").addEventListener("change", e => {
+    const sel = e.target.closest("select[data-gap]"); if (!sel) return;
+    S.gaps[sel.dataset.gap] = { status: sel.value }; save(); renderGaps();
+  });
+
+  // ----------------------------------------------------------------
+  // Render: where to look
+  // ----------------------------------------------------------------
+  function identifiers() {
+    const out = [];
+    if (S.fullName.trim()) out.push(["name", S.fullName.trim()]);
+    ORDER.slice(1).forEach(k => S[k].forEach(v => out.push([k, v])));
+    return out;
+  }
+  function linkLi(l) {
+    return '<li><a href="' + esc(l[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(l[0]) + "</a>" +
+      (l[2] ? l[2].split("").map(f => '<span class="fl ' + (f === "$" ? "S" : f) + '" title="' + ({ T: "Tool to install", D: "Google dork", R: "Login needed", $: "Paid", L: "LE access only", A: "May alert subject", P: "Privacy / legal caution" })[f] + '">' + f + "</span>").join("") : "") +
+      (l[3] ? '<span class="why">' + esc(l[3]) + "</span>" : "") + "</li>";
+  }
+  function renderLook() {
+    const ids = identifiers();
+    const types = Array.from(new Set(ids.map(i => i[0])));
+    if (lookFilter !== "all" && lookFilter !== "country" && lookFilter !== "gaps" && types.indexOf(lookFilter) < 0) lookFilter = "all";
+    const countries = Array.from(new Set([S.nationality, S.residence].filter(c => c && COUNTRY_PACK[c])));
+    $("#look-filter").innerHTML = [["all", "All leads"]].concat(types.map(t => [t, TYPE_LABEL[t]]), countries.length ? [["country", "Country sources"]] : [], [["gaps", "Legal, routine & risk"]])
+      .map(f => '<button type="button" data-f="' + f[0] + '" aria-pressed="' + (lookFilter === f[0]) + '">' + esc(f[1]) + "</button>").join("");
+
+    let html = "";
+    if (!ids.length) html += '<div class="empty-look">Add a name, phone, email or any other detail in step 1 and the searches will appear here.</div>';
+    ids.forEach(([k, v]) => {
+      if (lookFilter !== "all" && lookFilter !== k) return;
+      const r = BUILD[k](v, S);
+      html += '<article class="ident"><div class="ident-head"><span class="ident-type">' + esc(TYPE_LABEL[k]) + '</span><span class="ident-val">' + esc(v) + "</span></div>" +
+        '<div class="ident-body"><p class="lookfor"><b>Look for:</b> ' + r.look + "</p><ul class=\"links\">" + r.links.filter(Boolean).map(linkLi).join("") + "</ul>" +
+        '<p class="pivot"><b>Pivot:</b> ' + esc(r.pivot) + "</p></div></article>";
+    });
+    if ((lookFilter === "all" || lookFilter === "country") && countries.length) {
+      countries.forEach(c => {
+        const name = (COUNTRIES.find(x => x[0] === c) || [0, c])[1];
+        html += '<article class="ident"><div class="ident-head"><span class="ident-type">Country sources</span><span class="ident-val">' + esc(name) + "</span></div>" +
+          '<div class="ident-body"><p class="lookfor"><b>Look for:</b> national company registers, gazettes, court rulings, wanted lists and the marketplaces people actually use in ' + esc(name) + ". Search these with the subject's name and companies.</p><ul class=\"links\">" +
+          COUNTRY_PACK[c].map(l => linkLi([l[0], l[1], "", l[2]])).join("") + "</ul></div></article>";
+      });
+    }
+    if (lookFilter === "all" || lookFilter === "gaps") {
+      const nm = S.fullName.trim();
+      const gen = GENERAL.map(l => l[0].indexOf("weapons") > -1 ? (nm ? [l[0].replace("name", nm), g(q(nm) + " (gun OR firearm OR pistol OR knife OR \"shots fired\")"), "D", "Posts or news about weapons"] : null) : [l[0], l[1], l[2], ({ legal: "Legal exposure", routine: "Routine", risk: "Risk" })[l[3]]]).filter(Boolean);
+      html += '<article class="ident"><div class="ident-head"><span class="ident-type">Always check</span><span class="ident-val">Legal exposure, routine &amp; risk</span></div>' +
+        '<div class="ident-body"><p class="lookfor"><b>Look for:</b> wanted notices and sanctions, the times and places the subject posts from, and any sign of <b>weapons, violence or awareness of surveillance</b> before any physical action.</p><ul class="links">' + gen.map(linkLi).join("") + "</ul></div></article>";
+    }
+    $("#look").innerHTML = html;
+  }
+  $("#look-filter").addEventListener("click", e => { const b = e.target.closest("button[data-f]"); if (!b) return; lookFilter = b.dataset.f; renderLook(); });
+
+  // ----------------------------------------------------------------
+  // Findings
+  // ----------------------------------------------------------------
+  function renderFindings() {
+    $("#find-list").innerHTML = S.findings.map((f, i) =>
+      '<li><div class="find-meta"><span>' + esc(f.utc) + "</span>" + (f.gap ? "<span>" + esc((GAPS.find(x => x.id === f.gap) || {}).name || "") + "</span>" : "") +
+      (f.type ? '<span class="pill">New ' + esc(TYPE_LABEL[f.type] || f.type) + ": " + esc(f.val) + "</span>" : "") +
+      '<button type="button" class="btn small danger" data-delf="' + i + '" style="margin-left:auto">Remove</button></div>' +
+      '<div class="find-text">' + esc(f.text) + "</div>" + (f.src ? '<div class="find-src">' + (/^https?:\/\//i.test(f.src) ? '<a href="' + esc(f.src) + '" target="_blank" rel="noopener noreferrer">' + esc(f.src) + "</a>" : esc(f.src)) + "</div>" : "") + "</li>"
+    ).join("") || '<li class="hint" style="border:0;color:var(--muted)">No findings logged yet.</li>';
+  }
+  $("#find-form").addEventListener("submit", e => {
+    e.preventDefault();
+    const f = { utc: nowUtc(), text: $("#f-text").value.trim(), src: $("#f-src").value.trim(), gap: $("#f-gap").value, type: $("#f-type").value, val: $("#f-val").value.trim() };
+    if (!f.text) return;
+    if (f.type && f.val) { addValue(f.type, f.val); document.querySelectorAll('[data-multi="' + f.type + '"]').forEach(renderMulti); toast("Logged and added to the subject file"); }
+    else { f.type = ""; toast("Finding logged at " + f.utc); }
+    S.findings.unshift(f); S.example = false; save();
+    ["#f-text", "#f-src", "#f-val"].forEach(s => $(s).value = ""); $("#f-type").value = ""; $("#f-gap").value = "";
+    renderAll(false);
+  });
+  $("#find-list").addEventListener("click", e => {
+    const b = e.target.closest("button[data-delf]"); if (!b) return;
+    if (!b.dataset.armed) { b.dataset.armed = "1"; b.textContent = "Confirm"; setTimeout(() => { if (b.isConnected) { delete b.dataset.armed; b.textContent = "Remove"; } }, 3000); return; }
+    S.findings.splice(+b.dataset.delf, 1); save(); renderAll(false);
+  });
+
+  // ----------------------------------------------------------------
+  // Report, save, open, new
+  // ----------------------------------------------------------------
+  function reportText() {
+    const L = [];
+    const c = code => (COUNTRIES.find(x => x[0] === code) || [0, ""])[1];
+    L.push("SUBJECT PROFILE (open sources)", "Case: " + (S.caseRef || "-") + "    Officer: " + (S.officer || "-") + "    Generated: " + nowUtc(), "");
+    L.push("IDENTITY", "  Name: " + (S.fullName || "-"), "  Date of birth: " + (S.dob || "-"), "  Nationality: " + (c(S.nationality) || "-") + "    Residence: " + (c(S.residence) || "-") + (S.city ? ", " + S.city : ""));
+    ORDER.slice(1).forEach(k => { if (S[k].length) L.push("  " + MULTI[k].label + ": " + S[k].join("; ")); });
+    if (S.notes) L.push("", "NOTES", "  " + S.notes);
+    L.push("", "INTELLIGENCE GAPS");
+    GAPS.forEach(x => L.push("  [" + ({ open: " ", partial: "~", confirmed: "x" })[gapStatus(x)] + "] " + x.name + " — " + ({ open: "open", partial: "partly known", confirmed: "confirmed" })[gapStatus(x)]));
+    L.push("", "FINDINGS (" + S.findings.length + ")");
+    S.findings.slice().reverse().forEach(f => {
+      L.push("  " + f.utc + (f.gap ? "  [" + ((GAPS.find(x => x.id === f.gap) || {}).name || "") + "]" : ""), "    " + f.text);
+      if (f.src) L.push("    Source: " + f.src);
+      if (f.type) L.push("    New identifier: " + TYPE_LABEL[f.type] + " " + f.val);
+    });
+    L.push("", "Open-source information. Verify with a second source before relying on it.");
+    return L.join("\n");
+  }
+  $("#btn-report").addEventListener("click", () => { $("#report").value = reportText(); $("#report-card").hidden = false; $("#report-card").scrollIntoView({ behavior: "smooth" }); });
+  $("#close-report").addEventListener("click", () => { $("#report-card").hidden = true; });
+  $("#copy-report").addEventListener("click", () => copy($("#report").value));
+  $("#btn-save").addEventListener("click", () => {
+    const name = "subject-" + (S.caseRef || "profile").replace(/[^\w-]+/g, "_") + "-" + new Date().toISOString().slice(0, 10) + ".json";
+    try {
+      const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(S, null, 2)], { type: "application/json" })); a.download = name;
+      document.body.appendChild(a); a.click(); a.remove(); toast("Saved " + name);
+    } catch (e) { copy(JSON.stringify(S)); toast("Download blocked: profile copied as text instead"); }
+  });
+  $("#file-open").addEventListener("change", e => {
+    const f = e.target.files[0]; if (!f) return;
+    f.text().then(t => {
+      try { const d = JSON.parse(t); const b = blank(); S = Object.assign(b, d); Object.keys(MULTI).forEach(k => { if (!Array.isArray(S[k])) S[k] = []; }); save(); justAdded = {}; fillForm(); renderAll(true); toast("Opened " + f.name); }
+      catch (err) { toast("That file is not a Subject Profiler file"); }
+    });
+    e.target.value = "";
+  });
+  $("#btn-new").addEventListener("click", e => {
+    const b = e.currentTarget;
+    if (!b.dataset.armed && !S.example) { b.dataset.armed = "1"; b.textContent = "Click again: clears this profile"; setTimeout(() => { delete b.dataset.armed; b.textContent = "New subject"; }, 3500); return; }
+    delete b.dataset.armed; b.textContent = "New subject";
+    const keep = { caseRef: "", officer: S.example ? "" : S.officer };
+    S = blank(); S.officer = keep.officer; justAdded = {}; save(); fillForm(); renderAll(true); $("#fullName").focus();
+  });
+
+  // ----------------------------------------------------------------
+  let t;
+  function renderSoon() { clearTimeout(t); t = setTimeout(() => renderAll(false), 250); }
+  function renderAll() { renderGaps(); renderLook(); renderFindings(); $("#example-banner").hidden = !S.example; }
+  fillForm(); renderAll(true);
+})();
+</script>
+
+</body>
+</html>
