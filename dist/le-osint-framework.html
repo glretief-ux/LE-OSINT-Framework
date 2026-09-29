@@ -5572,7 +5572,7 @@ window.LE_LINES = {
     }
     if (st.hex) btns.push('<a class="btn ghost" href="https://globe.adsbexchange.com/?icao=' + st.hex + '" target="_blank" rel="noopener">ADS-B Exchange ↗</a>');
     const el = $("#fl-launch");
-    el.innerHTML = '<div class="fl-launch-btns">' + btns.join("") + '</div><p class="hint">The live position opens in a new tab on the free, unfiltered adsb.lol map' + (st.q && st.q.kind === "flight" ? ", showing only " + esc(cs) : "") + '. Click the aircraft there for altitude, speed and squawk. No aircraft = not airborne yet, landed or out of receiver coverage.</p>';
+    el.innerHTML = '<div class="fl-launch-btns">' + btns.join("") + '</div><p class="hint">The live position opens in a new tab on the free, unfiltered adsb.lol map' + (st.q && st.q.kind === "flight" ? ", showing only " + esc(cs) + " (also with a suffix letter, e.g. " + esc(cs) + "F)" : "") + '. Click the aircraft there for altitude, speed and squawk. No aircraft = not airborne yet, landed or out of receiver coverage.</p>';
     el.hidden = false;
   }
   function embedTrack(q) {
@@ -5585,7 +5585,8 @@ window.LE_LINES = {
       else if (q.kind === "reg") url = EMBED + "?reg=" + encodeURIComponent(q.v);
       else {
         const cs = st.cs || q.v;
-        url = EMBED + "?filterCallSign=" + encodeURIComponent("^" + cs + "$") + "&callsign=" + encodeURIComponent(cs);
+        // airlines often broadcast the flight number with a suffix letter (AT831 is sent as RAM831F), so allow one
+        url = EMBED + "?filterCallSign=" + encodeURIComponent("^" + cs + "[A-Z]?$");
         if (st.route && st.route.origin && st.route.destination) {
           const o = [st.route.origin.latitude, st.route.origin.longitude], d = [st.route.destination.latitude, st.route.destination.longitude], mid = gc(o, d, 2)[1], tot = nm(o, d);
           url += "&lat=" + mid[0].toFixed(3) + "&lon=" + mid[1].toFixed(3) + "&zoom=" + (tot > 3500 ? 3 : tot > 1500 ? 4 : tot > 600 ? 5 : 6);
@@ -5602,6 +5603,21 @@ window.LE_LINES = {
     else { st.hex = q.v; adsbdb("aircraft/" + q.v).then(function (r) { st.acinfo = r && r.aircraft || null; done(); }); }
   }
 
+  // callsign with suffix letter (RAM831F): scan around the route and match ^CALLSIGN[A-Z]?$
+  function routeScan(cs) {
+    const r = st.route, o = [r.origin.latitude, r.origin.longitude], d = [r.destination.latitude, r.destination.longitude];
+    const pts = gc(o, d, 4), re = new RegExp("^" + cs + "[A-Z]?$");
+    let i = 0;
+    function next() {
+      if (i >= pts.length || !SOURCES.length) return Promise.resolve(null);
+      const pt = pts[i++];
+      return getJSON(SOURCES[0].pt(pt[0].toFixed(3), pt[1].toFixed(3), 250)).then(function (j) {
+        const ac = ((j && (j.ac || j.aircraft)) || []).filter(function (a) { return re.test((a.flight || "").trim()); });
+        return ac.length ? { ac: ac, src: SOURCES[0] } : next();
+      }).catch(next);
+    }
+    return next();
+  }
   function track(q) {
     if (!PROXY) { embedTrack(q); return; }
     $("#fl-launch").hidden = true;
@@ -5618,6 +5634,7 @@ window.LE_LINES = {
         return liveFirstHit("cs", st.cs).then(function (res) {
           if (!res.ac.length && st.cs !== q.v) return liveFirstHit("cs", q.v);
           if (!res.ac.length && q.alsoHex) return liveFirstHit("hex", q.v.toLowerCase());
+          if (!res.ac.length && st.route && st.route.origin) return routeScan(st.cs).then(function (hit) { return hit || res; });
           return res;
         });
       });
