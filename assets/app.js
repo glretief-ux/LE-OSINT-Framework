@@ -152,6 +152,7 @@
 
   function fillUrl(link) {
     const u = link.url;
+    if (u.charAt(0) === "#" && u.indexOf("{q}") > -1) return state.term && state.type && link.sel.indexOf(state.type) > -1 ? u.replace("{q}", encodeURIComponent(normalise(state.term, state.type))) : u.replace(/=?\{q\}/, "");
     if (u.charAt(0) === "#" || u.indexOf("{q}") === -1) return u;
     if (state.term && state.type && link.sel.indexOf(state.type) > -1) {
       const val = normalise(state.term, state.type);
@@ -375,6 +376,12 @@
     e.preventDefault();
     const id = a.getAttribute("href").slice(1);
     if (id === "ports" || id === "hs" || id === "lines") { showView(id); window.scrollTo(0, 0); return; }
+    if (id.indexOf("flights") === 0) {
+      showView("flights"); window.scrollTo(0, 0);
+      let v = ""; try { v = decodeURIComponent(id.split("=")[1] || ""); } catch (err) { v = ""; }
+      if (v && v.indexOf("{q}") < 0 && window.LE_OSINT.flightSearch) window.LE_OSINT.flightSearch(v);
+      return;
+    }
     showView("toolbox");
     const pre = a.dataset.prefill;
     const target = document.getElementById(id);
@@ -831,6 +838,7 @@
   applyTheme(theme);
   render();
   if (/^toolbox-/.test(h)) { showView("toolbox"); setTimeout(function () { const el = document.getElementById(h); if (el) el.scrollIntoView(); }, 50); }
-  else if (["toolbox", "about", "playbooks", "profile", "web", "flow", "desk", "ports", "hs", "lines"].indexOf(h) > -1) showView(h);
+  else if (["toolbox", "about", "playbooks", "profile", "web", "flow", "desk", "ports", "hs", "lines", "flights"].indexOf(h) > -1) showView(h);
+  else if (/^flights=/.test(h)) showView("flights");
   else showView("flow");
 })();

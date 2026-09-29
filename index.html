@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Public+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/vendor/leaflet.css">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -25,6 +26,7 @@
       <button type="button" data-view="ports">World ports</button>
       <button type="button" data-view="hs">HS codes</button>
       <button type="button" data-view="lines">Shipping lines</button>
+      <button type="button" data-view="flights">Flight tracker</button>
       <button type="button" data-view="playbooks">Case playbooks</button>
       <button type="button" data-view="profile">Suspect profile</button>
       <button type="button" data-view="toolbox">Toolbox &amp; case log</button>
@@ -44,6 +46,7 @@
         <button type="button" data-view="ports">World ports</button>
         <button type="button" data-view="hs">HS codes</button>
         <button type="button" data-view="lines">Shipping lines</button>
+        <button type="button" data-view="flights">Flight tracker</button>
         <button type="button" data-view="playbooks">Playbooks</button>
         <button type="button" data-view="profile">Suspect profile</button>
         <button type="button" data-view="toolbox">Toolbox</button>
@@ -304,6 +307,8 @@
 
       <section class="view" id="view-lines" hidden><div id="lines"></div></section>
 
+      <section class="view" id="view-flights" hidden><div id="flights"></div></section>
+
       <section class="view" id="view-playbooks" hidden><div id="playbooks"></div></section>
 
       <section class="view" id="view-profile" hidden>
@@ -360,5 +365,7 @@
 <script src="assets/hs.js"></script>
 <script src="data/shipping-lines.js"></script>
 <script src="assets/lines.js"></script>
+<script src="assets/vendor/leaflet.js"></script>
+<script src="assets/flights.js"></script>
 </body>
 </html>

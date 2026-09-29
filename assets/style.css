@@ -396,3 +396,31 @@ td.mono { font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; fo
 tr.ln-old td { opacity: .78; }
 .ln-combo .ln-inputwrap input { width: auto; }
 @media (min-width: 900px) { .topnav { flex-wrap: wrap; overflow: visible; row-gap: 6px; } }
+
+/* Flight tracker */
+.fl-bar { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: flex-end; margin-bottom: 8px; }
+.fl-bar .pf input { width: 100%; font-family: var(--mono); letter-spacing: .02em; }
+.fl-bar .pf select { font: 14px var(--font); padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); }
+.fl-opts { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; margin-bottom: 10px; font-size: 13.5px; }
+.fl-status { font-size: 13px; font-weight: 600; color: var(--muted); }
+.fl-status.ok { color: var(--ok); } .fl-status.bad { color: var(--bad); } .fl-status.warn { color: #B26B00; }
+.fl-grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 12px; }
+.fl-map { height: min(68vh, 620px); min-height: 380px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--panel-2); z-index: 0; }
+.fl-info { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; font-size: 13.5px; max-height: min(68vh, 620px); overflow: auto; }
+.fl-title { margin: 0 0 2px; font: 700 22px var(--mono); letter-spacing: .02em; }
+.fl-airline { margin: 0 0 10px; font-weight: 600; }
+.fl-route { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 6px 0; }
+.fl-route b { display: block; font: 700 20px var(--mono); } .fl-route small { color: var(--muted); font-size: 12px; } .fl-route > span { color: var(--muted); font-size: 18px; }
+.fl-route div:last-child { text-align: right; }
+.fl-prog { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; margin: 6px 0 4px; } .fl-prog span { display: block; height: 100%; background: var(--accent); }
+.fl-tbl { width: 100%; border-collapse: collapse; margin: 8px 0; } .fl-tbl th { text-align: left; font-weight: 600; color: var(--muted); padding: 4px 8px 4px 0; width: 42%; vertical-align: top; } .fl-tbl td { padding: 4px 0; }
+.fl-tbl .bad { color: var(--bad); }
+.fl-alert { background: var(--bad); color: #fff; font-weight: 700; padding: 8px 10px; border-radius: 8px; margin-bottom: 10px; }
+.fl-photo { width: 100%; border-radius: 8px; margin: 6px 0; display: block; }
+.fl-links { line-height: 1.8; } .fl-actions { margin: 8px 0; }
+.fl-pick { list-style: none; margin: 0; padding: 0; } .fl-pick button { width: 100%; text-align: left; font: 13.5px var(--font); background: none; border: 1px solid var(--line); border-radius: 8px; padding: 8px; margin-bottom: 6px; color: var(--ink); cursor: pointer; }
+.fl-plane svg { fill: #1B6FD1; stroke: #fff; stroke-width: 1; filter: drop-shadow(0 1px 2px rgba(0,0,0,.35)); }
+.fl-plane.sel svg { fill: #E0761F; } .fl-plane.emerg svg { fill: #D62B1F; }
+.fl-ap span { display: inline-block; transform: translate(-50%, -50%); background: #1c2a26; color: #fff; font: 700 11px var(--mono); padding: 2px 6px; border-radius: 5px; white-space: nowrap; }
+.leaflet-container { font: 12px var(--font); }
+@media (max-width: 900px) { .fl-grid { grid-template-columns: 1fr; } .fl-info { max-height: none; } .fl-map { height: 58vh; } }

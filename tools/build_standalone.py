@@ -22,11 +22,12 @@ def build(fragment=False):
     html = read("index.html")
     css = read("assets/style.css")
     html = html.replace('<link rel="stylesheet" href="assets/style.css">', "<style>\n" + css + "\n</style>")
+    html = html.replace('<link rel="stylesheet" href="assets/vendor/leaflet.css">', "<style>\n" + read("assets/vendor/leaflet.css") + "\n</style>")
     cdn = {
         "assets/vendor/exifr.full.umd.js": "https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/full.umd.js",
     }
     for src in ["assets/vendor/exifr.full.umd.js",
-                "data/links.js", "data/playbooks.js", "assets/app.js", "assets/toolbox.js", "data/ports.js", "assets/ports.js", "data/hs.js", "assets/hs.js", "data/shipping-lines.js", "assets/lines.js"]:
+                "data/links.js", "data/playbooks.js", "assets/app.js", "assets/toolbox.js", "data/ports.js", "assets/ports.js", "data/hs.js", "assets/hs.js", "data/shipping-lines.js", "assets/lines.js", "assets/vendor/leaflet.js", "assets/flights.js"]:
         tag = '<script src="%s"></script>' % src
         if fragment and src in cdn:
             html = html.replace(tag, '<script src="%s"></script>' % cdn[src])

@@ -330,6 +330,7 @@ Platesmania (plate photos) | https://platesmania.com/ | |
 Interpol SMV (stolen motor vehicles) | https://www.interpol.int/Crimes/Vehicle-crime/Our-response | L |
 EUCARIS | https://www.eucaris.net/ | L |
 ## Aviation
+Live flight tracker (in this tool) | #flights={q} | N | flight,reg | Track a flight number, callsign, registration or ICAO hex live on a map, with route, aircraft owner and track
 Flightradar24 (by registration) | https://www.flightradar24.com/data/aircraft/{q} | | reg
 Flightradar24 (by flight) | https://www.flightradar24.com/data/flights/{q} | | flight
 FlightAware | https://www.flightaware.com/live/flight/{q} | | flight,reg
