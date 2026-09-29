@@ -799,6 +799,23 @@
     window.addEventListener("resize", debounce(function () { if (state.view === "flow") drawFlow(); }, 200));
   }
 
+  // ------------------------------------------------------------------
+  // Light / dark / automatic theme
+  // ------------------------------------------------------------------
+  const THEMES = ["auto", "light", "dark"];
+  function applyTheme(t) {
+    const root = document.documentElement;
+    if (t === "auto") root.removeAttribute("data-theme"); else root.setAttribute("data-theme", t);
+    const btn = $("#theme-btn"); if (btn) btn.textContent = "Theme: " + t.charAt(0).toUpperCase() + t.slice(1);
+    try { const f = $("#profile-frame"); const d = f && f.contentDocument; if (d) { if (t === "auto") d.documentElement.removeAttribute("data-theme"); else d.documentElement.setAttribute("data-theme", t); } } catch (e) { /* frame not reachable */ }
+    store.set("leosint.theme", t);
+    if (state.view === "flow") drawFlow(); else if (state.view === "web") drawWeb();
+  }
+  let theme = store.get("leosint.theme", "auto");
+  if (THEMES.indexOf(theme) < 0) theme = "auto";
+  $("#theme-btn") && $("#theme-btn").addEventListener("click", function () { theme = THEMES[(THEMES.indexOf(theme) + 1) % 3]; applyTheme(theme); });
+  $("#profile-frame") && $("#profile-frame").addEventListener("load", function () { applyTheme(theme); });
+
   function render() {
     renderRail();
     if (state.term) renderRun(); else renderBrowse();
@@ -811,6 +828,7 @@
   $("#stat-cats").textContent = DB.children.length;
 
   const h = (location.hash || "").slice(1);
+  applyTheme(theme);
   render();
   if (/^toolbox-/.test(h)) { showView("toolbox"); setTimeout(function () { const el = document.getElementById(h); if (el) el.scrollIntoView(); }, 50); }
   else if (["toolbox", "about", "playbooks", "profile", "web", "flow", "desk", "ports", "hs"].indexOf(h) > -1) showView(h);

@@ -375,3 +375,4 @@ td.mono { font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; fo
 .hs-C { background: var(--warn-soft); color: var(--warn); }
 .hs-V { background: #E8DDF6; color: #4B2A7A; }
 .hs-X, .hs-M { background: var(--accent-soft); color: var(--accent); }
+.topnav .theme-btn { margin-left: auto; border-style: dashed; }
