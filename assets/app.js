@@ -637,6 +637,16 @@
     $("#web-zin").addEventListener("click", function () { zoomAt(1.3, 0, 0); });
     $("#web-zout").addEventListener("click", function () { zoomAt(1 / 1.3, 0, 0); });
     $("#web-fit").addEventListener("click", function () { fitWeb(); applyT(); });
+    const wpts = {}; let wpinch = null;
+    wrap.addEventListener("pointerdown", function (e) { if (e.pointerType !== "touch") return; wpts[e.pointerId] = [e.clientX, e.clientY]; const ids = Object.keys(wpts); if (ids.length === 2) { const a = wpts[ids[0]], b = wpts[ids[1]]; wpinch = Math.hypot(a[0] - b[0], a[1] - b[1]); drag = null; } });
+    wrap.addEventListener("pointermove", function (e) {
+      if (!wpts[e.pointerId]) return; wpts[e.pointerId] = [e.clientX, e.clientY];
+      const ids = Object.keys(wpts); if (ids.length !== 2 || !wpinch) return;
+      const a = wpts[ids[0]], b = wpts[ids[1]], d = Math.hypot(a[0] - b[0], a[1] - b[1]);
+      zoomAt(d / wpinch, 0, 0); wpinch = d; moved = true;
+    });
+    const wend = function (e) { delete wpts[e.pointerId]; if (Object.keys(wpts).length < 2) wpinch = null; };
+    wrap.addEventListener("pointerup", wend); wrap.addEventListener("pointercancel", wend);
     $("#web-collapse").addEventListener("click", function () { WEB.open = {}; WEB.find = ""; $("#web-find").value = ""; WEB.fitted = false; drawWeb(); });
     $("#web-find").addEventListener("input", debounce(function () {
       WEB.find = $("#web-find").value.trim();
@@ -768,6 +778,14 @@
       applyF();
     }
   }
+  // floating zoom controls that stay visible on the board (they press the toolbar buttons)
+  [["flow-wrap", "flow"], ["web-wrap", "web"]].forEach(function (x) {
+    const w = document.getElementById(x[0]); if (!w) return;
+    const box = document.createElement("div"); box.className = "zoom-fab"; box.setAttribute("role", "group"); box.setAttribute("aria-label", "Zoom");
+    box.innerHTML = '<button type="button" data-z="zin" aria-label="Zoom in" title="Zoom in">+</button><button type="button" data-z="zout" aria-label="Zoom out" title="Zoom out">&minus;</button><button type="button" data-z="fit" aria-label="Fit to screen" title="Fit to screen">⤢</button>';
+    ["pointerdown", "wheel", "click"].forEach(function (ev) { box.addEventListener(ev, function (e) { e.stopPropagation(); if (ev === "click") { const b = e.target.closest("button[data-z]"); if (b) { const t = document.getElementById(x[1] + "-" + b.dataset.z); if (t) t.click(); } } }, ev === "wheel" ? { passive: true } : false); });
+    w.appendChild(box);
+  });
   if (fsvg) {
     let drag = null, moved = false;
     fwrap.addEventListener("pointerdown", function (e) { if (e.button !== 0) return; drag = [e.clientX, e.clientY, FLOW.x, FLOW.y]; moved = false; });
@@ -796,6 +814,18 @@
     $("#flow-zin").addEventListener("click", function () { const c = mid(); zoomF(1.25, c[0], c[1]); });
     $("#flow-zout").addEventListener("click", function () { const c = mid(); zoomF(1 / 1.25, c[0], c[1]); });
     $("#flow-fit").addEventListener("click", function () { fitFlow(); applyF(); });
+    // two-finger pinch zoom (iPad / phone)
+    const pts = {};
+    let pinch = null;
+    fwrap.addEventListener("pointerdown", function (e) { if (e.pointerType !== "touch") return; pts[e.pointerId] = [e.clientX, e.clientY]; const ids = Object.keys(pts); if (ids.length === 2) { const a = pts[ids[0]], b = pts[ids[1]]; pinch = Math.hypot(a[0] - b[0], a[1] - b[1]); drag = null; } });
+    fwrap.addEventListener("pointermove", function (e) {
+      if (!pts[e.pointerId]) return; pts[e.pointerId] = [e.clientX, e.clientY];
+      const ids = Object.keys(pts); if (ids.length !== 2 || !pinch) return;
+      const a = pts[ids[0]], b = pts[ids[1]], d = Math.hypot(a[0] - b[0], a[1] - b[1]), r = fsvg.getBoundingClientRect();
+      zoomF(d / pinch, (a[0] + b[0]) / 2 - r.left, (a[1] + b[1]) / 2 - r.top); pinch = d; moved = true;
+    });
+    const endPinch = function (e) { delete pts[e.pointerId]; if (Object.keys(pts).length < 2) pinch = null; };
+    fwrap.addEventListener("pointerup", endPinch); fwrap.addEventListener("pointercancel", endPinch);
     $("#flow-collapse").addEventListener("click", function () { FLOW.open = {}; FLOW.find = ""; $("#flow-find").value = ""; FLOW.fitted = false; drawFlow(); });
     $("#flow-find").addEventListener("input", debounce(function () {
       FLOW.find = $("#flow-find").value.trim();
