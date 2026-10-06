@@ -322,10 +322,11 @@ Russia Rusprofile | https://www.rusprofile.ru/search?query={q} | | org,name
 
 # Transportation
 ## Vehicles
+Stolen vehicle check (in this tool) | #stolen={q} | N | vin | Decodes the VIN and lists every free public stolen-vehicle check by country (30 services), with a result log
 NHTSA VIN Decoder | https://vpic.nhtsa.dot.gov/decoder/ | |
 NICB VINCheck (US stolen/salvage) | https://www.nicb.org/vincheck | |
 UK DVLA Vehicle Enquiry | https://vehicleenquiry.service.gov.uk/ | |
-UK MOT History | https://www.check-mot.service.gov.uk/ | |
+UK MOT History | https://www.gov.uk/check-mot-history | |
 Platesmania (plate photos) | https://platesmania.com/ | |
 Interpol SMV (stolen motor vehicles) | https://www.interpol.int/Crimes/Vehicle-crime/Our-response | L |
 EUCARIS | https://www.eucaris.net/ | L |

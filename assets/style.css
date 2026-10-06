@@ -440,3 +440,39 @@ tr.ln-old td { opacity: .78; }
 .fl-alt { margin: 8px 0 0; font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
 .fl-pick-map { margin-left: auto; font-size: 12.5px; color: var(--muted); display: inline-flex; gap: 6px; align-items: center; }
 .fl-pick-map select { font: 13px var(--font); padding: 4px 6px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); color: var(--ink); }
+
+/* Stolen vehicles */
+.mono-in { font-family: var(--mono) !important; letter-spacing: .04em; text-transform: uppercase; }
+#stolen .ports-bar .pf input { width: 100%; }
+.sv-dec { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin-bottom: 12px; }
+.sv-dec-main { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; margin-bottom: 8px; }
+.sv-vin { font: 700 22px var(--mono); letter-spacing: .08em; }
+.sv-vin span, .sv-legend span { border-radius: 3px; padding: 0 1px; }
+.sv-legend { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 11.5px; }
+.sv-legend span { padding: 1px 6px; }
+.pw { background: #DCEBF8; color: #18456E; } .pd { background: #E7F2E4; color: #2D5A24; } .pc { background: #FBE3C8; color: #8A4B06; } .py { background: #EEDFF7; color: #5B2C7A; } .pp { background: #F9DDE3; color: #8A2238; } .ps { background: #ECEEEE; color: #3C4643; }
+:root[data-theme="dark"] .pw, :root[data-theme="dark"] .pd, :root[data-theme="dark"] .pc, :root[data-theme="dark"] .py, :root[data-theme="dark"] .ps, :root[data-theme="dark"] .pp { filter: invert(.88) hue-rotate(180deg); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pw, :root:not([data-theme="light"]) .pd, :root:not([data-theme="light"]) .pc, :root:not([data-theme="light"]) .py, :root:not([data-theme="light"]) .ps, :root:not([data-theme="light"]) .pp { filter: invert(.88) hue-rotate(180deg); } }
+.sv-tbl { border-collapse: collapse; font-size: 13.5px; width: 100%; max-width: 860px; }
+.sv-tbl th { text-align: left; color: var(--muted); font-weight: 600; padding: 4px 14px 4px 0; width: 240px; vertical-align: top; }
+.sv-tbl td { padding: 4px 0; }
+.sv-dec .ok, #sv-count .ok { color: var(--ok); font-weight: 700; } .sv-dec .bad, #sv-count .bad { color: var(--bad); font-weight: 700; }
+.sv-table td { vertical-align: top; }
+.sv-table tr.sv-first td { border-top: 2px solid var(--line); }
+.sv-cc-td b { font-size: 13px; }
+.sv-name { font-weight: 700; font-size: 14px; color: var(--ink); text-decoration: none; }
+.sv-name:hover { text-decoration: underline; }
+.sv-need, .sv-unv { font: 600 11px var(--mono); padding: 2px 6px; border-radius: 5px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
+.sv-need.plate { background: var(--chip, #E8ECEA); color: var(--muted); }
+.sv-unv { background: var(--warn-soft); color: var(--warn); }
+.sv-who { margin: 2px 0; font-size: 12.5px; color: var(--muted); }
+.sv-note { font-size: 13px; max-width: 70ch; }
+.sv-act { white-space: nowrap; } .sv-act .btn { text-decoration: none; display: inline-block; }
+.sv-sel { font: 13px var(--font); padding: 5px 6px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); color: var(--ink); max-width: 100%; }
+.sv-table tr.r-clear .sv-sel { border-color: var(--ok); color: var(--ok); font-weight: 600; }
+.sv-table tr.r-hit td { background: color-mix(in srgb, var(--bad) 10%, transparent); } .sv-table tr.r-hit .sv-sel { border-color: var(--bad); color: var(--bad); font-weight: 700; }
+.sv-warn { background: var(--warn-soft); color: var(--ink); border-left: 4px solid var(--warn); border-radius: 8px; padding: 12px 14px; margin: 16px 0; font-size: 13.5px; line-height: 1.55; }
+.sv-h { margin: 18px 0 2px; font-size: 16px; }
+.sv-ul { margin: 6px 0 0; padding-left: 18px; font-size: 13.5px; line-height: 1.6; }
+.sv-cc { font: 600 11px var(--mono); color: var(--muted); text-transform: uppercase; }
+#stolen .ports-bar select { font: 14px var(--font); padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); }

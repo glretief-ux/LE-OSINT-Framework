@@ -376,6 +376,12 @@
     e.preventDefault();
     const id = a.getAttribute("href").slice(1);
     if (id === "ports" || id === "hs" || id === "lines") { showView(id); window.scrollTo(0, 0); return; }
+    if (id.indexOf("stolen") === 0) {
+      showView("stolen"); window.scrollTo(0, 0);
+      let v = ""; try { v = decodeURIComponent(id.split("=")[1] || ""); } catch (err) { v = ""; }
+      if (v && v.indexOf("{q}") < 0 && window.LE_OSINT.stolenSearch) window.LE_OSINT.stolenSearch(v);
+      return;
+    }
     if (id.indexOf("flights") === 0) {
       showView("flights"); window.scrollTo(0, 0);
       let v = ""; try { v = decodeURIComponent(id.split("=")[1] || ""); } catch (err) { v = ""; }
@@ -838,7 +844,8 @@
   applyTheme(theme);
   render();
   if (/^toolbox-/.test(h)) { showView("toolbox"); setTimeout(function () { const el = document.getElementById(h); if (el) el.scrollIntoView(); }, 50); }
-  else if (["toolbox", "about", "playbooks", "profile", "web", "flow", "desk", "ports", "hs", "lines", "flights"].indexOf(h) > -1) showView(h);
+  else if (["toolbox", "about", "playbooks", "profile", "web", "flow", "desk", "ports", "hs", "lines", "flights", "stolen"].indexOf(h) > -1) showView(h);
   else if (/^flights=/.test(h)) showView("flights");
+  else if (/^stolen=/.test(h)) showView("stolen");
   else showView("flow");
 })();
