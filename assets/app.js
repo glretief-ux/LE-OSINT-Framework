@@ -81,6 +81,7 @@
   const LANE_OF = {};
   LANES.forEach(function (l) { l.cats.forEach(function (c) { LANE_OF[c] = l; }); });
   window.LE_OSINT = { DB: DB, LEAVES: LEAVES, TYPES: TYPES, LANES: LANES };
+  window.LE_OSINT.showView = function (v) { showView(v); window.scrollTo(0, 0); };
 
   // ------------------------------------------------------------------
   // Helpers
@@ -377,7 +378,13 @@
     if (!a) return;
     e.preventDefault();
     const id = a.getAttribute("href").slice(1);
-    if (id === "ports" || id === "hs" || id === "lines") { showView(id); window.scrollTo(0, 0); return; }
+    if (id === "ports" || id === "hs" || id === "lines" || id === "risk" || id === "case") { showView(id); window.scrollTo(0, 0); return; }
+    if (id.indexOf("air") === 0 && (id.length === 3 || id[3] === "=")) {
+      showView("air"); window.scrollTo(0, 0);
+      let v = ""; try { v = decodeURIComponent(id.split("=")[1] || ""); } catch (err) { v = ""; }
+      if (v && v.indexOf("{q}") < 0 && window.LE_OSINT.airSearch) window.LE_OSINT.airSearch(v);
+      return;
+    }
     if (id.indexOf("precursors") === 0) {
       showView("precursors"); window.scrollTo(0, 0);
       let v = ""; try { v = decodeURIComponent(id.split("=")[1] || ""); } catch (err) { v = ""; }
@@ -882,7 +889,8 @@
   applyTheme(theme);
   render();
   if (/^toolbox-/.test(h)) { showView("toolbox"); setTimeout(function () { const el = document.getElementById(h); if (el) el.scrollIntoView(); }, 50); }
-  else if (["toolbox", "about", "playbooks", "profile", "web", "flow", "desk", "ports", "hs", "lines", "flights", "stolen", "precursors"].indexOf(h) > -1) showView(h);
+  else if (["toolbox", "about", "playbooks", "profile", "web", "flow", "desk", "ports", "hs", "lines", "flights", "stolen", "precursors", "air", "risk", "case"].indexOf(h) > -1) showView(h);
+  else if (/^air=/.test(h)) { showView("air"); window.addEventListener("load", function () { try { window.LE_OSINT.airSearch(decodeURIComponent(h.slice(4))); } catch (err) { /* ignore */ } }); }
   else if (/^flights=/.test(h)) showView("flights");
   else if (/^stolen=/.test(h)) showView("stolen");
   else showView("flow");

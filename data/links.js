@@ -325,6 +325,7 @@ Interpol SMV (stolen motor vehicles) | https://www.interpol.int/Crimes/Vehicle-c
 EUCARIS | https://www.eucaris.net/ | L |
 ## Aviation
 Live flight tracker (in this tool) | #flights={q} | N | flight,reg | Track a flight number, callsign, registration or ICAO hex live on a map, with route, aircraft owner and track
+Air cargo: AWB, airline and airport lookup (in this tool) | #air | N | | Checks an air waybill number (check digit and issuing airline), 150+ cargo airlines with AWB prefixes, and 5,000+ airports by IATA / ICAO code
 Flightradar24 (by registration) | https://www.flightradar24.com/data/aircraft/{q} | | reg
 Flightradar24 (by flight) | https://www.flightradar24.com/data/flights/{q} | | flight
 FlightAware | https://www.flightaware.com/live/flight/{q} | | flight,reg
@@ -365,7 +366,8 @@ SeaRates Tracking | https://www.searates.com/container/tracking/?number={q} | | 
 Google (exact container / vessel / IMO) | https://www.google.com/search?q=%22{q}%22 | D | cont,imo,vessel,mmsi
 BIC Code Register (owner prefixes) | https://www.bic-code.org/ | R |
 ## Container Tracking (carriers)
-Shipping lines directory (in this tool) | #lines | N | | 110 ocean carriers with SCAC codes, container prefixes, alliances and tracking pages; identifies the line from a container or B/L number
+Shipping lines directory (in this tool) | #lines | N | | 110+ ocean carriers with SCAC codes, container prefixes, alliances and tracking pages; identifies the line from a container or B/L number
+Manifest and booking risk checklist (in this tool) | #risk | N | | 40 sea-container and 15 air-cargo risk indicators from Europol, EUDA, WCO and UNODC sources, with a one-page case summary you can print or save as PDF
 Maersk | https://www.maersk.com/tracking/{q} | | cont
 MSC | https://www.msc.com/en/track-a-shipment | |
 CMA CGM | https://www.cma-cgm.com/ebusiness/tracking | |

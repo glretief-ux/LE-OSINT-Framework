@@ -91,7 +91,10 @@
     }
     if (byPre.length) h += "Prefix <b>" + cd.code + "</b> belongs to " + byPre.map(function (r) { return esc(r.n); }).join(", ") + ". ";
     if (bySc.length) h += "SCAC <b>" + cd.code + "</b> is " + bySc.map(function (r) { return esc(r.n); }).join(", ") + (cd.isCont ? "" : " (B/L numbers often start with the SCAC)") + ". ";
-    if (!byPre.length && !bySc.length) h += "<b>" + cd.code + "</b> is not in this list. It may be a leasing company or a smaller line: check the <a href=\"https://www.bic-code.org/\" target=\"_blank\" rel=\"noopener\">BIC register</a> or <a href=\"https://www.google.com/search?q=" + encodeURIComponent('"' + cd.code + '" SCAC OR "BIC code"') + '" target="_blank" rel="noopener">search the code</a>. ';
+    const own = /^[A-Z]{3}U$/.test(cd.code) && window.LE_OWNERS && window.LE_OWNERS.find ? window.LE_OWNERS.find(cd.code) : null;
+    if (own && !own.unknown && own.owner) h += "BIC register: <b>" + esc(cd.code) + "</b> is registered to " + esc(own.owner) + (own.type !== "carrier" ? " (" + (own.type === "tank" ? "tank container operator" : own.type === "lessor" ? "leasing company: the box can be used by any line" : "not a shipping line") + ")" : "") + ". ";
+    if (own && own.cancelled) h += '<span class="bad">' + esc(cd.code) + " is no longer registered</span> (" + esc(own.cancelled) + "). ";
+    if (!byPre.length && !bySc.length && !(own && !own.unknown)) h += "<b>" + cd.code + "</b> is not in this list. It may be a leasing company or a smaller line: check the <a href=\"https://www.bic-code.org/\" target=\"_blank\" rel=\"noopener\">BIC register</a> or <a href=\"https://www.google.com/search?q=" + encodeURIComponent('"' + cd.code + '" SCAC OR "BIC code"') + '" target="_blank" rel="noopener">search the code</a>. ';
     if (cd.isCont) h += '<a href="https://www.searates.com/container/tracking/?number=' + encodeURIComponent(cd.full) + '" target="_blank" rel="noopener">Track on SeaRates</a> · <a href="https://www.track-trace.com/container" target="_blank" rel="noopener">Track-Trace</a>';
     box.innerHTML = '<div class="ln-ident">' + h + "</div>";
   }

@@ -208,21 +208,36 @@
   })();
   function containerCheck(raw) {
     const s = raw.replace(/[\s-]/g, "").toUpperCase();
-    if (!/^[A-Z]{3}[UJZR][0-9]{6}[0-9]?$/.test(s)) return { valid: false, msg: "Format must be 3-letter owner code + U/J/Z/R + 6 digits + check digit, e.g. MSCU1234566" };
+    if (!/^[A-Z]{3}[UJZ][0-9]{6}[0-9]?$/.test(s)) return { valid: false, msg: "Format must be 3-letter owner code + U/J/Z + 6 digits + check digit, e.g. MSCU1234566" };
     let sum = 0;
     for (let i = 0; i < 10; i++) { const c = s[i]; sum += (/\d/.test(c) ? +c : ISO_VAL[c]) * Math.pow(2, i); }
     const cd = (sum % 11) % 10;
     return { valid: s.length === 11 ? +s[10] === cd : null, cd: cd, s: s };
   }
-  const CAT = { U: "freight container", J: "detachable freight equipment", Z: "trailer or chassis", R: "reefer (ISO 6346:2022 category)" };
+  const CAT = { U: "freight container", J: "detachable freight equipment", Z: "trailer or chassis" };
+  const OTYPE = { lessor: "leasing company", tank: "tank container operator / lessor", carrier: "shipping line", rail: "rail / intermodal", other: "other owner" };
+  function ownerTxt(code) {
+    const o = window.LE_OWNERS && window.LE_OWNERS.find ? window.LE_OWNERS.find(code) : null;
+    const reg = '<a href="https://www.bic-code.org/bic-codes/' + code.toLowerCase() + '/" target="_blank" rel="noopener">BIC register entry</a>';
+    if (!o || o.unknown) return "\nOwner       not in our list of " + (window.LE_OWNERS ? window.LE_OWNERS.rows.length : 0) + " codes. Check the " + reg + ".";
+    let s = "";
+    if (o.owner) s += "\nOwner       <b>" + esc(o.owner) + "</b>  (" + esc(OTYPE[o.type] || o.type) + ")" + (o.note ? "\n            " + esc(o.note) : "");
+    if (o.lines.length) s += "\nUsed by     " + esc(o.lines.join(", "));
+    if (o.cancelled) s += "\nStatus      " + bad("no longer registered: " + o.cancelled);
+    if (o.type === "lessor" || o.type === "tank") s += "\n            Leased boxes are used by many shipping lines and by shippers (SOC). Ask the carrier who is operating it.";
+    return s + "\n            " + reg;
+  }
   $("#cont-in").addEventListener("input", function () {
     const v = this.value; const out = $("#cont-out");
-    if (!v.trim()) { out.textContent = "Enter a container number."; return; }
+    if (!v.trim()) { out.textContent = "Enter a container number, or just the 4-letter owner code."; return; }
+    const four = v.replace(/[\s-]/g, "").toUpperCase();
+    if (/^[A-Z]{3}[UJZ]$/.test(four)) { out.innerHTML = "Owner code  " + esc(four) + "  (" + esc(CAT[four[3]]) + ")" + ownerTxt(four); return; }
     const r = containerCheck(v);
     if (r.valid === false && r.msg) { out.innerHTML = bad(r.msg); return; }
     const owner = r.s.slice(0, 3), cat = r.s[3];
     let t = (r.valid === null ? "Check digit should be " + r.cd + " → " + r.s.slice(0, 10) + r.cd : (r.valid ? ok("VALID check digit (" + r.cd + ")") : bad("INVALID: check digit should be " + r.cd + ", not " + r.s[10] + ". Possible typo, or a fabricated number.")));
     t += "\nOwner code  " + esc(owner) + cat + "  (" + esc(CAT[cat] || "") + ")";
+    t += ownerTxt(owner + cat);
     if (r.valid) t += '\n\n<a href="#" data-sel="' + r.s + '" data-type="cont">Search this container in all trackers →</a>';
     out.innerHTML = t;
   });
