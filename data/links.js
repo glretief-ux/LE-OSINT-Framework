@@ -204,10 +204,8 @@ Pinterest | https://www.pinterest.com/{q}/ | | user
 Tumblr | https://{q}.tumblr.com/ | | user
 SoundCloud | https://soundcloud.com/{q} | | user
 Medium | https://medium.com/@{q} | | user
-Patreon | https://www.patreon.com/{q} | | user
 VK | https://vk.com/{q} | | user
 ## Payment Handles
-PayPal.me | https://www.paypal.com/paypalme/{q} | | user
 Venmo | https://account.venmo.com/u/{q} | | user
 > A payment handle often shows the real name and profile photo. Useful in fraud and street-dealing cases.
 

@@ -66,7 +66,7 @@ window.LE_OSINT_PLAYBOOKS = [
       { name: "Follow the money", steps: [
         { t: "Validate the IBAN and identify the bank; freeze requests go to that bank's country.", why: "Money mules often use neobanks in another EU country.", tool: "toolbox-container", src: ["IBAN Checker", "SWIFT BIC Search"] },
         { t: "If paid in crypto: identify the chain, trace to an exchange, check scam reports.", why: "Exchanges can identify the customer with legal process.", tool: "toolbox-crypto", src: ["Chainabuse", "Blockchair (multi-chain)", "Arkham Intelligence"] },
-        { t: "Payment handles (PayPal.me, Venmo) often show a name and photo.", why: "", src: ["PayPal.me", "Venmo"] }
+        { t: "Payment handles (Venmo) often show a name and photo.", why: "", src: ["Venmo"] }
       ]},
       { name: "People and requests", steps: [
         { t: "Profile any phone, email or name used by the fraudsters.", why: "", profileView: true },
