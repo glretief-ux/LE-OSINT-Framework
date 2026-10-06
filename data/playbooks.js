@@ -12,7 +12,7 @@ window.LE_OSINT_PLAYBOOKS = [
       { name: "Verify the shipment", steps: [
         { t: "Check the container number is genuine (ISO 6346 check digit) and identify the owner / lessor prefix.", why: "Fabricated or mistyped numbers are an early red flag.", tool: "toolbox-container", src: ["BIC Code Register (owner prefixes)"] },
         { t: "Track the container on the carrier's site: route, transhipment ports, dwell times, empty-return date.", why: "Unusual transhipment or long dwell in a source-country port raises risk.", src: ["Maersk", "MSC", "CMA CGM", "Hapag-Lloyd", "ONE", "Track-Trace", "SeaRates Tracking"] },
-        { t: "Identify the vessel(s) and check AIS history for gaps, loitering or unscheduled stops.", why: "At-sea drop-offs and rip-on / rip-off happen during AIS gaps.", src: ["VesselFinder", "MarineTraffic", "Global Fishing Watch (AIS gaps)"] },
+        { t: "Identify the vessel(s) and check AIS history for gaps, loitering or unscheduled stops.", why: "At-sea drop-offs and pick-ups often happen during AIS gaps; rip-on / rip-off happens in port.", src: ["VesselFinder", "MarineTraffic", "Global Fishing Watch (AIS gaps)"] },
         { t: "Check the vessel's owner, manager, flag history and port-state inspections.", why: "Frequent flag or name changes and poor inspection records.", src: ["Equasis (owner, manager, inspections)", "Paris MoU Inspection Search", "OpenSanctions"] }
       ]},
       { name: "Examine the traders", steps: [
@@ -70,7 +70,7 @@ window.LE_OSINT_PLAYBOOKS = [
       ]},
       { name: "People and requests", steps: [
         { t: "Profile any phone, email or name used by the fraudsters.", why: "", profileView: true },
-        { t: "Send preservation and data requests to hosting provider, registrar and platforms.", why: "Logs are deleted quickly.", src: ["Europol SIRIUS (cross-border e-evidence)", "Cloudflare", "SEARCH.org ISP List"] },
+        { t: "Send preservation and data requests to hosting provider, registrar and platforms.", why: "Logs are deleted quickly. Within the EU, European Production and Preservation Orders can go directly to providers in another EU state from 18 August 2026.", src: ["Europol SIRIUS (cross-border e-evidence)", "EU e-Evidence Regulation 2023/1543", "Cloudflare", "SEARCH.org ISP List"] },
         { t: "Report to the national and European centres.", why: "Links your case to other victims.", src: ["Europol EC3", "Safeonweb (Belgium)", "FBI IC3 (US)"] }
       ]}
     ]
@@ -81,7 +81,7 @@ window.LE_OSINT_PLAYBOOKS = [
     when: "A wallet address appears in a seizure, a phone extraction, an advert or a ransom note.",
     phases: [
       { name: "Identify", steps: [
-        { t: "Identify the blockchain from the address format.", why: "USDT on TRON is the most common in drug and fraud cases.", tool: "toolbox-crypto" },
+        { t: "Identify the blockchain from the address format.", why: "TRON (T…) and Bitcoin addresses are distinctive, but a 0x address can exist on Ethereum, BNB Chain, Polygon and other EVM chains: check several explorers. USDT on TRON is the most common in drug and fraud cases.", tool: "toolbox-crypto" },
         { t: "Open the address on the right explorer: balance, first and last activity, counterparties.", why: "", src: ["Tronscan", "Etherscan", "Mempool.space", "OKLink (multi-chain explorer)", "Blockchair (multi-chain)"] },
         { t: "For USDT: check whether the address is already frozen by Tether.", why: "A frozen address tells you another agency is already on it.", src: ["USDT freeze checker (BlockSec)"] },
         { t: "Check labels, scam reports and sanctions.", why: "", src: ["Arkham Intelligence", "Chainabuse", "OpenSanctions", "WalletExplorer (clusters)"] }
@@ -107,7 +107,7 @@ window.LE_OSINT_PLAYBOOKS = [
       ]},
       { name: "Recent activity", steps: [
         { t: "Profile the person and close contacts: last posts, new accounts, changed profile photos.", why: "Contacts' accounts often show where the person is.", profileView: true },
-        { t: "Geolocate the most recent photos and videos; compare with public posts in that area.", why: "", src: ["Snap Map (public stories by location)", "YouTube Geofind (videos by location)", "Google Maps", "SunCalc (sun position & shadows)"], tool: "toolbox-exif" },
+        { t: "Geolocate the most recent photos and videos; compare with public posts in that area.", why: "", src: ["YouTube Geofind (videos by location)", "Google Maps", "SunCalc (sun position & shadows)"], tool: "toolbox-exif" },
         { t: "Look at travel options from the last known location.", why: "Bus, ferry and flight routes and times.", src: ["Rome2Rio (all routes between two places)", "FlixBus routes", "Direct Ferries (routes)", "Flightradar24 (flight)"] },
         { t: "Check accommodation seen in photos.", why: "Room details can identify the hotel.", src: ["TraffickCam (hotel-room image matching)", "Booking.com", "Airbnb"] }
       ]},
@@ -161,7 +161,7 @@ window.LE_OSINT_PLAYBOOKS = [
       ]},
       { name: "Behaviour", steps: [
         { t: "Track history: AIS gaps, meetings with other vessels, loitering off known drop zones.", why: "", src: ["Global Fishing Watch (AIS gaps)", "MarineTraffic", "VesselFinder"] },
-        { t: "Check satellite imagery for the dates of AIS gaps.", why: "", src: ["Copernicus Browser (Sentinel)", "Sentinel Hub EO Browser"] },
+        { t: "Check satellite imagery for the dates of AIS gaps.", why: "", src: ["Copernicus Browser (Sentinel)", "Copernicus Browser (Sentinel)"] },
         { t: "Port-state inspection and detention history.", why: "", src: ["Paris MoU Inspection Search", "Tokyo MoU APCIS"] }
       ]},
       { name: "Coordinate", steps: [

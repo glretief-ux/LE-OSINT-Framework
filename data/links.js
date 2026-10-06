@@ -33,16 +33,15 @@ window.LE_OSINT_DATA = String.raw`
 WhatsMyName | https://whatsmyname.app/?q={q} | | user
 Namechk | https://namechk.com/ | |
 Instant Username Search | https://instantusername.com/ | |
-UserSearch | https://usersearch.com/ | | | Reverse username, email, phone and picture lookups (free searches, no signup)
 Google (exact handle) | https://www.google.com/search?q=%22{q}%22 | D | user
 ## Command-line Tools
 Sherlock | https://github.com/sherlock-project/sherlock | T |
 Maigret | https://github.com/soxoj/maigret | T |
-Blackbird | https://github.com/p1ngul1n0/blackbird | T |
+Blackbird | https://github.com/antoniaci/blackbird | T |
 Social Analyzer | https://github.com/qeeqbox/social-analyzer | T |
 ## Direct Profile Checks
 X / Twitter | https://x.com/{q} | | user
-Instagram | https://www.instagram.com/{q}/ | | user
+Instagram | https://www.instagram.com/{q}/ | R | user
 TikTok | https://www.tiktok.com/@{q} | | user
 Telegram | https://t.me/{q} | | user
 Reddit | https://www.reddit.com/user/{q} | | user
@@ -67,7 +66,7 @@ Intelligence X | https://intelx.io/?s={q} | R | email,domain,ip,url,phone,crypto
 ## Verification & Reputation
 EmailRep | https://emailrep.io/ | |
 Hunter Email Verifier | https://hunter.io/email-verifier | R |
-Hunter Domain Search | https://hunter.io/search/{q} | R | domain
+Hunter Domain Search | https://hunter.io/domain-search | R | | Email addresses found for a domain (free plan, limited searches)
 Verifalia | https://verifalia.com/validate-email | |
 ## Email Header Analysis
 Google Admin Toolbox Messageheader | https://toolbox.googleapps.com/apps/messageheader/ | |
@@ -80,7 +79,6 @@ DomainTools WHOIS | https://whois.domaintools.com/{q} | | domain
 who.is | https://who.is/whois/{q} | | domain
 ViewDNS WHOIS | https://viewdns.info/whois/?domain={q} | | domain
 ViewDNS Reverse WHOIS | https://viewdns.info/reversewhois/?q={q} | | email,name,org
-Whoxy Reverse WHOIS | https://www.whoxy.com/ | |
 ## DNS & Infrastructure
 DNSDumpster | https://dnsdumpster.com/ | |
 SecurityTrails | https://securitytrails.com/domain/{q}/dns | R | domain
@@ -98,10 +96,6 @@ SpyOnWeb (shared analytics IDs) | https://spyonweb.com/{q} | | domain
 AnalyzeID (shared IDs) | https://analyzeid.com/ | |
 VirusTotal Domain | https://www.virustotal.com/gui/domain/{q} | | domain
 Google Safe Browsing Status | https://transparencyreport.google.com/safe-browsing/search?url={q} | | domain,url
-Meta Ad Library | https://www.facebook.com/ads/library/ | N | | All active ads on Facebook / Instagram and who pays for them: fake shops, investment scams
-Google Ads Transparency Center | https://adstransparency.google.com/ | N | | Ads shown by an advertiser on Google, YouTube and partners
-TikTok Commercial Content Library | https://library.tiktok.com/ | N | | Ads shown in the EU on TikTok
-DSA Transparency Database | https://transparency.dsa.ec.europa.eu/ | N | | Content moderation decisions by online platforms in the EU
 Google site: search | https://www.google.com/search?q=site%3A{q} | D | domain
 ## Look-alike & Subdomains
 dnstwist (typosquats) | https://dnstwist.it/ | |
@@ -113,8 +107,8 @@ OWASP Amass | https://github.com/owasp-amass/amass | T |
 ## IP Reputation & Context
 AbuseIPDB | https://www.abuseipdb.com/check/{q} | | ip
 IPinfo | https://ipinfo.io/{q} | | ip
-Spur (VPN / proxy detection) | https://spur.us/context/{q} | | ip
-GreyNoise | https://viz.greynoise.io/ip/{q} | | ip
+Spur (VPN / proxy detection) | https://spur.us/context/{q} | R | ip | Free account; limited lookups
+GreyNoise | https://viz.greynoise.io/ips/{q} | | ip
 VirusTotal IP | https://www.virustotal.com/gui/ip-address/{q} | | ip
 Cisco Talos Reputation | https://talosintelligence.com/reputation_center/lookup?search={q} | | ip,domain
 ## Registration & Routing
@@ -139,7 +133,7 @@ SEARCH.org ISP List | https://www.search.org/resources/isp-list/ | |
 ## Reverse Image Search
 Google Lens | https://lens.google.com/uploadbyurl?url={q} | | img
 Search by Image (browser extension) | https://github.com/dessant/search-by-image | TN | | Right-click any image to search 30+ reverse-image engines at once
-Bing Visual Search | https://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:{q} | | img
+Bing Visual Search | https://www.bing.com/images/search?view=detailv2&iss=sbi&form=SBIVSP&sbisrc=UrlPaste&q=imgurl:{q} | | img
 Yandex Images | https://yandex.com/images/search?rpt=imageview&url={q} | | img
 TinEye | https://tineye.com/search?url={q} | | img
 ## Image Forensics
@@ -191,7 +185,6 @@ Arctic Shift (Reddit archive) | https://arctic-shift.photon-reddit.com/ | |
 VK | https://vk.com/ | R |
 Odnoklassniki | https://ok.ru/ | R |
 ## Snapchat
-Snap Map (public stories by location) | https://map.snapchat.com/ | |
 ## Bluesky & Mastodon
 Bluesky Search | https://bsky.app/search?q={q} | | kw,name,user
 Mastodon (instance search) | https://joinmastodon.org/servers | |
@@ -199,12 +192,17 @@ Mastodon (instance search) | https://joinmastodon.org/servers | |
 ## Other Platforms (direct profile checks)
 Threads | https://www.threads.com/@{q} | | user
 Snapchat | https://www.snapchat.com/@{q} | | user
-Facebook (vanity name) | https://www.facebook.com/{q} | | user
+Facebook (vanity name) | https://www.facebook.com/{q} | R | user
 Pinterest | https://www.pinterest.com/{q}/ | | user
 Tumblr | https://{q}.tumblr.com/ | | user
 SoundCloud | https://soundcloud.com/{q} | | user
 Medium | https://medium.com/@{q} | | user
 VK | https://vk.com/{q} | | user
+## Ad Libraries & Transparency
+Meta Ad Library | https://www.facebook.com/ads/library/ | N | | All active ads on Facebook / Instagram and who pays for them: fake shops, investment scams
+Google Ads Transparency Center | https://adstransparency.google.com/ | N | | Ads shown by an advertiser on Google, YouTube and partners
+TikTok Commercial Content Library | https://library.tiktok.com/ | N | | Ads shown in the EU on TikTok
+DSA Transparency Database | https://transparency.dsa.ec.europa.eu/ | N | | Content moderation decisions by online platforms in the EU
 ## Payment Handles
 Venmo | https://account.venmo.com/u/{q} | | user
 > A payment handle often shows the real name and profile photo. Useful in fraud and street-dealing cases.
@@ -213,9 +211,9 @@ Venmo | https://account.venmo.com/u/{q} | | user
 ## Telegram
 Telegram handle | https://t.me/{q} | | user
 TGStat | https://tgstat.com/ | |
-Telemetr | https://telemetr.io/ | |
+Telemetr | https://telemetr.io/ | R | | Telegram channel catalogue free; full analytics paid after a trial
 Telegago (Google CSE) | https://cse.google.com/cse?cx=006368593537057042503:efxu7xprihg | |
-TgDB | https://www.tgdb.org/ | N | | Telegram search engine: groups, channels, users and memberships (free tier)
+TgDB | https://www.tgdb.org/ | RN | | Telegram search engine: groups, channels, users and memberships (free tier with login; some lookups paid)
 Telegram Directory | https://tdirectory.me/ | N | | Directory of public channels, groups and bots
 Telegram phone number checker (Bellingcat) | https://github.com/bellingcat/telegram-phone-number-checker | TN | | Checks if phone numbers have a Telegram account and returns the username
 Telegram Desktop export (evidence) | https://desktop.telegram.org/ | T |
@@ -234,14 +232,12 @@ LINE | https://line.me/ | T |
 > Most people-search sites cover the US only. Check the legal basis for using commercial data brokers in your jurisdiction.
 ## International
 Webmii | https://webmii.com/people?n=%22{q}%22 | | name
-PeekYou | https://www.peekyou.com/ | |
 IDCrawl | https://www.idcrawl.com/ | |
 Infobel (phone directories) | https://www.infobel.com/ | |
 ## United States
 TruePeopleSearch | https://www.truepeoplesearch.com/ | |
 FastPeopleSearch | https://www.fastpeoplesearch.com/ | |
 ThatsThem | https://thatsthem.com/ | |
-Radaris | https://radaris.com/ | |
 
 # Dating
 > Dating sites rarely allow search. Reverse-image search profile photos and match usernames instead.
@@ -277,7 +273,7 @@ CourtListener (US) | https://www.courtlistener.com/?q={q} | | name,org,kw
 BAILII (UK & Ireland) | https://www.bailii.org/ | |
 UK Find Case Law | https://caselaw.nationalarchives.gov.uk/ | |
 EU e-Justice Portal | https://e-justice.europa.eu/ | |
-CURIA (EU Court of Justice) | https://curia.europa.eu/juris/recherche.jsf | |
+CURIA (EU Court of Justice) | https://infocuria.curia.europa.eu/ | |
 ## Official Gazettes
 Belgian Official Gazette (Moniteur / Staatsblad) | https://www.ejustice.just.fgov.be/ | |
 The Gazette (UK) | https://www.thegazette.co.uk/all-notices/notice?text={q} | | name,org
@@ -294,9 +290,9 @@ Find a Grave | https://www.findagrave.com/ | |
 
 # Business Records
 ## Global
-OpenCorporates | https://opencorporates.com/companies?q={q} | | org
+OpenCorporates | https://opencorporates.com/companies?q={q} | R | org | Free account needed for officers, filings and company status
 GLEIF LEI Search | https://search.gleif.org/ | |
-OCCRP Aleph | https://aleph.occrp.org/search?q={q} | R | org,name | Leaks, registries and court records; free account (moved to Aleph Pro, still free)
+OCCRP Aleph | https://aleph.occrp.org/search?q={q} | R | org,name | Leaks, registries and court records. Public datasets free with an account; full Aleph Pro access free only for journalists and approved researchers
 
 ICIJ Offshore Leaks | https://offshoreleaks.icij.org/search?q={q} | | org,name
 Kompass | https://www.kompass.com/ | |
@@ -375,7 +371,7 @@ MSC | https://www.msc.com/en/track-a-shipment | |
 CMA CGM | https://www.cma-cgm.com/ebusiness/tracking | |
 Hapag-Lloyd | https://www.hapag-lloyd.com/en/online-business/track/track-by-container-solution.html | |
 COSCO | https://elines.coscoshipping.com/ebusiness/cargoTracking | |
-ONE | https://ecomm.one-line.com/one-ecom/manage-shipment/cargo-tracking?trakNoParam={q} | | cont
+ONE | https://www.one-line.com/one-ecom/manage-shipment/cargo-tracking?trakNoParam={q} | | cont
 Evergreen | https://ct.shipmentlink.com/servlet/TDB1_CargoTracking.do | |
 ZIM | https://www.zim.com/tools/track-a-shipment | |
 HMM | https://www.hmm21.com/ | |
@@ -458,7 +454,6 @@ Basel AML Index | https://index.baselgovernance.org/ | |
 > Compare a document photo or scan with the genuine model before relying on it.
 PRADO (EU register of authentic documents) | https://www.consilium.europa.eu/en/documents/prado/ | N | | Security features of genuine ID cards, passports, residence permits and driving licences
 Interpol SLTD (stolen & lost travel documents) | https://www.interpol.int/How-we-work/Databases/Our-databases | LN | | Check document numbers via your NCB / border systems
-ECB euro banknote security features | https://www.ecb.europa.eu/euro/banknotes/security/html/index.en.html | N | | How to recognise counterfeit euro notes
 # Wanted & Missing Persons [LE+]
 Interpol Red Notices | https://www.interpol.int/How-we-work/Notices/Red-Notices/View-Red-Notices | |
 Interpol Yellow Notices (missing) | https://www.interpol.int/How-we-work/Notices/Yellow-Notices/View-Yellow-Notices | |
@@ -472,12 +467,14 @@ NamUs (US missing & unidentified) | https://namus.nij.ojp.gov/ | |
 # Financial Crime & Fraud [LE+]
 ## Banking Identifiers
 IBAN Checker | https://www.iban.com/ | |
-SWIFT BIC Search | https://www.swift.com/bsl/ | |
+SWIFT BIC Search | https://www2.swift.com/bsl/index.faces | |
 ## Investment & Scam Warnings
 IOSCO I-SCAN | https://www.iosco.org/i-scan/ | |
 FSMA Belgium Warnings | https://www.fsma.be/en/warnings | |
 UK FCA Warning List | https://www.fca.org.uk/consumers/warning-list-unauthorised-firms | |
 ScamAdviser | https://www.scamadviser.com/check-website/{q} | | domain
+## Counterfeit Currency
+ECB euro banknote security features | https://www.ecb.europa.eu/euro/banknotes/security/html/index.en.html | N | | How to recognise counterfeit euro notes
 ## Networks
 Egmont Group (FIUs) | https://egmontgroup.org/ | |
 CARIN (asset recovery) | https://www.carin.info/ | L |
@@ -505,18 +502,16 @@ PeakFinder | https://www.peakfinder.com/ | N | | 360° mountain panoramas from a
 GeoHints | https://geohints.com/ | N | | Country clues: bollards, road signs, plates, utility poles
 TracePoint | https://kluter.github.io/TracePoint/ | N | | Find where a photo was taken by intersecting sight lines
 BBBike map compare | https://mc.bbbike.org/mc/ | N | | Compare the same spot on many map and satellite providers side by side
-Wikimapia | http://wikimapia.org/ | N | | User-described buildings and places
+Wikimapia | https://wikimapia.org/ | N | | User-described buildings and places
 F4map (3D) | https://demo.f4map.com/ | N | | 3D buildings to check views and heights
 Flickr map | https://www.flickr.com/map/ | N | | Geotagged public photos by location
 ## Satellite Imagery
 Copernicus Browser (Sentinel) | https://browser.dataspace.copernicus.eu/ | R |
-Sentinel Hub EO Browser | https://apps.sentinel-hub.com/eo-browser/ | R |
 NASA Worldview | https://worldview.earthdata.nasa.gov/ | |
 NASA FIRMS (fires) | https://firms.modaps.eosdis.nasa.gov/map/ | |
 Zoom Earth | https://zoom.earth/ | |
 Satellites.pro | https://satellites.pro/ | N | | Satellite maps from several providers
 Google Earth Timelapse | https://earthengine.google.com/timelapse/ | N | | Satellite change over time since 1984
-Liveuamap | https://liveuamap.com/ | N | | Live incident maps for conflict areas
 Soar Atlas | https://soaratlas.com/ | |
 ## Chronolocation & Weather
 SunCalc (sun position & shadows) | https://www.suncalc.org/ | |
@@ -604,7 +599,8 @@ EU Terrorist List | https://www.consilium.europa.eu/en/policies/fight-against-te
 US Foreign Terrorist Organizations | https://www.state.gov/foreign-terrorist-organizations/ | |
 UK Proscribed Groups | https://www.gov.uk/government/publications/proscribed-terror-groups-or-organisations--2 | |
 ## Research & Data
-Global Terrorism Database | https://www.start.umd.edu/gtd/ | R |
+Global Terrorism Database | https://www.start.umd.edu/data-tools/GTD | R | | Search and browse free for non-commercial use; dataset download for organisations needs a paid licence
+Liveuamap | https://liveuamap.com/ | N | | Live incident maps for conflict areas
 ACLED (conflict events) | https://acleddata.com/ | R |
 Europol TE-SAT | https://www.europol.europa.eu/publications-events/main-reports/tesat-report | |
 Counter Extremism Project | https://www.counterextremism.com/ | |
@@ -640,15 +636,15 @@ Etherscan | https://etherscan.io/address/{q} | | crypto
 BscScan | https://bscscan.com/address/{q} | | crypto
 ## TRON (USDT-TRC20)
 Tronscan | https://tronscan.org/#/address/{q} | | crypto
-OKLink (multi-chain explorer) | https://www.oklink.com/ | N | | Explorer for 60+ chains with address labels
 USDT freeze checker (BlockSec) | https://blocksec.com/usdt-freeze-checker | N | | Is a USDT address frozen by Tether? Free, no signup
-MetaSleuth (fund-flow graphs) | https://metasleuth.io/ | RN | | Visual tracing of funds between addresses (free account)
-MistTrack | https://misttrack.io/ | RN | | Address risk labels and tracing (free limited use)
 ## Other Chains
 Solscan | https://solscan.io/account/{q} | | crypto
 Blockchair (multi-chain) | https://blockchair.com/search?q={q} | | crypto,hash
 Monero Explorer | https://xmrchain.net/ | |
 ## Attribution & Abuse Reports
+OKLink (multi-chain explorer) | https://www.oklink.com/ | N | | Explorer for 60+ chains with address labels
+MetaSleuth (fund-flow graphs) | https://metasleuth.io/ | RN | | Visual tracing of funds between addresses (free account)
+MistTrack | https://misttrack.io/ | RN | | Address risk labels and tracing (free limited use)
 Chainabuse | https://www.chainabuse.com/address/{q} | | crypto
 Arkham Intelligence | https://intel.arkm.com/explorer/address/{q} | R | crypto
 Breadcrumbs | https://www.breadcrumbs.app/ | R |
@@ -786,29 +782,29 @@ Berkeley Protocol on Digital Open Source Investigations | https://www.ohchr.org/
 > Open sources end where the platform's own records begin. Use these portals, with the right legal process, to request subscriber data, logs and preservation.
 ## Guidance
 Europol SIRIUS (cross-border e-evidence) | https://www.europol.europa.eu/operations-services-and-innovation/sirius-project | L |
-EU e-Evidence Regulation 2023/1543 | https://eur-lex.europa.eu/eli/reg/2023/1543/oj | |
+EU e-Evidence Regulation 2023/1543 | https://eur-lex.europa.eu/eli/reg/2023/1543/oj | N | | European Production and Preservation Orders sent directly to service providers in another EU state; applies from 18 August 2026 (with Directive 2023/1544 on legal representatives)
 SEARCH.org ISP List | https://www.search.org/resources/isp-list/ | |
 ## Platforms
 Meta (Facebook, Instagram, WhatsApp) | https://www.facebook.com/records/login/ | L |
 Google LERS | https://lers.google.com/ | L |
-Apple | https://www.apple.com/legal/transparency/government-information.html | |
+Apple (LE guidelines by country) | https://www.apple.com/legal/transparency/government-information.html | | | Choose a country for Apple's law-enforcement guidelines and request process
 Microsoft LE Portal | https://leportal.microsoft.com/ | L |
-X / Twitter | https://help.x.com/en/rules-and-policies/x-law-enforcement-support | |
+X / Twitter | https://help.x.com/en/rules-and-policies/x-law-enforcement-support | | | Guidelines; requests are submitted via legalrequests.x.com
 TikTok | https://www.tiktok.com/safety/en/tools-and-guides/tiktok-law-enforcement-guidelines | |
 Snap | https://values.snap.com/safety/safety-enforcement | |
 Discord | https://discord.com/safety/360044157931-working-with-law-enforcement | |
 Uber | https://lert.uber.com/ | L |
-Airbnb (international LE) | https://www.airbnb.com/help/article/3814 | |
-Cloudflare | https://www.cloudflare.com/trust-hub/abuse-approach/ | |
+Airbnb (international LE) | https://www.airbnb.com/help/article/3814 | L | | Guidelines; requests via the Kodex portal
+Cloudflare | https://www.cloudflare.com/trust-hub/law-enforcement/ | | | Law-enforcement guidelines and contact
 ## Crypto Exchanges
-Binance | https://www.binance.com/en/support/law-enforcement | L |
+Binance | https://www.binance.com/en/support/law-enforcement | L | | Requests via the Kodex portal
 Tether (USDT) law enforcement requests | https://tether.to/en/legal/?tab=law-enforcement-requests | LN | | Freeze and information requests for USDT
-Coinbase | https://help.coinbase.com/en/coinbase/other-topics/legal-policies/who-do-i-contact-for-a-subpoena-request-or-dispute-or-to-send-a-legal-document | |
+Coinbase | https://help.coinbase.com/en/coinbase/other-topics/legal-policies/who-do-i-contact-for-a-subpoena-request-or-dispute-or-to-send-a-legal-document | L | | Criminal requests via the Kodex portal
 
 # Exploitation & Trafficking Reporting [LE+]
 > Reporting and referral channels only. Never download or keep abuse material outside an approved system.
 NCMEC CyberTipline | https://report.cybertip.org/ | |
-INHOPE Hotlines | https://www.inhope.org/EN | |
+INHOPE Hotlines | https://www.inhope.org/ | |
 IWF Report | https://report.iwf.org.uk/ | |
 Europol Stop Child Abuse – Trace an Object | https://www.europol.europa.eu/stopchildabuse | |
 Interpol ICSE Database | https://www.interpol.int/Crimes/Crimes-against-children/International-Child-Sexual-Exploitation-database | L |
@@ -837,8 +833,8 @@ Eurojust | https://www.eurojust.europa.eu/ | |
 World Customs Organization | https://www.wcoomd.org/ | |
 UNODC | https://www.unodc.org/ | |
 UNODC SHERLOC (legislation & cases) | https://sherloc.unodc.org/ | |
-UNODC Practical Guide: electronic evidence across borders | https://sherloc.unodc.org/cld/en/publications/practical-guide/practical-guide.html | N | | How to request data from providers in other countries
-UNODC Electronic Evidence Hub | https://www.unodc.org/cld/en/st/evidence/electronic-evidence-hub.html | N | | Provider contacts and procedures for e-evidence
+UNODC Practical Guide: electronic evidence across borders | https://sherloc.unodc.org/cld/en/st/evidence/practical-guide.html | N | | How to request data from providers in other countries
+UNODC Electronic Evidence Hub | https://sherloc.unodc.org/cld/en/st/evidence/electronic-evidence-hub.html | N | | Provider contacts and procedures for e-evidence
 Frontex | https://www.frontex.europa.eu/ | |
 CEPOL | https://www.cepol.europa.eu/ | |
 
@@ -851,7 +847,7 @@ ECHR Guide on Article 8 (privacy) | https://ks.echr.coe.int/web/echr-ks/article-
 
 # Training
 Bellingcat Guides | https://www.bellingcat.com/category/resources/how-tos/ | |
-OSINT Curious | https://www.osintcurio.us/ | |
+OSINT Curious (archived) | https://www.osintcurio.us/ | | | Project closed in 2023; past articles and videos remain online
 Trace Labs (missing persons CTF) | https://www.tracelabs.org/ | |
 OSINT Dojo | https://www.osintdojo.com/ | |
 Sector035 Week in OSINT | https://sector035.nl/ | |
@@ -920,7 +916,7 @@ Chainabuse (crypto scams) | https://www.chainabuse.com/address/{q} | | crypto
 ## Reporting Centres
 Europol EC3 | https://www.europol.europa.eu/about-europol/european-cybercrime-centre-ec3 | |
 Safeonweb (Belgium) | https://safeonweb.be/ | |
-Action Fraud (UK) | https://www.actionfraud.police.uk/ | |
+Report Fraud (UK, replaced Action Fraud) | https://www.reportfraud.police.uk/ | N |
 FBI IC3 (US) | https://www.ic3.gov/ | |
 APWG | https://apwg.org/ | |
 

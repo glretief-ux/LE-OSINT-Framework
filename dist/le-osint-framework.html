@@ -2429,16 +2429,15 @@ window.LE_OSINT_DATA = String.raw`
 WhatsMyName | https://whatsmyname.app/?q={q} | | user
 Namechk | https://namechk.com/ | |
 Instant Username Search | https://instantusername.com/ | |
-UserSearch | https://usersearch.com/ | | | Reverse username, email, phone and picture lookups (free searches, no signup)
 Google (exact handle) | https://www.google.com/search?q=%22{q}%22 | D | user
 ## Command-line Tools
 Sherlock | https://github.com/sherlock-project/sherlock | T |
 Maigret | https://github.com/soxoj/maigret | T |
-Blackbird | https://github.com/p1ngul1n0/blackbird | T |
+Blackbird | https://github.com/antoniaci/blackbird | T |
 Social Analyzer | https://github.com/qeeqbox/social-analyzer | T |
 ## Direct Profile Checks
 X / Twitter | https://x.com/{q} | | user
-Instagram | https://www.instagram.com/{q}/ | | user
+Instagram | https://www.instagram.com/{q}/ | R | user
 TikTok | https://www.tiktok.com/@{q} | | user
 Telegram | https://t.me/{q} | | user
 Reddit | https://www.reddit.com/user/{q} | | user
@@ -2463,7 +2462,7 @@ Intelligence X | https://intelx.io/?s={q} | R | email,domain,ip,url,phone,crypto
 ## Verification & Reputation
 EmailRep | https://emailrep.io/ | |
 Hunter Email Verifier | https://hunter.io/email-verifier | R |
-Hunter Domain Search | https://hunter.io/search/{q} | R | domain
+Hunter Domain Search | https://hunter.io/domain-search | R | | Email addresses found for a domain (free plan, limited searches)
 Verifalia | https://verifalia.com/validate-email | |
 ## Email Header Analysis
 Google Admin Toolbox Messageheader | https://toolbox.googleapps.com/apps/messageheader/ | |
@@ -2476,7 +2475,6 @@ DomainTools WHOIS | https://whois.domaintools.com/{q} | | domain
 who.is | https://who.is/whois/{q} | | domain
 ViewDNS WHOIS | https://viewdns.info/whois/?domain={q} | | domain
 ViewDNS Reverse WHOIS | https://viewdns.info/reversewhois/?q={q} | | email,name,org
-Whoxy Reverse WHOIS | https://www.whoxy.com/ | |
 ## DNS & Infrastructure
 DNSDumpster | https://dnsdumpster.com/ | |
 SecurityTrails | https://securitytrails.com/domain/{q}/dns | R | domain
@@ -2494,10 +2492,6 @@ SpyOnWeb (shared analytics IDs) | https://spyonweb.com/{q} | | domain
 AnalyzeID (shared IDs) | https://analyzeid.com/ | |
 VirusTotal Domain | https://www.virustotal.com/gui/domain/{q} | | domain
 Google Safe Browsing Status | https://transparencyreport.google.com/safe-browsing/search?url={q} | | domain,url
-Meta Ad Library | https://www.facebook.com/ads/library/ | N | | All active ads on Facebook / Instagram and who pays for them: fake shops, investment scams
-Google Ads Transparency Center | https://adstransparency.google.com/ | N | | Ads shown by an advertiser on Google, YouTube and partners
-TikTok Commercial Content Library | https://library.tiktok.com/ | N | | Ads shown in the EU on TikTok
-DSA Transparency Database | https://transparency.dsa.ec.europa.eu/ | N | | Content moderation decisions by online platforms in the EU
 Google site: search | https://www.google.com/search?q=site%3A{q} | D | domain
 ## Look-alike & Subdomains
 dnstwist (typosquats) | https://dnstwist.it/ | |
@@ -2509,8 +2503,8 @@ OWASP Amass | https://github.com/owasp-amass/amass | T |
 ## IP Reputation & Context
 AbuseIPDB | https://www.abuseipdb.com/check/{q} | | ip
 IPinfo | https://ipinfo.io/{q} | | ip
-Spur (VPN / proxy detection) | https://spur.us/context/{q} | | ip
-GreyNoise | https://viz.greynoise.io/ip/{q} | | ip
+Spur (VPN / proxy detection) | https://spur.us/context/{q} | R | ip | Free account; limited lookups
+GreyNoise | https://viz.greynoise.io/ips/{q} | | ip
 VirusTotal IP | https://www.virustotal.com/gui/ip-address/{q} | | ip
 Cisco Talos Reputation | https://talosintelligence.com/reputation_center/lookup?search={q} | | ip,domain
 ## Registration & Routing
@@ -2535,7 +2529,7 @@ SEARCH.org ISP List | https://www.search.org/resources/isp-list/ | |
 ## Reverse Image Search
 Google Lens | https://lens.google.com/uploadbyurl?url={q} | | img
 Search by Image (browser extension) | https://github.com/dessant/search-by-image | TN | | Right-click any image to search 30+ reverse-image engines at once
-Bing Visual Search | https://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:{q} | | img
+Bing Visual Search | https://www.bing.com/images/search?view=detailv2&iss=sbi&form=SBIVSP&sbisrc=UrlPaste&q=imgurl:{q} | | img
 Yandex Images | https://yandex.com/images/search?rpt=imageview&url={q} | | img
 TinEye | https://tineye.com/search?url={q} | | img
 ## Image Forensics
@@ -2587,7 +2581,6 @@ Arctic Shift (Reddit archive) | https://arctic-shift.photon-reddit.com/ | |
 VK | https://vk.com/ | R |
 Odnoklassniki | https://ok.ru/ | R |
 ## Snapchat
-Snap Map (public stories by location) | https://map.snapchat.com/ | |
 ## Bluesky & Mastodon
 Bluesky Search | https://bsky.app/search?q={q} | | kw,name,user
 Mastodon (instance search) | https://joinmastodon.org/servers | |
@@ -2595,12 +2588,17 @@ Mastodon (instance search) | https://joinmastodon.org/servers | |
 ## Other Platforms (direct profile checks)
 Threads | https://www.threads.com/@{q} | | user
 Snapchat | https://www.snapchat.com/@{q} | | user
-Facebook (vanity name) | https://www.facebook.com/{q} | | user
+Facebook (vanity name) | https://www.facebook.com/{q} | R | user
 Pinterest | https://www.pinterest.com/{q}/ | | user
 Tumblr | https://{q}.tumblr.com/ | | user
 SoundCloud | https://soundcloud.com/{q} | | user
 Medium | https://medium.com/@{q} | | user
 VK | https://vk.com/{q} | | user
+## Ad Libraries & Transparency
+Meta Ad Library | https://www.facebook.com/ads/library/ | N | | All active ads on Facebook / Instagram and who pays for them: fake shops, investment scams
+Google Ads Transparency Center | https://adstransparency.google.com/ | N | | Ads shown by an advertiser on Google, YouTube and partners
+TikTok Commercial Content Library | https://library.tiktok.com/ | N | | Ads shown in the EU on TikTok
+DSA Transparency Database | https://transparency.dsa.ec.europa.eu/ | N | | Content moderation decisions by online platforms in the EU
 ## Payment Handles
 Venmo | https://account.venmo.com/u/{q} | | user
 > A payment handle often shows the real name and profile photo. Useful in fraud and street-dealing cases.
@@ -2609,9 +2607,9 @@ Venmo | https://account.venmo.com/u/{q} | | user
 ## Telegram
 Telegram handle | https://t.me/{q} | | user
 TGStat | https://tgstat.com/ | |
-Telemetr | https://telemetr.io/ | |
+Telemetr | https://telemetr.io/ | R | | Telegram channel catalogue free; full analytics paid after a trial
 Telegago (Google CSE) | https://cse.google.com/cse?cx=006368593537057042503:efxu7xprihg | |
-TgDB | https://www.tgdb.org/ | N | | Telegram search engine: groups, channels, users and memberships (free tier)
+TgDB | https://www.tgdb.org/ | RN | | Telegram search engine: groups, channels, users and memberships (free tier with login; some lookups paid)
 Telegram Directory | https://tdirectory.me/ | N | | Directory of public channels, groups and bots
 Telegram phone number checker (Bellingcat) | https://github.com/bellingcat/telegram-phone-number-checker | TN | | Checks if phone numbers have a Telegram account and returns the username
 Telegram Desktop export (evidence) | https://desktop.telegram.org/ | T |
@@ -2630,14 +2628,12 @@ LINE | https://line.me/ | T |
 > Most people-search sites cover the US only. Check the legal basis for using commercial data brokers in your jurisdiction.
 ## International
 Webmii | https://webmii.com/people?n=%22{q}%22 | | name
-PeekYou | https://www.peekyou.com/ | |
 IDCrawl | https://www.idcrawl.com/ | |
 Infobel (phone directories) | https://www.infobel.com/ | |
 ## United States
 TruePeopleSearch | https://www.truepeoplesearch.com/ | |
 FastPeopleSearch | https://www.fastpeoplesearch.com/ | |
 ThatsThem | https://thatsthem.com/ | |
-Radaris | https://radaris.com/ | |
 
 # Dating
 > Dating sites rarely allow search. Reverse-image search profile photos and match usernames instead.
@@ -2673,7 +2669,7 @@ CourtListener (US) | https://www.courtlistener.com/?q={q} | | name,org,kw
 BAILII (UK & Ireland) | https://www.bailii.org/ | |
 UK Find Case Law | https://caselaw.nationalarchives.gov.uk/ | |
 EU e-Justice Portal | https://e-justice.europa.eu/ | |
-CURIA (EU Court of Justice) | https://curia.europa.eu/juris/recherche.jsf | |
+CURIA (EU Court of Justice) | https://infocuria.curia.europa.eu/ | |
 ## Official Gazettes
 Belgian Official Gazette (Moniteur / Staatsblad) | https://www.ejustice.just.fgov.be/ | |
 The Gazette (UK) | https://www.thegazette.co.uk/all-notices/notice?text={q} | | name,org
@@ -2690,9 +2686,9 @@ Find a Grave | https://www.findagrave.com/ | |
 
 # Business Records
 ## Global
-OpenCorporates | https://opencorporates.com/companies?q={q} | | org
+OpenCorporates | https://opencorporates.com/companies?q={q} | R | org | Free account needed for officers, filings and company status
 GLEIF LEI Search | https://search.gleif.org/ | |
-OCCRP Aleph | https://aleph.occrp.org/search?q={q} | R | org,name | Leaks, registries and court records; free account (moved to Aleph Pro, still free)
+OCCRP Aleph | https://aleph.occrp.org/search?q={q} | R | org,name | Leaks, registries and court records. Public datasets free with an account; full Aleph Pro access free only for journalists and approved researchers
 
 ICIJ Offshore Leaks | https://offshoreleaks.icij.org/search?q={q} | | org,name
 Kompass | https://www.kompass.com/ | |
@@ -2771,7 +2767,7 @@ MSC | https://www.msc.com/en/track-a-shipment | |
 CMA CGM | https://www.cma-cgm.com/ebusiness/tracking | |
 Hapag-Lloyd | https://www.hapag-lloyd.com/en/online-business/track/track-by-container-solution.html | |
 COSCO | https://elines.coscoshipping.com/ebusiness/cargoTracking | |
-ONE | https://ecomm.one-line.com/one-ecom/manage-shipment/cargo-tracking?trakNoParam={q} | | cont
+ONE | https://www.one-line.com/one-ecom/manage-shipment/cargo-tracking?trakNoParam={q} | | cont
 Evergreen | https://ct.shipmentlink.com/servlet/TDB1_CargoTracking.do | |
 ZIM | https://www.zim.com/tools/track-a-shipment | |
 HMM | https://www.hmm21.com/ | |
@@ -2854,7 +2850,6 @@ Basel AML Index | https://index.baselgovernance.org/ | |
 > Compare a document photo or scan with the genuine model before relying on it.
 PRADO (EU register of authentic documents) | https://www.consilium.europa.eu/en/documents/prado/ | N | | Security features of genuine ID cards, passports, residence permits and driving licences
 Interpol SLTD (stolen & lost travel documents) | https://www.interpol.int/How-we-work/Databases/Our-databases | LN | | Check document numbers via your NCB / border systems
-ECB euro banknote security features | https://www.ecb.europa.eu/euro/banknotes/security/html/index.en.html | N | | How to recognise counterfeit euro notes
 # Wanted & Missing Persons [LE+]
 Interpol Red Notices | https://www.interpol.int/How-we-work/Notices/Red-Notices/View-Red-Notices | |
 Interpol Yellow Notices (missing) | https://www.interpol.int/How-we-work/Notices/Yellow-Notices/View-Yellow-Notices | |
@@ -2868,12 +2863,14 @@ NamUs (US missing & unidentified) | https://namus.nij.ojp.gov/ | |
 # Financial Crime & Fraud [LE+]
 ## Banking Identifiers
 IBAN Checker | https://www.iban.com/ | |
-SWIFT BIC Search | https://www.swift.com/bsl/ | |
+SWIFT BIC Search | https://www2.swift.com/bsl/index.faces | |
 ## Investment & Scam Warnings
 IOSCO I-SCAN | https://www.iosco.org/i-scan/ | |
 FSMA Belgium Warnings | https://www.fsma.be/en/warnings | |
 UK FCA Warning List | https://www.fca.org.uk/consumers/warning-list-unauthorised-firms | |
 ScamAdviser | https://www.scamadviser.com/check-website/{q} | | domain
+## Counterfeit Currency
+ECB euro banknote security features | https://www.ecb.europa.eu/euro/banknotes/security/html/index.en.html | N | | How to recognise counterfeit euro notes
 ## Networks
 Egmont Group (FIUs) | https://egmontgroup.org/ | |
 CARIN (asset recovery) | https://www.carin.info/ | L |
@@ -2901,18 +2898,16 @@ PeakFinder | https://www.peakfinder.com/ | N | | 360° mountain panoramas from a
 GeoHints | https://geohints.com/ | N | | Country clues: bollards, road signs, plates, utility poles
 TracePoint | https://kluter.github.io/TracePoint/ | N | | Find where a photo was taken by intersecting sight lines
 BBBike map compare | https://mc.bbbike.org/mc/ | N | | Compare the same spot on many map and satellite providers side by side
-Wikimapia | http://wikimapia.org/ | N | | User-described buildings and places
+Wikimapia | https://wikimapia.org/ | N | | User-described buildings and places
 F4map (3D) | https://demo.f4map.com/ | N | | 3D buildings to check views and heights
 Flickr map | https://www.flickr.com/map/ | N | | Geotagged public photos by location
 ## Satellite Imagery
 Copernicus Browser (Sentinel) | https://browser.dataspace.copernicus.eu/ | R |
-Sentinel Hub EO Browser | https://apps.sentinel-hub.com/eo-browser/ | R |
 NASA Worldview | https://worldview.earthdata.nasa.gov/ | |
 NASA FIRMS (fires) | https://firms.modaps.eosdis.nasa.gov/map/ | |
 Zoom Earth | https://zoom.earth/ | |
 Satellites.pro | https://satellites.pro/ | N | | Satellite maps from several providers
 Google Earth Timelapse | https://earthengine.google.com/timelapse/ | N | | Satellite change over time since 1984
-Liveuamap | https://liveuamap.com/ | N | | Live incident maps for conflict areas
 Soar Atlas | https://soaratlas.com/ | |
 ## Chronolocation & Weather
 SunCalc (sun position & shadows) | https://www.suncalc.org/ | |
@@ -3000,7 +2995,8 @@ EU Terrorist List | https://www.consilium.europa.eu/en/policies/fight-against-te
 US Foreign Terrorist Organizations | https://www.state.gov/foreign-terrorist-organizations/ | |
 UK Proscribed Groups | https://www.gov.uk/government/publications/proscribed-terror-groups-or-organisations--2 | |
 ## Research & Data
-Global Terrorism Database | https://www.start.umd.edu/gtd/ | R |
+Global Terrorism Database | https://www.start.umd.edu/data-tools/GTD | R | | Search and browse free for non-commercial use; dataset download for organisations needs a paid licence
+Liveuamap | https://liveuamap.com/ | N | | Live incident maps for conflict areas
 ACLED (conflict events) | https://acleddata.com/ | R |
 Europol TE-SAT | https://www.europol.europa.eu/publications-events/main-reports/tesat-report | |
 Counter Extremism Project | https://www.counterextremism.com/ | |
@@ -3036,15 +3032,15 @@ Etherscan | https://etherscan.io/address/{q} | | crypto
 BscScan | https://bscscan.com/address/{q} | | crypto
 ## TRON (USDT-TRC20)
 Tronscan | https://tronscan.org/#/address/{q} | | crypto
-OKLink (multi-chain explorer) | https://www.oklink.com/ | N | | Explorer for 60+ chains with address labels
 USDT freeze checker (BlockSec) | https://blocksec.com/usdt-freeze-checker | N | | Is a USDT address frozen by Tether? Free, no signup
-MetaSleuth (fund-flow graphs) | https://metasleuth.io/ | RN | | Visual tracing of funds between addresses (free account)
-MistTrack | https://misttrack.io/ | RN | | Address risk labels and tracing (free limited use)
 ## Other Chains
 Solscan | https://solscan.io/account/{q} | | crypto
 Blockchair (multi-chain) | https://blockchair.com/search?q={q} | | crypto,hash
 Monero Explorer | https://xmrchain.net/ | |
 ## Attribution & Abuse Reports
+OKLink (multi-chain explorer) | https://www.oklink.com/ | N | | Explorer for 60+ chains with address labels
+MetaSleuth (fund-flow graphs) | https://metasleuth.io/ | RN | | Visual tracing of funds between addresses (free account)
+MistTrack | https://misttrack.io/ | RN | | Address risk labels and tracing (free limited use)
 Chainabuse | https://www.chainabuse.com/address/{q} | | crypto
 Arkham Intelligence | https://intel.arkm.com/explorer/address/{q} | R | crypto
 Breadcrumbs | https://www.breadcrumbs.app/ | R |
@@ -3182,29 +3178,29 @@ Berkeley Protocol on Digital Open Source Investigations | https://www.ohchr.org/
 > Open sources end where the platform's own records begin. Use these portals, with the right legal process, to request subscriber data, logs and preservation.
 ## Guidance
 Europol SIRIUS (cross-border e-evidence) | https://www.europol.europa.eu/operations-services-and-innovation/sirius-project | L |
-EU e-Evidence Regulation 2023/1543 | https://eur-lex.europa.eu/eli/reg/2023/1543/oj | |
+EU e-Evidence Regulation 2023/1543 | https://eur-lex.europa.eu/eli/reg/2023/1543/oj | N | | European Production and Preservation Orders sent directly to service providers in another EU state; applies from 18 August 2026 (with Directive 2023/1544 on legal representatives)
 SEARCH.org ISP List | https://www.search.org/resources/isp-list/ | |
 ## Platforms
 Meta (Facebook, Instagram, WhatsApp) | https://www.facebook.com/records/login/ | L |
 Google LERS | https://lers.google.com/ | L |
-Apple | https://www.apple.com/legal/transparency/government-information.html | |
+Apple (LE guidelines by country) | https://www.apple.com/legal/transparency/government-information.html | | | Choose a country for Apple's law-enforcement guidelines and request process
 Microsoft LE Portal | https://leportal.microsoft.com/ | L |
-X / Twitter | https://help.x.com/en/rules-and-policies/x-law-enforcement-support | |
+X / Twitter | https://help.x.com/en/rules-and-policies/x-law-enforcement-support | | | Guidelines; requests are submitted via legalrequests.x.com
 TikTok | https://www.tiktok.com/safety/en/tools-and-guides/tiktok-law-enforcement-guidelines | |
 Snap | https://values.snap.com/safety/safety-enforcement | |
 Discord | https://discord.com/safety/360044157931-working-with-law-enforcement | |
 Uber | https://lert.uber.com/ | L |
-Airbnb (international LE) | https://www.airbnb.com/help/article/3814 | |
-Cloudflare | https://www.cloudflare.com/trust-hub/abuse-approach/ | |
+Airbnb (international LE) | https://www.airbnb.com/help/article/3814 | L | | Guidelines; requests via the Kodex portal
+Cloudflare | https://www.cloudflare.com/trust-hub/law-enforcement/ | | | Law-enforcement guidelines and contact
 ## Crypto Exchanges
-Binance | https://www.binance.com/en/support/law-enforcement | L |
+Binance | https://www.binance.com/en/support/law-enforcement | L | | Requests via the Kodex portal
 Tether (USDT) law enforcement requests | https://tether.to/en/legal/?tab=law-enforcement-requests | LN | | Freeze and information requests for USDT
-Coinbase | https://help.coinbase.com/en/coinbase/other-topics/legal-policies/who-do-i-contact-for-a-subpoena-request-or-dispute-or-to-send-a-legal-document | |
+Coinbase | https://help.coinbase.com/en/coinbase/other-topics/legal-policies/who-do-i-contact-for-a-subpoena-request-or-dispute-or-to-send-a-legal-document | L | | Criminal requests via the Kodex portal
 
 # Exploitation & Trafficking Reporting [LE+]
 > Reporting and referral channels only. Never download or keep abuse material outside an approved system.
 NCMEC CyberTipline | https://report.cybertip.org/ | |
-INHOPE Hotlines | https://www.inhope.org/EN | |
+INHOPE Hotlines | https://www.inhope.org/ | |
 IWF Report | https://report.iwf.org.uk/ | |
 Europol Stop Child Abuse – Trace an Object | https://www.europol.europa.eu/stopchildabuse | |
 Interpol ICSE Database | https://www.interpol.int/Crimes/Crimes-against-children/International-Child-Sexual-Exploitation-database | L |
@@ -3233,8 +3229,8 @@ Eurojust | https://www.eurojust.europa.eu/ | |
 World Customs Organization | https://www.wcoomd.org/ | |
 UNODC | https://www.unodc.org/ | |
 UNODC SHERLOC (legislation & cases) | https://sherloc.unodc.org/ | |
-UNODC Practical Guide: electronic evidence across borders | https://sherloc.unodc.org/cld/en/publications/practical-guide/practical-guide.html | N | | How to request data from providers in other countries
-UNODC Electronic Evidence Hub | https://www.unodc.org/cld/en/st/evidence/electronic-evidence-hub.html | N | | Provider contacts and procedures for e-evidence
+UNODC Practical Guide: electronic evidence across borders | https://sherloc.unodc.org/cld/en/st/evidence/practical-guide.html | N | | How to request data from providers in other countries
+UNODC Electronic Evidence Hub | https://sherloc.unodc.org/cld/en/st/evidence/electronic-evidence-hub.html | N | | Provider contacts and procedures for e-evidence
 Frontex | https://www.frontex.europa.eu/ | |
 CEPOL | https://www.cepol.europa.eu/ | |
 
@@ -3247,7 +3243,7 @@ ECHR Guide on Article 8 (privacy) | https://ks.echr.coe.int/web/echr-ks/article-
 
 # Training
 Bellingcat Guides | https://www.bellingcat.com/category/resources/how-tos/ | |
-OSINT Curious | https://www.osintcurio.us/ | |
+OSINT Curious (archived) | https://www.osintcurio.us/ | | | Project closed in 2023; past articles and videos remain online
 Trace Labs (missing persons CTF) | https://www.tracelabs.org/ | |
 OSINT Dojo | https://www.osintdojo.com/ | |
 Sector035 Week in OSINT | https://sector035.nl/ | |
@@ -3316,7 +3312,7 @@ Chainabuse (crypto scams) | https://www.chainabuse.com/address/{q} | | crypto
 ## Reporting Centres
 Europol EC3 | https://www.europol.europa.eu/about-europol/european-cybercrime-centre-ec3 | |
 Safeonweb (Belgium) | https://safeonweb.be/ | |
-Action Fraud (UK) | https://www.actionfraud.police.uk/ | |
+Report Fraud (UK, replaced Action Fraud) | https://www.reportfraud.police.uk/ | N |
 FBI IC3 (US) | https://www.ic3.gov/ | |
 APWG | https://apwg.org/ | |
 
@@ -3424,7 +3420,7 @@ window.LE_OSINT_PLAYBOOKS = [
       { name: "Verify the shipment", steps: [
         { t: "Check the container number is genuine (ISO 6346 check digit) and identify the owner / lessor prefix.", why: "Fabricated or mistyped numbers are an early red flag.", tool: "toolbox-container", src: ["BIC Code Register (owner prefixes)"] },
         { t: "Track the container on the carrier's site: route, transhipment ports, dwell times, empty-return date.", why: "Unusual transhipment or long dwell in a source-country port raises risk.", src: ["Maersk", "MSC", "CMA CGM", "Hapag-Lloyd", "ONE", "Track-Trace", "SeaRates Tracking"] },
-        { t: "Identify the vessel(s) and check AIS history for gaps, loitering or unscheduled stops.", why: "At-sea drop-offs and rip-on / rip-off happen during AIS gaps.", src: ["VesselFinder", "MarineTraffic", "Global Fishing Watch (AIS gaps)"] },
+        { t: "Identify the vessel(s) and check AIS history for gaps, loitering or unscheduled stops.", why: "At-sea drop-offs and pick-ups often happen during AIS gaps; rip-on / rip-off happens in port.", src: ["VesselFinder", "MarineTraffic", "Global Fishing Watch (AIS gaps)"] },
         { t: "Check the vessel's owner, manager, flag history and port-state inspections.", why: "Frequent flag or name changes and poor inspection records.", src: ["Equasis (owner, manager, inspections)", "Paris MoU Inspection Search", "OpenSanctions"] }
       ]},
       { name: "Examine the traders", steps: [
@@ -3482,7 +3478,7 @@ window.LE_OSINT_PLAYBOOKS = [
       ]},
       { name: "People and requests", steps: [
         { t: "Profile any phone, email or name used by the fraudsters.", why: "", profileView: true },
-        { t: "Send preservation and data requests to hosting provider, registrar and platforms.", why: "Logs are deleted quickly.", src: ["Europol SIRIUS (cross-border e-evidence)", "Cloudflare", "SEARCH.org ISP List"] },
+        { t: "Send preservation and data requests to hosting provider, registrar and platforms.", why: "Logs are deleted quickly. Within the EU, European Production and Preservation Orders can go directly to providers in another EU state from 18 August 2026.", src: ["Europol SIRIUS (cross-border e-evidence)", "EU e-Evidence Regulation 2023/1543", "Cloudflare", "SEARCH.org ISP List"] },
         { t: "Report to the national and European centres.", why: "Links your case to other victims.", src: ["Europol EC3", "Safeonweb (Belgium)", "FBI IC3 (US)"] }
       ]}
     ]
@@ -3493,7 +3489,7 @@ window.LE_OSINT_PLAYBOOKS = [
     when: "A wallet address appears in a seizure, a phone extraction, an advert or a ransom note.",
     phases: [
       { name: "Identify", steps: [
-        { t: "Identify the blockchain from the address format.", why: "USDT on TRON is the most common in drug and fraud cases.", tool: "toolbox-crypto" },
+        { t: "Identify the blockchain from the address format.", why: "TRON (T…) and Bitcoin addresses are distinctive, but a 0x address can exist on Ethereum, BNB Chain, Polygon and other EVM chains: check several explorers. USDT on TRON is the most common in drug and fraud cases.", tool: "toolbox-crypto" },
         { t: "Open the address on the right explorer: balance, first and last activity, counterparties.", why: "", src: ["Tronscan", "Etherscan", "Mempool.space", "OKLink (multi-chain explorer)", "Blockchair (multi-chain)"] },
         { t: "For USDT: check whether the address is already frozen by Tether.", why: "A frozen address tells you another agency is already on it.", src: ["USDT freeze checker (BlockSec)"] },
         { t: "Check labels, scam reports and sanctions.", why: "", src: ["Arkham Intelligence", "Chainabuse", "OpenSanctions", "WalletExplorer (clusters)"] }
@@ -3519,7 +3515,7 @@ window.LE_OSINT_PLAYBOOKS = [
       ]},
       { name: "Recent activity", steps: [
         { t: "Profile the person and close contacts: last posts, new accounts, changed profile photos.", why: "Contacts' accounts often show where the person is.", profileView: true },
-        { t: "Geolocate the most recent photos and videos; compare with public posts in that area.", why: "", src: ["Snap Map (public stories by location)", "YouTube Geofind (videos by location)", "Google Maps", "SunCalc (sun position & shadows)"], tool: "toolbox-exif" },
+        { t: "Geolocate the most recent photos and videos; compare with public posts in that area.", why: "", src: ["YouTube Geofind (videos by location)", "Google Maps", "SunCalc (sun position & shadows)"], tool: "toolbox-exif" },
         { t: "Look at travel options from the last known location.", why: "Bus, ferry and flight routes and times.", src: ["Rome2Rio (all routes between two places)", "FlixBus routes", "Direct Ferries (routes)", "Flightradar24 (flight)"] },
         { t: "Check accommodation seen in photos.", why: "Room details can identify the hotel.", src: ["TraffickCam (hotel-room image matching)", "Booking.com", "Airbnb"] }
       ]},
@@ -3573,7 +3569,7 @@ window.LE_OSINT_PLAYBOOKS = [
       ]},
       { name: "Behaviour", steps: [
         { t: "Track history: AIS gaps, meetings with other vessels, loitering off known drop zones.", why: "", src: ["Global Fishing Watch (AIS gaps)", "MarineTraffic", "VesselFinder"] },
-        { t: "Check satellite imagery for the dates of AIS gaps.", why: "", src: ["Copernicus Browser (Sentinel)", "Sentinel Hub EO Browser"] },
+        { t: "Check satellite imagery for the dates of AIS gaps.", why: "", src: ["Copernicus Browser (Sentinel)", "Copernicus Browser (Sentinel)"] },
         { t: "Port-state inspection and detention history.", why: "", src: ["Paris MoU Inspection Search", "Tokyo MoU APCIS"] }
       ]},
       { name: "Coordinate", steps: [
@@ -5257,50 +5253,50 @@ window.LE_LINES = {
   rows: [
     ["A.P. Moller-Maersk", "Maersk Line", "MAEU", "MSKU MRKU MRSU MAEU MNBU", "C", "Gemini", "DK", "https://www.maersk.com/", "https://www.maersk.com/tracking/{q}", "", "Second-largest container carrier (after MSC). Also operates Sealand and (former) Hamburg Süd, Safmarine brands."],
     ["Mediterranean Shipping Company", "MSC", "MSCU", "MSCU MEDU MSDU MSMU", "C", "MSC", "CH", "https://www.msc.com/", "https://www.msc.com/en/track-a-shipment", "", "World's largest container carrier by capacity. Private, Aponte family, Geneva."],
-    ["CMA CGM", "", "CMDU", "CMAU CGMU ECMU", "C", "Ocean", "FR", "https://www.cma-cgm.com/", "https://www.cma-cgm.com/ebusiness/tracking", "", "Group brands: APL, ANL, CNC, Mercosul Line, Containerships, OPDR, Delmas (retired)."],
+    ["CMA CGM", "", "CMDU", "CMAU CGMU ECMU", "C", "Ocean", "FR", "https://www.cma-cgm.com/", "https://www.cma-cgm.com/ebusiness/tracking", "", "Group brands: APL, ANL, CNC, Mercosul Line, Containerships (brand retired 2023), OPDR, Delmas (retired)."],
     ["COSCO Shipping Lines", "China COSCO", "COSU", "CSNU CBHU CCLU CSLU", "C", "Ocean", "CN", "https://lines.coscoshipping.com/", "https://elines.coscoshipping.com/ebusiness/cargoTracking", "", "State-owned (China). Absorbed CSCL (2016) and controls OOCL (2018)."],
     ["Orient Overseas Container Line", "OOCL", "OOLU", "OOLU OOCU", "C", "Ocean", "HK", "https://www.oocl.com/", "https://www.oocl.com/eng/ourservices/eservices/cargotracking/Pages/cargotracking.aspx", "", "Owned by COSCO Shipping since 2018; keeps its own brand."],
     ["Hapag-Lloyd", "", "HLCU", "HLXU HLBU HLCU UACU", "C", "Gemini", "DE", "https://www.hapag-lloyd.com/", "https://www.hapag-lloyd.com/en/online-business/track/track-by-container-solution.html", "", "Merged with CSAV (2014) and UASC (2017)."],
-    ["Ocean Network Express", "ONE", "ONEY", "ONEU NYKU MOLU KKFU KKTU", "C", "Premier", "SG", "https://www.one-line.com/", "https://ecomm.one-line.com/one-ecom/manage-shipment/cargo-tracking?trakNoParam={q}", "", "Created 2018 from the container businesses of NYK, MOL and K Line (boxes with old NYK/MOL/K Line prefixes still in use)."],
+    ["Ocean Network Express", "ONE", "ONEY", "ONEU NYKU MOLU KKFU KKTU", "C", "Premier", "SG", "https://www.one-line.com/", "https://www.one-line.com/one-ecom/manage-shipment/cargo-tracking?trakNoParam={q}", "", "Created 2018 from the container businesses of NYK, MOL and K Line (boxes with old NYK/MOL/K Line prefixes still in use)."],
     ["Evergreen Marine", "Evergreen Line", "EGLV", "EGHU EGSU EISU EMCU EITU", "C", "Ocean", "TW", "https://www.evergreen-line.com/", "https://ct.shipmentlink.com/servlet/TDB1_CargoTracking.do", "", "Taiwan. Tracking via ShipmentLink. Includes Italia Marittima (former Lloyd Triestino)."],
     ["HMM", "Hyundai Merchant Marine", "HDMU", "HDMU HMMU", "C", "Premier", "KR", "https://www.hmm21.com/", "https://www.hmm21.com/e-service/general/trackNTrace/TrackNTrace.do", "", "South Korea's national carrier."],
     ["Yang Ming Marine Transport", "Yang Ming", "YMLU", "YMLU YMMU", "C", "Premier", "TW", "https://www.yangming.com/", "https://www.yangming.com/e-service/track_trace/track_trace_cargo_tracking.aspx", "", "Taiwan, state-linked."],
-    ["ZIM Integrated Shipping", "ZIM", "ZIMU", "ZIMU ZCSU", "C", "", "IL", "https://www.zim.com/", "https://www.zim.com/tools/track-a-shipment", "", "Israel. Owns Gold Star Line."],
+    ["ZIM Integrated Shipping", "ZIM", "ZIMU", "ZIMU ZCSU", "C", "", "IL", "https://www.zim.com/", "https://www.zim.com/tools/track-a-shipment", "", "Israel. Owns Gold Star Line. Hapag-Lloyd agreed to buy ZIM in February 2026 (closing expected late 2026, subject to approvals); a separate \"new ZIM\" is to keep the brand."],
     ["Wan Hai Lines", "", "WHLC", "WHSU WHLU", "C", "", "TW", "https://www.wanhai.com/", "https://www.wanhai.com/", "", "Taiwan; strong in intra-Asia, growing on long-haul."],
     ["Pacific International Lines", "PIL", "PCIU PABV", "PCIU", "C", "", "SG", "https://www.pilship.com/", "https://www.pilship.com/", "", "Singapore; majority owned by Heliconia (Temasek) since 2021."],
     ["American President Lines", "APL", "APLU", "APLU", "C", "Ocean", "SG", "https://www.apl.com/", "https://www.apl.com/ebusiness/tracking", "", "CMA CGM brand (bought NOL/APL in 2016). US-flag services."],
     ["ANL Container Line", "ANL", "ANNU", "ANNU", "R", "", "AU", "https://www.anl.com.au/", "https://www.anl.com.au/ebusiness/tracking", "", "CMA CGM brand for Oceania."],
     ["CNC Line", "Cheng Lie Navigation", "", "", "R", "", "TW", "https://www.cnc-line.com/", "https://www.cnc-line.com/", "", "CMA CGM intra-Asia brand."],
-    ["Sealand (Maersk)", "Sealand Americas, Sealand Europe, Sealand Asia", "SEAU SEJJ", "", "R", "", "US", "https://www.maersk.com/sealand", "https://www.maersk.com/tracking/{q}", "", "Maersk's regional (intra-region) container brand."],
+    ["Sealand (Maersk)", "Sealand Americas, Sealand Europe, Sealand Asia", "SEAU SEJJ MCCQ", "", "R", "", "US", "https://www.maersk.com/sealand", "https://www.maersk.com/tracking/{q}", "", "Maersk's regional (intra-region) container brand."],
     ["Safmarine", "", "SAFM", "", "R", "", "ZA", "https://www.maersk.com/", "https://www.maersk.com/tracking/{q}", "merged", "Maersk brand for Africa; operations integrated into Maersk."],
     ["Hamburg Süd", "Hamburg Sud", "SUDU", "SUDU", "C", "", "DE", "https://www.maersk.com/", "https://www.maersk.com/tracking/{q}", "merged", "Bought by Maersk 2017; brand retired into Maersk 2023. SUDU boxes still in service."],
     ["Aliança Navegação", "Alianca", "", "", "R", "", "BR", "https://www.alianca.com.br/", "https://www.maersk.com/tracking/{q}", "merged", "Brazilian cabotage, part of Maersk (ex Hamburg Süd)."],
     ["SITC International", "SITC Container Lines", "", "SITU", "R", "", "HK", "https://www.sitcline.com/", "https://www.sitcline.com/", "", "Intra-Asia container carrier."],
     ["Korea Marine Transport Co.", "KMTC", "KMTU", "KMTU", "R", "", "KR", "https://www.ekmtc.com/", "https://www.ekmtc.com/", "", "Intra-Asia, India, Middle East."],
-    ["Sinokor Merchant Marine", "Sinokor", "", "SKLU SKHU", "R", "", "KR", "https://www.sinokor.co.kr/", "https://www.sinokor.co.kr/", "", "Intra-Asia. Owns Heung-A Line (merged 2024)."],
-    ["Heung-A Line", "", "", "", "R", "", "KR", "https://www.heungaline.com/", "https://www.heungaline.com/", "merged", "Integrated with Sinokor."],
-    ["SM Line", "", "SMLM", "", "R", "", "KR", "https://www.smlines.com/", "https://www.smlines.com/", "", "Korean carrier founded 2017 from Hanjin assets."],
+    ["Sinokor Merchant Marine", "Sinokor", "SKLU", "SKLU SKHU", "R", "", "KR", "https://www.sinokor.co.kr/", "https://www.sinokor.co.kr/", "", "Intra-Asia. Runs joint services with Heung-A Line."],
+    ["Heung-A Line", "", "", "HASU", "R", "", "KR", "https://www.heungaline.com/", "https://www.heungaline.com/", "", "Korea – Japan – China – Southeast Asia; some services jointly with Sinokor (planned merger was not completed)."],
+    ["SM Line", "", "SMLM", "", "R", "", "KR", "https://www.smlines.com/", "https://www.smlines.com/", "", "Korean carrier set up from Hanjin assets (incorporated December 2016, services from 2017)."],
     ["Namsung Shipping", "Dongyoung", "", "", "R", "", "KR", "https://www.namsung.co.kr/", "https://www.namsung.co.kr/", "", "Korea / Japan / China services."],
     ["Pan Continental Shipping", "Pancon", "", "", "R", "", "KR", "https://www.pancon.co.kr/", "https://www.pancon.co.kr/", "", ""],
     ["Dongjin Shipping", "", "", "", "F", "", "KR", "https://www.djship.co.kr/", "https://www.djship.co.kr/", "", ""],
-    ["CK Line", "Chun Kyung", "", "", "F", "", "KR", "https://www.ckline.co.kr/", "https://www.ckline.co.kr/", "", ""],
+    ["CK Line", "Chun Kyung", "CKLU", "", "F", "", "KR", "https://www.ckline.co.kr/", "https://www.ckline.co.kr/", "", ""],
     ["T.S. Lines", "TS Lines", "TXZJ", "", "R", "", "TW", "https://www.tslines.com/", "https://www.tslines.com/", "", "Taiwan; Asia, Australia, Middle East, India, West Coast US."],
     ["Interasia Lines", "IAL", "", "", "R", "", "TW", "https://www.interasia.cc/", "https://www.interasia.cc/", "", "Wan Hai affiliate, intra-Asia."],
     ["China United Lines", "CU Lines", "CULU", "", "R", "", "CN", "https://www.culines.com/", "https://www.culines.com/", "", ""],
     ["Sinotrans Container Lines", "Sinotrans", "", "", "R", "", "CN", "https://www.sinotrans.com/", "https://www.sinotrans.com/", "", "China Merchants group."],
     ["Zhonggu Logistics", "", "", "", "F", "", "CN", "https://www.zhonggu56.com/", "https://www.zhonggu56.com/", "", "Chinese domestic container carrier."],
     ["Antong Holdings", "Quanzhou Antong", "", "", "F", "", "CN", "https://www.antong56.com/", "https://www.antong56.com/", "", "Chinese domestic container carrier."],
-    ["Gold Star Line", "", "GOSU", "", "R", "", "HK", "https://www.gslltd.com.hk/", "https://www.gslltd.com.hk/", "", "ZIM subsidiary."],
+    ["Gold Star Line", "", "GOSU", "", "R", "", "HK", "https://www.gslltd.com.hk/", "https://www.gslltd.com.hk/", "", "ZIM subsidiary (ownership may change with the Hapag-Lloyd / ZIM deal)."],
     ["Regional Container Lines", "RCL", "", "", "R", "", "TH", "https://www.rclgroup.com/", "https://www.rclgroup.com/", "", "Thailand; intra-Asia, Middle East, India."],
     ["Samudera Shipping Line", "", "", "", "R", "", "SG", "https://www.samudera.id/", "https://www.samudera.id/", "", "Indonesian group, Singapore-listed."],
-    ["Meratus Line", "", "", "", "R", "", "ID", "https://www.meratus.com/", "https://www.meratus.com/", "", "Indonesia domestic and regional."],
+    ["Meratus Line", "", "MRTU", "", "R", "", "ID", "https://www.meratus.com/", "https://www.meratus.com/", "", "Indonesia domestic and regional."],
     ["Tanto Intim Line", "Tanto", "", "", "F", "", "ID", "https://www.tantonet.com/", "https://www.tantonet.com/", "", "Indonesia domestic."],
     ["Salam Pacific Indonesia Lines", "SPIL", "", "", "F", "", "ID", "https://www.spil.co.id/", "https://www.spil.co.id/", "", "Indonesia domestic."],
     ["Temas Line", "", "", "", "F", "", "ID", "https://www.temasline.com/", "https://www.temasline.com/", "", "Indonesia domestic."],
     ["Hai An Transport", "Haian", "", "", "F", "", "VN", "https://www.haiants.vn/", "https://www.haiants.vn/", "", "Vietnam."],
-    ["SeaLead Shipping", "", "SQQY", "", "R", "", "SG", "https://www.sea-lead.com/", "https://www.sea-lead.com/", "", "Newer carrier; Asia, Middle East, Europe, Americas."],
+    ["SeaLead Shipping", "", "SQQY SJHH", "", "R", "", "SG", "https://www.sea-lead.com/", "https://www.sea-lead.com/", "", "Newer carrier; Asia, Middle East, Europe, Americas."],
     ["Emirates Shipping Line", "ESL", "", "", "R", "", "AE", "https://www.emiratesline.com/", "https://www.emiratesline.com/", "", ""],
-    ["Global Feeder Shipping", "GFS", "", "", "F", "", "AE", "", "", "", "Gulf, Red Sea, Indian subcontinent feeder; majority owned by AD Ports Group. Website not confirmed."],
+    ["Global Feeder Shipping", "GFS", "", "", "F", "", "AE", "", "", "", "Gulf, Red Sea, Indian subcontinent feeder; 80% owned by AD Ports Group since November 2022. Website not confirmed."],
     ["Simatech Shipping", "", "", "", "F", "", "AE", "", "", "", "Gulf / Indian subcontinent. Website not confirmed."],
     ["Bahri", "National Shipping Co. of Saudi Arabia", "", "", "M", "", "SA", "https://www.bahri.sa/", "https://www.bahri.sa/", "", "Ro-ro / general cargo liner service (Bahri Logistics) plus tankers."],
     ["Shipping Corporation of India", "SCI", "", "", "R", "", "IN", "https://www.shipindia.com/", "https://www.shipindia.com/", "", "State-owned."],
@@ -5310,7 +5306,7 @@ window.LE_LINES = {
     ["BG Freight Line", "", "", "", "F", "", "NL", "https://www.bgfreightline.com/", "https://www.bgfreightline.com/", "", "North Europe feeder (Eimskip / Samskip region)."],
     ["Samskip", "", "", "", "F", "", "NL", "https://www.samskip.com/", "https://www.samskip.com/", "", "European short-sea and multimodal."],
     ["Eimskip", "", "", "", "F", "", "IS", "https://www.eimskip.com/", "https://www.eimskip.com/", "", "Iceland, Faroes, Norway, North Atlantic."],
-    ["Containerships", "", "", "", "F", "", "FI", "https://www.cma-cgm.com/", "https://www.cma-cgm.com/ebusiness/tracking", "merged", "Bought by CMA CGM (2018); services now run under the CMA CGM brand."],
+    ["Containerships", "", "", "", "F", "", "FI", "https://www.cma-cgm.com/", "https://www.cma-cgm.com/ebusiness/tracking", "merged", "Bought by CMA CGM (2018); brand dropped in July 2023, services now run as CMA CGM."],
     ["OPDR", "Oldenburg-Portugiesische", "", "", "F", "", "DE", "https://www.cma-cgm.com/", "https://www.cma-cgm.com/ebusiness/tracking", "merged", "Bought by CMA CGM (2022); Iberia, Canaries, Morocco short-sea, now via CMA CGM."],
     ["WEC Lines", "", "", "", "F", "", "NL", "https://www.weclines.com/", "https://www.weclines.com/", "", "UK / Ireland / Iberia / Med / West Africa."],
     ["CLdN", "Cobelfret", "", "", "P", "", "LU", "https://www.cldn.com/", "https://www.cldn.com/", "", "Ro-ro freight: UK, Ireland, Belgium, Netherlands, Iberia, Scandinavia."],
@@ -5323,10 +5319,10 @@ window.LE_LINES = {
     ["Neptune Lines", "", "", "", "V", "", "GR", "https://www.neptunelines.com/", "https://www.neptunelines.com/", "", "Short-sea car carrier, Med / Black Sea / North Europe."],
     ["Arkas Line", "Arkas Container Transport", "ARKU", "ARKU", "R", "", "TR", "https://www.arkasline.com.tr/", "https://www.arkasline.com.tr/", "", "Turkey; Med, Black Sea, West Africa, North Europe."],
     ["Turkon Line", "", "TRKU", "TRKU", "R", "", "TR", "https://www.turkon.com/", "https://www.turkon.com/", "", "Turkey – US East Coast."],
-    ["Messina Line", "Ignazio Messina & C.", "", "", "M", "", "IT", "https://www.messinaline.it/", "https://www.messinaline.it/", "", "Ro-ro / con-ro Med – Middle East – Africa. MSC stake."],
-    ["Marfret", "Compagnie Maritime Marfret", "", "", "R", "", "FR", "https://www.marfret.com/", "https://www.marfret.com/", "", "France; Med, Caribbean, South America, Pacific islands."],
+    ["Messina Line", "Ignazio Messina & C.", "", "", "M", "", "IT", "https://www.messinaline.it/", "https://www.messinaline.it/", "", "Ro-ro / con-ro Med – Middle East – Africa. MSC owns 49%."],
+    ["Marfret", "Compagnie Maritime Marfret", "MFTU", "", "R", "", "FR", "https://www.marfret.com/", "https://www.marfret.com/", "", "France; Med, Caribbean, South America, Pacific islands."],
     ["Nirint Shipping", "", "", "", "M", "", "NL", "https://www.nirint.com/", "https://www.nirint.com/", "", "North Europe – Caribbean / Cuba multipurpose liner."],
-    ["Sallaum Lines", "", "", "", "V", "", "LB", "https://www.sallaumlines.com/", "https://www.sallaumlines.com/", "", "Ro-ro Europe / Americas – West Africa, Middle East."],
+    ["Sallaum Lines", "", "", "", "V", "", "CY", "https://www.sallaumlines.com/", "https://www.sallaumlines.com/", "", "Ro-ro Europe / Americas – West Africa, Middle East. Lebanese-owned; head office moved to Limassol, Cyprus (2025)."],
     ["Wallenius Wilhelmsen", "WW Ocean, Wallenius Wilhelmsen Logistics", "", "", "V", "", "NO", "https://www.walleniuswilhelmsen.com/", "https://www.walleniuswilhelmsen.com/", "", "Global vehicle and high-and-heavy (ro-ro) carrier."],
     ["Höegh Autoliners", "Hoegh", "", "", "V", "", "NO", "https://www.hoeghautoliners.com/", "https://www.hoeghautoliners.com/", "", "Global car carrier."],
     ["Hyundai Glovis", "Glovis", "", "", "V", "", "KR", "https://www.glovis.net/", "https://www.glovis.net/", "", "Car carrier (Hyundai / Kia group)."],
@@ -5336,24 +5332,29 @@ window.LE_LINES = {
     ["Matson", "Matson Navigation", "MATS", "MATU", "R", "", "US", "https://www.matson.com/", "https://www.matson.com/", "", "US Jones Act (Hawaii, Alaska, Guam) and China – Long Beach express."],
     ["Pasha Hawaii", "", "", "", "R", "", "US", "https://www.pashahawaii.com/", "https://www.pashahawaii.com/", "", "US West Coast – Hawaii."],
     ["TOTE Maritime", "", "", "", "V", "", "US", "https://www.totemaritime.com/", "https://www.totemaritime.com/", "", "US Jones Act: Puerto Rico and Alaska."],
-    ["Crowley Maritime", "Crowley", "CLAM", "CMCU", "R", "", "US", "https://www.crowley.com/", "https://www.crowley.com/", "", "US – Caribbean, Central America, Puerto Rico."],
+    ["Crowley Maritime", "Crowley", "CLAM CWLQ", "CMCU", "R", "", "US", "https://www.crowley.com/", "https://www.crowley.com/", "", "US – Caribbean, Central America, Puerto Rico."],
     ["Seaboard Marine", "", "SMLU", "SMLU", "R", "", "US", "https://www.seaboardmarine.com/", "https://www.seaboardmarine.com/", "", "US – Caribbean, Central & South America."],
     ["Tropical Shipping", "", "", "", "R", "", "US", "https://www.tropical.com/", "https://www.tropical.com/", "", "Florida – Caribbean / Bahamas. Saltchuk group."],
     ["King Ocean Services", "", "", "", "R", "", "US", "https://www.kingocean.com/", "https://www.kingocean.com/", "", "US – Caribbean, Colombia, Venezuela, Central America."],
     ["Great White Fleet", "Chiquita", "", "", "Q", "", "US", "https://www.greatwhitefleet.com/", "https://www.greatwhitefleet.com/", "", "Chiquita's reefer container line, Central America – US / Europe."],
     ["Dole Ocean Cargo Express", "Dole", "", "", "Q", "", "US", "https://www.doleoceancargo.com/", "https://www.doleoceancargo.com/", "", "Fruit and general cargo, Central America – US / Europe."],
     ["Seatrade", "Seatrade Reefer Chartering", "", "", "Q", "", "NL", "https://www.seatrade.com/", "https://www.seatrade.com/", "", "Reefer ships and reefer container services (fruit trades)."],
-    ["Baltic Shipping (Cool Carriers)", "Cool Carriers", "", "", "Q", "", "SE", "https://www.coolcarriers.com/", "https://www.coolcarriers.com/", "", "Specialised reefer vessels."],
+    ["Cool Carriers (Baltic Reefers)", "formerly NYKCool", "", "", "Q", "", "SE", "https://www.coolcarriers.com/", "https://www.coolcarriers.com/", "", "Specialised reefer vessels."],
     ["Log-In Logística", "Log-In", "", "", "F", "", "BR", "https://www.loginlogistica.com.br/", "https://www.loginlogistica.com.br/", "", "Brazil cabotage and Mercosur. MSC owned."],
     ["Mercosul Line", "", "", "", "F", "", "BR", "https://www.mercosul-line.com.br/", "https://www.mercosul-line.com.br/", "", "Brazil cabotage, CMA CGM group."],
     ["Swire Shipping", "China Navigation Co.", "CHVW", "", "M", "", "SG", "https://www.swireshipping.com/", "https://www.swireshipping.com/", "", "Pacific islands, Australia, Asia, Americas liner and multipurpose."],
     ["Westwood Shipping Lines", "", "WWSU", "", "M", "", "US", "https://www.westwoodshipping.com/", "https://www.westwoodshipping.com/", "", "US Pacific Northwest / Canada – Japan, Korea, China."],
     ["Independent Container Line", "ICL", "IILU", "", "R", "", "US", "https://www.icl-ltd.com/", "https://www.icl-ltd.com/", "", "US / Canada – North Europe."],
-    ["Neptune Pacific Direct Line", "NPDL", "", "", "F", "", "FJ", "https://www.npdlship.com/", "https://www.npdlship.com/", "", "South Pacific islands."],
+    ["Neptune Pacific Direct Line", "NPDL", "", "", "F", "", "FJ", "https://www.npdlship.com/", "https://www.npdlship.com/", "", "South Pacific islands. Formerly PIL's Pacific Direct Line, sold to Neptune Pacific Line in 2020."],
     ["Ocean Africa Container Lines", "OACL", "", "", "F", "", "ZA", "", "", "", "Southern and East Africa feeder."],
-    ["Grindrod Shipping", "", "", "", "F", "", "ZA", "https://www.taylormaritime.com/", "", "merged", "Taken over by Taylor Maritime (2023)."],
-    ["FESCO", "Far Eastern Shipping Company", "", "", "R", "", "RU", "https://www.fesco.ru/", "https://www.fesco.ru/", "", "Russia; Far East, rail-sea. Check current sanctions lists before dealing."],
+    ["FESCO", "Far Eastern Shipping Company", "", "", "R", "", "RU", "https://www.fesco.ru/", "https://www.fesco.ru/", "", "Russia; Far East, rail-sea. On the UK sanctions list; check current EU / US / UK lists before dealing."],
     ["IRISL", "Islamic Republic of Iran Shipping Lines, HDS Lines", "", "", "R", "", "IR", "https://www.irisl.net/", "https://www.irisl.net/", "", "Iran. Designated under US sanctions; uses front companies and frequent ship renaming. Check sanctions lists."],
+    ["Ningbo Ocean Shipping", "NBOSCO", "", "", "R", "", "CN", "", "", "", "Chinese carrier, among the world's 25 largest; Asia and transpacific. Website not confirmed."],
+    ["Hede International Shipping", "Tangshan Port Hede, HEDE Shipping", "HDUJ", "", "R", "", "CN", "", "", "", "Chinese carrier, among the world's 25 largest. Website not confirmed."],
+    ["Asyad Line", "Oman Shipping container line", "", "", "R", "", "OM", "", "", "", "Omani state group (Asyad); Gulf, Indian subcontinent, Africa. Website not confirmed."],
+    ["Transworld Feeders / Avana Global", "TWF, Avana", "", "", "F", "", "IN", "", "", "", "Indian-origin feeder and regional operator (India, Gulf, Southeast Asia). Website not confirmed."],
+    ["Mariana Express Lines", "MELL", "MELL", "", "R", "", "SG", "", "", "", "Asia – Pacific islands – Australia. Website not confirmed."],
+    ["Nile Dutch", "", "", "", "R", "", "NL", "", "https://www.hapag-lloyd.com/", "merged", "West Africa specialist; bought by Hapag-Lloyd in 2021."],
     ["Hanjin Shipping", "", "", "HJCU", "C", "", "KR", "", "", "defunct", "Bankrupt 2016–2017. Old B/Ls and boxes still appear in documents."],
     ["United Arab Shipping Company", "UASC", "", "UACU", "C", "", "KW", "", "https://www.hapag-lloyd.com/", "merged", "Merged into Hapag-Lloyd 2017."],
     ["CSAV", "Compañía Sud Americana de Vapores", "", "", "C", "", "CL", "", "https://www.hapag-lloyd.com/", "merged", "Container business merged into Hapag-Lloyd 2014."],
@@ -5361,7 +5362,7 @@ window.LE_LINES = {
     ["Neptune Orient Lines", "NOL", "", "", "C", "", "SG", "", "https://www.apl.com/", "merged", "Parent of APL; bought by CMA CGM 2016."],
     ["Hyundai Merchant Marine", "", "HDMU", "HDMU", "C", "", "KR", "", "https://www.hmm21.com/", "merged", "Renamed HMM (2020)."],
     ["CCNI", "Compañía Chilena de Navegación Interoceánica", "", "", "R", "", "CL", "", "https://www.maersk.com/", "merged", "Container business sold to Hamburg Süd 2015, now Maersk."],
-    ["Rickmers-Linie", "Rickmers", "", "", "M", "", "DE", "", "", "defunct", "Rickmers Holding insolvent 2017; line continued as Rickmers-Linie under new owners."],
+    ["Rickmers-Linie", "Rickmers", "", "", "M", "", "DE", "", "", "merged", "Rickmers Holding insolvent 2017; the liner business was taken over by Zeaborn."],
     ["Delmas", "", "", "", "R", "", "FR", "", "https://www.cma-cgm.com/", "merged", "West Africa brand retired into CMA CGM."],
     ["MOL, NYK, K Line (container)", "", "", "MOLU NYKU KKFU KKTU", "C", "", "JP", "", "https://www.one-line.com/", "merged", "Container operations merged into ONE, April 2018."]
   ]
@@ -6270,7 +6271,7 @@ window.LE_PRECURSORS = {
     ["Phenylacetic acid", "Benzeneacetic acid; PAA", "I", "103-82-2", "2916.34", "1988 (Table II), moved to Table I in 2010", ["AMP", "METH"], "Pre-precursor (via P-2-P)", "Used to make P-2-P. Legitimate use in penicillin production and perfumes."],
     ["alpha-Phenylacetoacetonitrile", "APAAN; 3-oxo-2-phenylbutanenitrile", "I", "4468-48-8", "2926.40", "2014", ["AMP", "METH"], "Pre-precursor (via P-2-P)", "Designer precursor with almost no legitimate use; converted to P-2-P."],
     ["alpha-Phenylacetoacetamide", "APAA; 3-oxo-2-phenylbutanamide", "I", "4433-77-6", "2924.29", "2019", ["AMP", "METH"], "Pre-precursor (via P-2-P)", "Designer precursor; converted to P-2-P."],
-    ["Methyl alpha-phenylacetoacetate", "MAPA; methyl 3-oxo-2-phenylbutanoate", "I", "16648-44-5", "2918.30", "2019", ["AMP", "METH"], "Pre-precursor (via P-2-P)", "Designer precursor; converted to P-2-P."],
+    ["Methyl alpha-phenylacetoacetate", "MAPA; methyl 3-oxo-2-phenylbutanoate", "I", "16648-44-5", "2918.30", "2020", ["AMP", "METH"], "Pre-precursor (via P-2-P)", "Designer precursor; converted to P-2-P."],
     ["P-2-P methyl glycidic acid and its esters", "BMK glycidic acid; 2-methyl-3-phenyloxirane-2-carboxylic acid; BMK methyl glycidate; BMK ethyl glycidate; methyl, ethyl, propyl, isopropyl, butyl, isobutyl, sec-butyl and tert-butyl esters", "I", "25547-51-7 (acid); 80532-66-7 (methyl ester)", "2918.99 (indicative)", "2024 (acid and 8 esters)", ["AMP", "METH"], "Pre-precursor (via P-2-P)", "Designer precursors; seized in large quantities in Europe as \"BMK glycidate\". Optical isomers included."],
     ["Isosafrole", "cis- and trans-isosafrole", "I", "120-58-1", "2932.91", "1992", ["MDMA"], "Precursor", ""],
     ["Safrole", "Also in safrole-rich oils (sassafras oil, Ocotea cymbarum oil)", "I", "94-59-7", "2932.94", "1992", ["MDMA"], "Precursor", "Essential oils rich in safrole are a known diversion route."],
