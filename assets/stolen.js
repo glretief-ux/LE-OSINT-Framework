@@ -27,6 +27,7 @@
   ];
   const REGION = function (c) { return "ABCDEFGH".indexOf(c) > -1 ? "Africa" : "JKLMNPR".indexOf(c) > -1 ? "Asia" : "STUVWXYZ".indexOf(c) > -1 ? "Europe" : "12345".indexOf(c) > -1 ? "North America" : "67".indexOf(c) > -1 ? "Oceania" : "89".indexOf(c) > -1 ? "South America" : ""; };
   const WMI = {
+    WVG: "Volkswagen SUV", WV3: "Volkswagen truck", W1T: "Mercedes-Benz truck", WDF: "Mercedes-Benz van", WAP: "Alpina", VF6: "Renault Trucks", VXK: "Opel (Stellantis)", VSX: "Opel Spain", NMB: "Mercedes-Benz Turkey", YV3: "Volvo bus", YS4: "Scania bus", TMT: "Tatra", U6Y: "Kia Slovakia", ZGU: "Moto Guzzi", ZD4: "Aprilia", SAD: "Jaguar SUV", SFA: "Ford UK", JTM: "Toyota SUV", JTJ: "Lexus SUV", KNE: "Kia Europe", LVV: "Chery", LGW: "Great Wall", LPS: "Polestar", LSG: "SAIC General Motors",
     WVW: "Volkswagen", WV1: "Volkswagen commercial", WV2: "Volkswagen bus/van", WAU: "Audi", WUA: "Audi Sport", WBA: "BMW", WBS: "BMW M", WBY: "BMW i", WMW: "MINI", WDB: "Mercedes-Benz", WDD: "Mercedes-Benz", W1K: "Mercedes-Benz", W1N: "Mercedes-Benz SUV", WDC: "Mercedes-Benz SUV", W1V: "Mercedes-Benz van", WP0: "Porsche", WP1: "Porsche SUV", W0L: "Opel", W0V: "Opel", WF0: "Ford Germany", WME: "smart", WMA: "MAN", WKK: "Setra / Kässbohrer",
     VF1: "Renault", VF3: "Peugeot", VF7: "Citroën", VR3: "Peugeot", VR7: "Citroën", VR1: "DS", VNK: "Toyota France", VSS: "SEAT", VS6: "Ford Spain", VSK: "Nissan Spain", VWV: "Volkswagen Spain",
     ZFA: "Fiat", ZAR: "Alfa Romeo", ZLA: "Lancia", ZFF: "Ferrari", ZHW: "Lamborghini", ZAM: "Maserati", ZCF: "Iveco", ZAP: "Piaggio", ZDM: "Ducati",
@@ -53,6 +54,8 @@
     for (let i = 0; i < 17; i++) { const ch = v[i]; const n = /\d/.test(ch) ? +ch : TRANS[ch]; if (n == null) return null; sum += n * WT[i]; }
     const r = sum % 11; return r === 10 ? "X" : String(r);
   }
+  // I, O and Q are never used in a VIN: they are almost always a misread 1 or 0
+  function fixVin(raw) { return String(raw || "").toUpperCase().replace(/[\s.\-_*]/g, "").replace(/I/g, "1").replace(/[OQ]/g, "0"); }
   function decode(raw) {
     const v = raw.toUpperCase().replace(/[\s-]/g, "");
     const out = { v: v, issues: [], ok: false };
@@ -105,12 +108,12 @@
     const box = $("#sv-decode");
     if (!st.vin) { box.innerHTML = ""; return; }
     const d = decode(st.vin);
-    let h = '<div class="sv-dec"><div class="sv-dec-main"><span class="sv-vin">' + d.v.split("").map(function (c, i) { return '<span class="p' + (i < 3 ? "w" : i < 8 ? "d" : i === 8 ? "c" : i === 9 ? "y" : i === 10 ? "p" : "s") + '">' + esc(c) + "</span>"; }).join("") + "</span>";
+    let h = '<div class="sv-dec">' + (st.typed && st.typed !== st.vin ? '<p class="sv-fix">You typed <span class="mono">' + esc(st.typed) + '</span>. The letters I, O and Q are never used in a VIN, so they were read as <b>1</b> and <b>0</b>: decoding and checks use <span class="mono"><b>' + esc(st.vin) + '</b></span>. <button type="button" class="btn ghost" id="sv-usefix">Put corrected VIN in the box</button></p>' : "") + '<div class="sv-dec-main"><span class="sv-vin">' + d.v.split("").map(function (c, i) { return '<span class="p' + (i < 3 ? "w" : i < 8 ? "d" : i === 8 ? "c" : i === 9 ? "y" : i === 10 ? "p" : "s") + '">' + esc(c) + "</span>"; }).join("") + "</span>";
     h += '<span class="sv-legend"><span class="pw">WMI (maker)</span><span class="pd">vehicle description</span><span class="pc">check digit</span><span class="py">year</span><span class="pp">plant</span><span class="ps">serial</span></span></div>';
     if (d.issues.length) h += '<p class="bad">' + d.issues.map(esc).join("<br>") + "</p>";
     if (d.v.length === 17) {
       h += '<table class="sv-tbl">';
-      h += "<tr><th>Manufacturer (WMI " + esc(d.wmi) + ")</th><td>" + (d.maker ? esc(d.maker) : '<span class="hint">not in the offline list, see NHTSA below</span>') + "</td></tr>";
+      h += "<tr><th>Manufacturer (WMI " + esc(d.wmi) + ')</th><td id="sv-maker"' + (d.maker ? ">" + esc(d.maker) : ' data-empty="1"><span class="hint">not in the offline list, see NHTSA below</span>') + "</td></tr>";
       h += "<tr><th>Country of manufacture</th><td>" + esc(d.country || "unknown") + (d.region ? ' <span class="hint">(' + esc(d.region) + ")</span>" : "") + "</td></tr>";
       h += "<tr><th>Check digit (position 9)</th><td>" + (d.cdOk ? '<span class="ok">valid (' + esc(d.cd) + ")</span>" : d.na ? '<b class="bad">invalid: expected ' + esc(d.cd) + ", found " + esc(d.v[8]) + "</b> · mandatory on North American VINs, so this VIN is mistyped or false" : '<span class="hint">does not match (expected ' + esc(d.cd) + "); normal for many European and Asian VINs, which do not use a check digit</span>") + "</td></tr>";
       h += "<tr><th>Model year (position 10)</th><td>" + (d.years ? esc(d.years.join(" or ")) + (d.na ? "" : ' <span class="hint">(only reliable on North American VINs)</span>') : '<span class="hint">not encoded</span>') + "</td></tr>";
@@ -132,9 +135,11 @@
     const done = function (r) {
       if (vpicFor !== v || !cell()) return;
       if (!r) { cell().innerHTML = '<span class="hint">Could not reach NHTSA (offline or blocked).</span>' + link; return; }
-      const parts = [r.ModelYear, r.Make, r.Model, r.Trim, r.BodyClass, r.VehicleType].filter(function (x) { return x && x !== "Not Applicable"; });
+      const mk = document.getElementById("sv-maker");
+      if (mk && mk.dataset.empty && (r.Make || r.Manufacturer)) mk.innerHTML = esc(r.Make || r.Manufacturer) + ' <span class="hint">(from NHTSA)</span>';
+      const parts = [r.ModelYear, r.Make || r.Manufacturer, r.Model, r.Trim, r.BodyClass, r.VehicleType].filter(function (x) { return x && x !== "Not Applicable"; });
       const err = (r.ErrorCode || "").split(",").filter(function (c) { return c.trim() !== "0"; }).length ? r.ErrorText : "";
-      cell().innerHTML = (parts.length ? "<b>" + esc(parts.join(" · ")) + "</b>" + (r.PlantCountry ? ' <span class="hint">built in ' + esc(r.PlantCountry) + (r.Manufacturer ? " by " + esc(r.Manufacturer) : "") + "</span>" : "") : '<span class="hint">NHTSA has no data for this VIN (common for vehicles never sold in North America).</span>') +
+      cell().innerHTML = (parts.length ? "<b>" + esc(parts.join(" · ")) + "</b>" + (r.PlantCountry ? ' <span class="hint">built in ' + esc(r.PlantCountry) + (r.Manufacturer ? " by " + esc(r.Manufacturer) : "") + "</span>" : "") : '<span class="hint">NHTSA has no data for this VIN' + (/^7\b/.test(r.ErrorCode || "") || /not registered with NHTSA/i.test(r.ErrorText || "") ? ": the manufacturer code is not registered for the US market (normal for European-market vehicles)." : " (common for vehicles never sold in North America).") + "</span>") +
         (err && parts.length ? '<br><span class="hint">NHTSA note: ' + esc(err.split(";")[0]) + "</span>" : "") + link;
     };
     if (vcache[v] !== undefined) { done(vcache[v]); return; }
@@ -173,12 +178,13 @@
 
   // ---------- events ----------
   const timers = {};
-  function onInput(id, k, fn) { $(id).addEventListener("input", function () { const v = this.value; clearTimeout(timers[k]); timers[k] = setTimeout(function () { st[k] = v.trim().toUpperCase().replace(/\s+/g, k === "vin" ? "" : " "); fn(); }, 200); }); }
+  function onInput(id, k, fn) { $(id).addEventListener("input", function () { const v = this.value; clearTimeout(timers[k]); timers[k] = setTimeout(function () { if (k === "vin") { st.typed = v.trim().toUpperCase().replace(/[\s.\-_*]/g, ""); st.vin = fixVin(v); } else st[k] = v.trim().toUpperCase().replace(/\s+/g, " "); fn(); }, 200); }); }
   onInput("#sv-vin", "vin", function () { renderDecode(); render(); });
   onInput("#sv-plate", "plate", render);
   $("#sv-cc").addEventListener("change", function () { st.cc = this.value; render(); });
   $("#sv-by").addEventListener("click", function (e) { const b = e.target.closest("button[data-by]"); if (!b) return; st.by = b.dataset.by; this.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); render(); });
   host.addEventListener("click", function (e) {
+    if (e.target.id === "sv-usefix") { $("#sv-vin").value = st.vin; st.typed = st.vin; renderDecode(); render(); return; }
     const o = e.target.closest("[data-open]");
     if (o) { const r = D.checks[+o.dataset.open]; const val = r[3] === "plate" ? st.plate : (st.vin || st.plate); if (val) { try { navigator.clipboard.writeText(val); } catch (err) { /* ignore */ } window.LE_OSINT.toast && window.LE_OSINT.toast((r[3] === "plate" || !st.vin ? "Plate " : "VIN ") + val + " copied: paste it on the site"); } return; }
     const l = e.target.closest("[data-log]");
@@ -197,7 +203,7 @@
     lines.push("", "Note: a no-record result is not proof the vehicle is not stolen (national coverage only, reporting delays, cloned VINs).");
     window.LE_OSINT.copy(lines.filter(function (x, i) { return x !== "" || i > 2; }).join("\n"));
   });
-  window.LE_OSINT.stolenSearch = function (v) { $("#sv-vin").value = v; st.vin = v.trim().toUpperCase().replace(/\s+/g, ""); renderDecode(); render(); };
+  window.LE_OSINT.stolenSearch = function (v) { $("#sv-vin").value = v; st.typed = v.trim().toUpperCase().replace(/[\s.\-_*]/g, ""); st.vin = fixVin(v); renderDecode(); render(); };
   const m = location.hash.match(/^#stolen=(.+)$/); if (m) { try { window.LE_OSINT.stolenSearch(decodeURIComponent(m[1])); } catch (e) { /* ignore */ } }
   render();
 })();

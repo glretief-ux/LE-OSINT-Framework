@@ -504,3 +504,4 @@ tr.ln-old td { opacity: .78; }
 .pc-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-top: 16px; }
 .pc-info > div { background: var(--panel-2); border-radius: 10px; padding: 10px 12px; font-size: 13px; line-height: 1.5; }
 .pc-related { font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.sv-fix { background: var(--warn-soft); border-radius: 8px; padding: 8px 12px; margin: 0 0 10px; font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
