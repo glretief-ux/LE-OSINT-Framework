@@ -1181,6 +1181,7 @@ tr.ln-old td { opacity: .78; }
 .pc-info > div { background: var(--panel-2); border-radius: 10px; padding: 10px 12px; font-size: 13px; line-height: 1.5; }
 .pc-related { font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .sv-fix { background: var(--warn-soft); border-radius: 8px; padding: 8px 12px; margin: 0 0 10px; font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+.sv-how { margin: 6px 0 14px; padding: 10px 14px 10px 34px; background: var(--accent-soft); border-radius: 10px; font-size: 13.5px; line-height: 1.6; }
 
 </style>
 </head>
@@ -6034,7 +6035,7 @@ window.LE_STOLEN = {
     JTD: "Toyota", JTE: "Toyota", JTN: "Toyota", JT2: "Toyota", JTH: "Lexus", JHM: "Honda", JHL: "Honda", JN1: "Nissan", JN8: "Nissan SUV", JMZ: "Mazda", JM1: "Mazda", JF1: "Subaru", JS1: "Suzuki motorcycle", JS3: "Suzuki", JMB: "Mitsubishi", JA3: "Mitsubishi", JYA: "Yamaha", JKA: "Kawasaki",
     KMH: "Hyundai", KNA: "Kia", KND: "Kia SUV", KNM: "Renault Samsung", KL1: "GM Korea", KPT: "SsangYong / KGM",
     LSV: "SAIC Volkswagen", LFV: "FAW-Volkswagen", LRW: "Tesla Shanghai", LBV: "BMW Brilliance", LGX: "BYD", LC0: "BYD", LJ1: "JAC", LVS: "Ford China", LSJ: "SAIC MG", LB3: "Geely", LYV: "Volvo China", L6T: "Geely",
-    MA3: "Suzuki India", MAL: "Hyundai India", MAT: "Tata", MA1: "Mahindra", MRH: "Honda Thailand", MR0: "Toyota Thailand", MNT: "Nissan Thailand",
+    MA3: "Maruti Suzuki (India)", MBJ: "Toyota Kirloskar (India)", MAJ: "Ford India", MAK: "Honda India", MEE: "Renault India", MBH: "Suzuki India", MCA: "FCA India (Fiat / Jeep)", MZB: "Kia India", MAL: "Hyundai India", MAT: "Tata", MA1: "Mahindra", MRH: "Honda Thailand", MR0: "Toyota Thailand", MNT: "Nissan Thailand",
     "1FA": "Ford", "1FT": "Ford truck", "1FM": "Ford SUV", "1G1": "Chevrolet", "1GC": "Chevrolet truck", "1GN": "Chevrolet SUV", "1GT": "GMC truck", "1G6": "Cadillac", "1C4": "Jeep / Chrysler", "1C6": "Ram", "1J4": "Jeep", "1HG": "Honda USA", "1N4": "Nissan USA", "1HD": "Harley-Davidson", "2T1": "Toyota Canada", "2HG": "Honda Canada", "2C3": "Chrysler Canada", "3VW": "Volkswagen Mexico", "3FA": "Ford Mexico", "3N1": "Nissan Mexico", "3GN": "GM Mexico", "4T1": "Toyota USA", "4S4": "Subaru USA", "4JG": "Mercedes-Benz USA", "5YJ": "Tesla", "7SA": "Tesla", "5UX": "BMW USA", "5N1": "Nissan USA", "5NP": "Hyundai USA", "5FN": "Honda USA",
     "6FP": "Ford Australia", "6G1": "Holden", "8AP": "Fiat Argentina", "8AJ": "Toyota Argentina", "9BW": "Volkswagen Brazil", "9BD": "Fiat Brazil", "9BR": "Toyota Brazil", "93H": "Honda Brazil", "9BG": "GM Brazil"
   };
@@ -6085,6 +6086,7 @@ window.LE_STOLEN = {
     '<div class="pf"><span>Search by</span><div class="chips" id="sv-by"><button type="button" data-by="" aria-pressed="true">All</button><button type="button" data-by="vin" aria-pressed="false">Accepts VIN</button><button type="button" data-by="plate" aria-pressed="false">Plate only</button></div></div>' +
     "</div>" +
     '<div id="sv-decode"></div>' +
+    '<ol class="sv-how"><li><b>Type the VIN</b>: it is checked and decoded here, in the tool.</li><li><b>Press “Open &amp; copy VIN”</b> on a service below: the official site opens and the VIN is already copied. Paste it there (police sites do not let other pages search for you).</li><li><b>Set the Result</b> (No record / HIT), then <b>Copy check summary</b> for your case file.</li></ol>' +
     '<div class="ports-meta"><span id="sv-count"></span><span class="ports-actions"><button type="button" class="btn ghost" id="sv-summary">Copy check summary</button><button type="button" class="btn ghost" id="sv-reset">Clear results</button></span></div>' +
     '<div id="sv-list" class="sv-list"></div>' +
     '<div class="box-warn sv-warn"><b>A "no record" result does not mean the vehicle is clean.</b> Each service only holds thefts reported in its own country, often with a delay of days. Stolen vehicles are often given a <b>cloned VIN</b> copied from a legitimate vehicle, which passes every online check. Compare the VIN on the windscreen plate, door pillar, chassis stamping and documents; look for altered rivets, labels or welds; and ask your Interpol NCB or SIRENE bureau for SMV / SIS checks.</div>' +
@@ -6137,7 +6139,7 @@ window.LE_STOLEN = {
       if (mk && mk.dataset.empty && (r.Make || r.Manufacturer)) mk.innerHTML = esc(r.Make || r.Manufacturer) + ' <span class="hint">(from NHTSA)</span>';
       const parts = [r.ModelYear, r.Make || r.Manufacturer, r.Model, r.Trim, r.BodyClass, r.VehicleType].filter(function (x) { return x && x !== "Not Applicable"; });
       const err = (r.ErrorCode || "").split(",").filter(function (c) { return c.trim() !== "0"; }).length ? r.ErrorText : "";
-      cell().innerHTML = (parts.length ? "<b>" + esc(parts.join(" · ")) + "</b>" + (r.PlantCountry ? ' <span class="hint">built in ' + esc(r.PlantCountry) + (r.Manufacturer ? " by " + esc(r.Manufacturer) : "") + "</span>" : "") : '<span class="hint">NHTSA has no data for this VIN' + (/^7\b/.test(r.ErrorCode || "") || /not registered with NHTSA/i.test(r.ErrorText || "") ? ": the manufacturer code is not registered for the US market (normal for European-market vehicles)." : " (common for vehicles never sold in North America).") + "</span>") +
+      cell().innerHTML = (parts.length ? "<b>" + esc(parts.join(" · ")) + "</b>" + (r.PlantCountry ? ' <span class="hint">built in ' + esc(r.PlantCountry) + (r.Manufacturer ? " by " + esc(r.Manufacturer) : "") + "</span>" : "") : '<span class="hint">NHTSA has no data for this VIN' + (/^7\b/.test(r.ErrorCode || "") || /not registered with NHTSA/i.test(r.ErrorText || "") ? ": the manufacturer code is not registered for the US market (normal for vehicles built for Europe, Asia or Africa). The offline decode above still applies." : " (common for vehicles never sold in North America).") + "</span>") +
         (err && parts.length ? '<br><span class="hint">NHTSA note: ' + esc(err.split(";")[0]) + "</span>" : "") + link;
     };
     if (vcache[v] !== undefined) { done(vcache[v]); return; }

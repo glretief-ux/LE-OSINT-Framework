@@ -505,3 +505,4 @@ tr.ln-old td { opacity: .78; }
 .pc-info > div { background: var(--panel-2); border-radius: 10px; padding: 10px 12px; font-size: 13px; line-height: 1.5; }
 .pc-related { font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .sv-fix { background: var(--warn-soft); border-radius: 8px; padding: 8px 12px; margin: 0 0 10px; font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+.sv-how { margin: 6px 0 14px; padding: 10px 14px 10px 34px; background: var(--accent-soft); border-radius: 10px; font-size: 13.5px; line-height: 1.6; }
