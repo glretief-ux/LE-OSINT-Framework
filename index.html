@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Public+Sans:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="assets/vendor/leaflet.css?v=20261006b">
-<link rel="stylesheet" href="assets/style.css?v=20261006b">
+<link rel="stylesheet" href="assets/vendor/leaflet.css?v=20261006c">
+<link rel="stylesheet" href="assets/style.css?v=20261006c">
 </head>
 <body>
 <!--BODY-START-->
@@ -28,6 +28,7 @@
       <button type="button" data-view="lines">Shipping lines</button>
       <button type="button" data-view="flights">Flight tracker</button>
       <button type="button" data-view="stolen">Stolen vehicles</button>
+      <button type="button" data-view="precursors">Precursors</button>
       <button type="button" data-view="playbooks">Case playbooks</button>
       <button type="button" data-view="profile">Suspect profile</button>
       <button type="button" data-view="toolbox">Toolbox &amp; case log</button>
@@ -49,6 +50,7 @@
         <button type="button" data-view="lines">Shipping lines</button>
         <button type="button" data-view="flights">Flight tracker</button>
         <button type="button" data-view="stolen">Stolen vehicles</button>
+        <button type="button" data-view="precursors">Precursors</button>
         <button type="button" data-view="playbooks">Playbooks</button>
         <button type="button" data-view="profile">Suspect profile</button>
         <button type="button" data-view="toolbox">Toolbox</button>
@@ -313,6 +315,8 @@
 
       <section class="view" id="view-stolen" hidden><div id="stolen"></div></section>
 
+      <section class="view" id="view-precursors" hidden><div id="precursors"></div></section>
+
       <section class="view" id="view-playbooks" hidden><div id="playbooks"></div></section>
 
       <section class="view" id="view-profile" hidden>
@@ -358,20 +362,22 @@
 </div>
 <!--BODY-END-->
 
-<script src="assets/vendor/exifr.full.umd.js?v=20261006b"></script>
-<script src="data/links.js?v=20261006b"></script>
-<script src="data/playbooks.js?v=20261006b"></script>
-<script src="assets/app.js?v=20261006b"></script>
-<script src="assets/toolbox.js?v=20261006b"></script>
-<script src="data/ports.js?v=20261006b"></script>
-<script src="assets/ports.js?v=20261006b"></script>
-<script src="data/hs.js?v=20261006b"></script>
-<script src="assets/hs.js?v=20261006b"></script>
-<script src="data/shipping-lines.js?v=20261006b"></script>
-<script src="assets/lines.js?v=20261006b"></script>
-<script src="assets/vendor/leaflet.js?v=20261006b"></script>
-<script src="assets/flights.js?v=20261006b"></script>
-<script src="data/stolen-checks.js?v=20261006b"></script>
-<script src="assets/stolen.js?v=20261006b"></script>
+<script src="assets/vendor/exifr.full.umd.js?v=20261006c"></script>
+<script src="data/links.js?v=20261006c"></script>
+<script src="data/playbooks.js?v=20261006c"></script>
+<script src="assets/app.js?v=20261006c"></script>
+<script src="assets/toolbox.js?v=20261006c"></script>
+<script src="data/ports.js?v=20261006c"></script>
+<script src="assets/ports.js?v=20261006c"></script>
+<script src="data/hs.js?v=20261006c"></script>
+<script src="assets/hs.js?v=20261006c"></script>
+<script src="data/shipping-lines.js?v=20261006c"></script>
+<script src="assets/lines.js?v=20261006c"></script>
+<script src="assets/vendor/leaflet.js?v=20261006c"></script>
+<script src="assets/flights.js?v=20261006c"></script>
+<script src="data/stolen-checks.js?v=20261006c"></script>
+<script src="assets/stolen.js?v=20261006c"></script>
+<script src="data/precursors.js?v=20261006c"></script>
+<script src="assets/precursors.js?v=20261006c"></script>
 </body>
 </html>

@@ -431,6 +431,7 @@ Seizure Watch (open-source seizure monitor) | https://glretief-ux.github.io/Seiz
 ## New Psychoactive Substances
 UNODC Early Warning Advisory | https://www.unodc.org/LSS/Home/NPS | |
 ## Precursors
+Drug precursor finder (in this tool) | #precursors | N | | All INCB Table I and II chemicals: search a chemical, CAS or HS code to see if it is controlled and which drugs it is used for
 INCB Precursors | https://www.incb.org/incb/en/precursors/ | |
 INCB Tools for Competent National Authorities | https://www.incb.org/incb/en/precursors/precursors/tools_and_kits.html | L |
 ## Chemical Lookup

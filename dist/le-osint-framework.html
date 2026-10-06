@@ -1153,6 +1153,34 @@ tr.ln-old td { opacity: .78; }
 .sv-cc { font: 600 11px var(--mono); color: var(--muted); text-transform: uppercase; }
 #stolen .ports-bar select { font: 14px var(--font); padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); }
 
+/* Precursors */
+#precursors .ports-bar .pf input { width: 100%; }
+#precursors .ports-bar select { font: 14px var(--font); padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); }
+.pc-count { font-weight: 600; font-size: 14px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+.pc-card { background: var(--panel); border: 1px solid var(--line); border-left: 6px solid var(--muted); border-radius: 12px; padding: 14px 18px; margin-bottom: 12px; }
+.pc-card.t-I { border-left-color: var(--bad); } .pc-card.t-II { border-left-color: var(--warn); }
+.pc-status { font: 700 12.5px var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.pc-card.t-I .pc-status { color: var(--bad); } .pc-card.t-II .pc-status { color: var(--warn); }
+.pc-name { margin: 4px 0 2px; font-size: 21px; }
+.pc-syn { margin: 0 0 10px; color: var(--muted); font-size: 13.5px; }
+.pc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px 18px; font-size: 14px; }
+.pc-k { display: block; font: 600 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+.pc-drugs { display: flex; flex-wrap: wrap; gap: 5px; }
+.pc-drug { font: 600 13px var(--font); border: 1px solid var(--line); background: var(--accent-soft); color: var(--ink); padding: 4px 10px; border-radius: 999px; cursor: pointer; }
+.pc-drug:hover { border-color: var(--accent); }
+.pc-note { margin: 10px 0 4px; font-size: 13.5px; }
+.pc-links { margin: 6px 0 0; font-size: 13px; }
+.pc-badge { font: 600 11.5px var(--mono); padding: 2px 7px; border-radius: 5px; white-space: nowrap; background: var(--chip, #E8ECEA); color: var(--muted); }
+.pc-badge.t-I { background: color-mix(in srgb, var(--bad) 14%, transparent); color: var(--bad); } .pc-badge.t-II { background: var(--warn-soft); color: var(--warn); }
+.pc-open { font: 600 14px var(--font); background: none; border: 0; padding: 0; color: var(--ink); cursor: pointer; text-align: left; }
+.pc-open:hover { color: var(--accent); text-decoration: underline; }
+.pc-table td { vertical-align: top; font-size: 13.5px; }
+.pc-miss { background: var(--panel); border: 1px solid var(--line); border-left: 6px solid var(--muted); border-radius: 12px; padding: 14px 18px; font-size: 14px; }
+.pc-miss ul { margin: 8px 0; padding-left: 18px; }
+.pc-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; margin-top: 16px; }
+.pc-info > div { background: var(--panel-2); border-radius: 10px; padding: 10px 12px; font-size: 13px; line-height: 1.5; }
+.pc-related { font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+
 </style>
 </head>
 <body>
@@ -1171,6 +1199,7 @@ tr.ln-old td { opacity: .78; }
       <button type="button" data-view="lines">Shipping lines</button>
       <button type="button" data-view="flights">Flight tracker</button>
       <button type="button" data-view="stolen">Stolen vehicles</button>
+      <button type="button" data-view="precursors">Precursors</button>
       <button type="button" data-view="playbooks">Case playbooks</button>
       <button type="button" data-view="profile">Suspect profile</button>
       <button type="button" data-view="toolbox">Toolbox &amp; case log</button>
@@ -1192,6 +1221,7 @@ tr.ln-old td { opacity: .78; }
         <button type="button" data-view="lines">Shipping lines</button>
         <button type="button" data-view="flights">Flight tracker</button>
         <button type="button" data-view="stolen">Stolen vehicles</button>
+        <button type="button" data-view="precursors">Precursors</button>
         <button type="button" data-view="playbooks">Playbooks</button>
         <button type="button" data-view="profile">Suspect profile</button>
         <button type="button" data-view="toolbox">Toolbox</button>
@@ -1455,6 +1485,8 @@ tr.ln-old td { opacity: .78; }
       <section class="view" id="view-flights" hidden><div id="flights"></div></section>
 
       <section class="view" id="view-stolen" hidden><div id="stolen"></div></section>
+
+      <section class="view" id="view-precursors" hidden><div id="precursors"></div></section>
 
       <section class="view" id="view-playbooks" hidden><div id="playbooks"></div></section>
 
@@ -2788,6 +2820,7 @@ Seizure Watch (open-source seizure monitor) | https://glretief-ux.github.io/Seiz
 ## New Psychoactive Substances
 UNODC Early Warning Advisory | https://www.unodc.org/LSS/Home/NPS | |
 ## Precursors
+Drug precursor finder (in this tool) | #precursors | N | | All INCB Table I and II chemicals: search a chemical, CAS or HS code to see if it is controlled and which drugs it is used for
 INCB Precursors | https://www.incb.org/incb/en/precursors/ | |
 INCB Tools for Competent National Authorities | https://www.incb.org/incb/en/precursors/precursors/tools_and_kits.html | L |
 ## Chemical Lookup
@@ -3925,6 +3958,12 @@ window.LE_OSINT_PLAYBOOKS = [
     e.preventDefault();
     const id = a.getAttribute("href").slice(1);
     if (id === "ports" || id === "hs" || id === "lines") { showView(id); window.scrollTo(0, 0); return; }
+    if (id.indexOf("precursors") === 0) {
+      showView("precursors"); window.scrollTo(0, 0);
+      let v = ""; try { v = decodeURIComponent(id.split("=")[1] || ""); } catch (err) { v = ""; }
+      if (v && v.indexOf("{q}") < 0 && window.LE_OSINT.precursorSearch) window.LE_OSINT.precursorSearch(v);
+      return;
+    }
     if (id.indexOf("stolen") === 0) {
       showView("stolen"); window.scrollTo(0, 0);
       let v = ""; try { v = decodeURIComponent(id.split("=")[1] || ""); } catch (err) { v = ""; }
@@ -4393,7 +4432,7 @@ window.LE_OSINT_PLAYBOOKS = [
   applyTheme(theme);
   render();
   if (/^toolbox-/.test(h)) { showView("toolbox"); setTimeout(function () { const el = document.getElementById(h); if (el) el.scrollIntoView(); }, 50); }
-  else if (["toolbox", "about", "playbooks", "profile", "web", "flow", "desk", "ports", "hs", "lines", "flights", "stolen"].indexOf(h) > -1) showView(h);
+  else if (["toolbox", "about", "playbooks", "profile", "web", "flow", "desk", "ports", "hs", "lines", "flights", "stolen", "precursors"].indexOf(h) > -1) showView(h);
   else if (/^flights=/.test(h)) showView("flights");
   else if (/^stolen=/.test(h)) showView("stolen");
   else showView("flow");
@@ -6157,6 +6196,187 @@ window.LE_STOLEN = {
   });
   window.LE_OSINT.stolenSearch = function (v) { $("#sv-vin").value = v; st.vin = v.trim().toUpperCase().replace(/\s+/g, ""); renderDecode(); render(); };
   const m = location.hash.match(/^#stolen=(.+)$/); if (m) { try { window.LE_OSINT.stolenSearch(decodeURIComponent(m[1])); } catch (e) { /* ignore */ } }
+  render();
+})();
+
+</script>
+<script>
+/* LE OSINT Framework: drug precursors under international control (1988 UN Convention, Tables I and II).
+   Status as of October 2026: Tables as amended up to CND 67 (March 2024, in force 3 Dec 2024) and the
+   CND 68 (2025) reorganisation of the PMK glycidate esters. CND 69 (March 2026) scheduled no precursors.
+   Row: [name, other names / esters, table ("I", "II", or "S" = not in Tables I/II), CAS, HS 2022, year under control, [drug codes], role, note]
+   Salts of Table I and II substances are also controlled wherever they can exist (except salts of hydrochloric and sulphuric acid). */
+window.LE_PRECURSORS = {
+  updated: "2026-10",
+  drugs: {
+    HER: "Heroin", COC: "Cocaine", METH: "Methamphetamine", AMP: "Amphetamine", MDMA: "MDMA / MDA / MDEA (\"ecstasy\")", FEN: "Fentanyl and analogues",
+    LSD: "LSD", MQ: "Methaqualone", PCP: "Phencyclidine (PCP)", MCAT: "Methcathinone / cathinones", GHB: "GHB", MANY: "Many drugs (general reagent or solvent)"
+  },
+  rows: [
+    // ---------------- Table I ----------------
+    ["Acetic anhydride", "Ethanoic anhydride; acetyl oxide", "I", "108-24-7", "2915.24", "1988 (Table II), moved to Table I in 2001", ["HER", "MQ", "AMP", "METH"], "Acetylating agent", "Key chemical for heroin manufacture. Also used to make phenylacetone (P-2-P) and methaqualone. Large legitimate use (cellulose acetate, pharmaceuticals)."],
+    ["N-Acetylanthranilic acid", "2-Acetamidobenzoic acid", "I", "89-52-1", "2924.23", "1992", ["MQ"], "Precursor", "Methaqualone and mecloqualone."],
+    ["Ephedrine", "Ephedrine and its salts; (-)-ephedrine", "I", "299-42-3", "2939.41", "1988", ["METH", "MCAT"], "Precursor", "Also found in pharmaceutical preparations, which are a common source of diversion."],
+    ["Pseudoephedrine", "Pseudoephedrine and its salts; (+)-pseudoephedrine", "I", "90-82-4", "2939.42", "1988", ["METH", "MCAT"], "Precursor", "Widely used in cold medicines; diversion of preparations is common."],
+    ["Norephedrine", "Phenylpropanolamine; PPA", "I", "14838-15-4", "2939.44", "2000", ["AMP"], "Precursor", "Also used for 4-methylaminorex."],
+    ["Ergometrine", "Ergonovine", "I", "60-79-7", "2939.61", "1988", ["LSD"], "Precursor", ""],
+    ["Ergotamine", "", "I", "113-15-5", "2939.62", "1988", ["LSD"], "Precursor", ""],
+    ["Lysergic acid", "", "I", "82-58-6", "2939.63", "1988", ["LSD"], "Precursor", ""],
+    ["1-Phenyl-2-propanone", "P-2-P; P2P; BMK (benzyl methyl ketone); phenylacetone", "I", "103-79-7", "2914.31", "1988", ["AMP", "METH"], "Precursor", "Direct precursor of amphetamine and methamphetamine."],
+    ["Phenylacetic acid", "Benzeneacetic acid; PAA", "I", "103-82-2", "2916.34", "1988 (Table II), moved to Table I in 2010", ["AMP", "METH"], "Pre-precursor (via P-2-P)", "Used to make P-2-P. Legitimate use in penicillin production and perfumes."],
+    ["alpha-Phenylacetoacetonitrile", "APAAN; 3-oxo-2-phenylbutanenitrile", "I", "4468-48-8", "2926.40", "2014", ["AMP", "METH"], "Pre-precursor (via P-2-P)", "Designer precursor with almost no legitimate use; converted to P-2-P."],
+    ["alpha-Phenylacetoacetamide", "APAA; 3-oxo-2-phenylbutanamide", "I", "4433-77-6", "2924.29", "2019", ["AMP", "METH"], "Pre-precursor (via P-2-P)", "Designer precursor; converted to P-2-P."],
+    ["Methyl alpha-phenylacetoacetate", "MAPA; methyl 3-oxo-2-phenylbutanoate", "I", "16648-44-5", "2918.30", "2019", ["AMP", "METH"], "Pre-precursor (via P-2-P)", "Designer precursor; converted to P-2-P."],
+    ["P-2-P methyl glycidic acid and its esters", "BMK glycidic acid; 2-methyl-3-phenyloxirane-2-carboxylic acid; BMK methyl glycidate; BMK ethyl glycidate; methyl, ethyl, propyl, isopropyl, butyl, isobutyl, sec-butyl and tert-butyl esters", "I", "25547-51-7 (acid); 80532-66-7 (methyl ester)", "2918.99 (indicative)", "2024 (acid and 8 esters)", ["AMP", "METH"], "Pre-precursor (via P-2-P)", "Designer precursors; seized in large quantities in Europe as \"BMK glycidate\". Optical isomers included."],
+    ["Isosafrole", "cis- and trans-isosafrole", "I", "120-58-1", "2932.91", "1992", ["MDMA"], "Precursor", ""],
+    ["Safrole", "Also in safrole-rich oils (sassafras oil, Ocotea cymbarum oil)", "I", "94-59-7", "2932.94", "1992", ["MDMA"], "Precursor", "Essential oils rich in safrole are a known diversion route."],
+    ["Piperonal", "Heliotropine; 1,3-benzodioxole-5-carbaldehyde", "I", "120-57-0", "2932.93", "1992", ["MDMA"], "Precursor", "Legitimate use in fragrances and flavours."],
+    ["3,4-Methylenedioxyphenyl-2-propanone", "3,4-MDP-2-P; PMK (piperonyl methyl ketone); MDP2P", "I", "4676-39-5", "2932.92", "1992", ["MDMA"], "Precursor", "Direct precursor of MDMA, MDA and MDEA."],
+    ["3,4-MDP-2-P methyl glycidic acid and its esters", "PMK glycidic acid; PMK glycidate; PMK methyl glycidate; PMK ethyl glycidate; methyl, ethyl, propyl, isopropyl, butyl, isobutyl, sec-butyl and tert-butyl esters", "I", "2167189-50-4 (acid); 13605-48-6 (methyl ester)", "2932.99 (indicative)", "2019 (acid and methyl ester); other 7 esters 2024", ["MDMA"], "Pre-precursor (via PMK)", "Designer precursors. In 2025 the methyl ester was moved into the footnote with the other esters; control unchanged."],
+    ["4-Anilino-N-phenethylpiperidine", "ANPP; 4-ANPP; despropionyl fentanyl", "I", "21409-26-7", "2933.36", "2017", ["FEN"], "Precursor", "Immediate precursor of fentanyl."],
+    ["N-Phenethyl-4-piperidone", "NPP", "I", "39742-60-4", "2933.37", "2017", ["FEN"], "Precursor", ""],
+    ["4-Anilinopiperidine", "4-AP; N-phenylpiperidin-4-amine", "I", "23056-29-3", "2933.39", "2022", ["FEN"], "Precursor", ""],
+    ["tert-Butyl 4-(phenylamino)piperidine-1-carboxylate", "1-boc-4-AP; boc-4-AP", "I", "125541-22-2", "2933.39", "2022", ["FEN"], "Precursor", "Protected form of 4-AP."],
+    ["Norfentanyl", "N-phenyl-N-(piperidin-4-yl)propanamide", "I", "1609-66-5", "2933.39", "2022", ["FEN"], "Precursor", "Precursor of fentanyl and several analogues."],
+    ["4-Piperidone", "Piperidin-4-one (and its salts, e.g. hydrochloride monohydrate)", "I", "41661-47-6", "2933.39", "2024", ["FEN"], "Pre-precursor", "Widely used in industry; precursor of NPP and other fentanyl precursors."],
+    ["1-boc-4-Piperidone", "tert-Butyl 4-oxopiperidine-1-carboxylate; N-boc-4-piperidone", "I", "79099-07-3", "2933.39", "2024", ["FEN"], "Pre-precursor", ""],
+    ["Potassium permanganate", "KMnO4", "I", "7722-64-7", "2841.61", "1992 (Table II), moved to Table I in 2001", ["COC", "MCAT"], "Oxidising agent", "Used to purify coca paste into cocaine base. Large legitimate use (water treatment)."],
+    // ---------------- Table II ----------------
+    ["Acetone", "Propan-2-one; dimethyl ketone", "II", "67-64-1", "2914.11", "1988", ["COC", "HER", "MANY"], "Solvent", "Very common solvent; used in cocaine and heroin processing."],
+    ["Anthranilic acid", "2-Aminobenzoic acid", "II", "118-92-3", "2922.43", "1988", ["MQ"], "Precursor (via N-acetylanthranilic acid)", ""],
+    ["Ethyl ether", "Diethyl ether; ether", "II", "60-29-7", "2909.11", "1988", ["COC", "HER", "MANY"], "Solvent", ""],
+    ["Hydrochloric acid", "Hydrogen chloride", "II", "7647-01-0", "2806.10", "1992", ["COC", "HER", "METH", "MANY"], "Acid", "Used to make the hydrochloride salt of cocaine, heroin and methamphetamine. Its salts are not controlled."],
+    ["Methyl ethyl ketone", "MEK; butanone; 2-butanone", "II", "78-93-3", "2914.12", "1992", ["COC", "MANY"], "Solvent", "Commonly used in cocaine hydrochloride manufacture."],
+    ["Piperidine", "", "II", "110-89-4", "2933.32", "1988", ["PCP"], "Precursor", ""],
+    ["Sulphuric acid", "Sulfuric acid; oil of vitriol", "II", "7664-93-9", "2807.00", "1992", ["COC", "MANY"], "Acid", "Used in coca leaf extraction. Its salts are not controlled."],
+    ["Toluene", "Methylbenzene; toluol", "II", "108-88-3", "2902.30", "1992", ["COC", "MANY"], "Solvent", ""],
+    // ---------------- Not in Tables I/II (examples often asked about) ----------------
+    ["Benzaldehyde", "", "S", "100-52-7", "2912.21", "", ["AMP", "METH"], "Pre-precursor", "Not internationally controlled. On the INCB limited international special surveillance list; controlled in some countries."],
+    ["Nitroethane", "", "S", "79-24-3", "2904.20", "", ["AMP", "MDMA"], "Reagent", "Not internationally controlled. On the INCB special surveillance list; controlled in some countries."],
+    ["Methylamine", "Monomethylamine", "S", "74-89-5", "2921.11", "", ["METH", "MDMA"], "Reagent", "Not internationally controlled. On the INCB special surveillance list; nationally controlled in several countries (e.g. USA, Mexico)."],
+    ["Red phosphorus", "", "S", "7723-14-0", "2804.70", "", ["METH"], "Reagent", "Not internationally controlled. On the INCB special surveillance list; nationally controlled in several countries."],
+    ["Hydriodic acid", "Hydrogen iodide", "S", "10034-85-2", "2811.19", "", ["METH"], "Reagent", "Not internationally controlled. On the INCB special surveillance list; controlled in some countries."],
+    ["gamma-Butyrolactone", "GBL", "S", "96-48-0", "2932.20", "", ["GHB"], "Precursor / substitute", "Not internationally controlled (GHB itself is). Converts to GHB in the body; controlled nationally in many countries."],
+    ["1,4-Butanediol", "1,4-BD; BDO", "S", "110-63-4", "2905.39", "", ["GHB"], "Precursor / substitute", "Not internationally controlled. Converts to GHB in the body; controlled nationally in some countries."]
+  ]
+};
+
+</script>
+<script>
+/* LE OSINT Framework: drug precursor finder (1988 Convention Tables I and II) */
+(function () {
+  "use strict";
+  const D = window.LE_PRECURSORS;
+  const host = document.getElementById("precursors");
+  if (!D || !host) return;
+  const $ = function (s, r) { return (r || document).querySelector(s); };
+  const esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]; }); };
+  const norm = function (s) { return String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[\s,()'".\-–]+/g, ""); };
+
+  const ROWS = D.rows.map(function (r, i) {
+    const o = { i: i, n: r[0], syn: r[1], t: r[2], cas: r[3], hs: r[4], yr: r[5], drugs: r[6], role: r[7], note: r[8] };
+    o.keys = [r[0]].concat(r[1] ? r[1].split(/;\s*/) : []).map(norm).filter(Boolean);
+    o.casK = (r[3].match(/\d{2,7}-\d{2}-\d/g) || []).map(function (c) { return c.replace(/-/g, ""); });
+    o.hsK = r[4].replace(/\D/g, "");
+    o.text = (r[0] + " " + r[1]).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return o;
+  });
+  const ALIAS = {
+    HER: ["heroin", "diacetylmorphine", "diamorphine"], COC: ["cocaine", "crack", "cocainehydrochloride", "cocabase", "cocapaste"],
+    METH: ["methamphetamine", "metamfetamine", "meth", "crystalmeth", "crystal", "ice", "yaba", "shabu", "tik"], AMP: ["amphetamine", "amfetamine", "speed", "captagon"],
+    MDMA: ["mdma", "ecstasy", "molly", "mda", "mdea", "xtc"], FEN: ["fentanyl", "fentanil", "carfentanil", "fentanylanalogues", "fentanylanalogue", "acetylfentanyl"],
+    LSD: ["lsd", "lysergide", "acid"], MQ: ["methaqualone", "mandrax", "quaalude", "mecloqualone"], PCP: ["pcp", "phencyclidine", "angeldust"],
+    MCAT: ["methcathinone", "cathinone", "ephedrone", "cathinones"], GHB: ["ghb", "gammahydroxybutyrate", "liquidecstasy"]
+  };
+  function drugOf(q) { for (const k in ALIAS) { if (ALIAS[k].indexOf(q) > -1) return k; } return ""; }
+  const TBL = { I: ["Table I", "Under international control"], II: ["Table II", "Under international control"], S: ["Not in Table I or II", "Not under international control"] };
+
+  host.innerHTML =
+    '<header class="desk-head"><div><p class="eyebrow">Drug intelligence</p><h2>Drug precursors (INCB Tables I and II)</h2>' +
+    '<p class="hint" style="margin:4px 0 0;max-width:80ch">Search a chemical by name, other name, CAS number or HS code to see whether it is under international control under the 1988 UN Convention, and which drugs it is used to make. You can also search a drug (e.g. “fentanyl”) to list its precursors. All ' +
+    ROWS.filter(function (r) { return r.t === "I"; }).length + " entries of Table I and " + ROWS.filter(function (r) { return r.t === "II"; }).length + " of Table II, status " + esc(D.updated) + ".</p></div></header>" +
+    '<div class="ports-bar">' +
+    '<label class="pf" style="flex:2 1 320px">Chemical, CAS, HS code or drug<input id="pc-q" type="search" list="pc-names" placeholder="e.g. acetic anhydride, BMK glycidate, 4676-39-5, 2939.41, fentanyl" autocomplete="off" spellcheck="false"><datalist id="pc-names">' +
+    ROWS.map(function (r) { return '<option value="' + esc(r.n) + '">'; }).join("") + "</datalist></label>" +
+    '<label class="pf">Used to make<select id="pc-drug"><option value="">Any drug</option>' + Object.keys(D.drugs).filter(function (k) { return k !== "MANY"; }).map(function (k) { return '<option value="' + k + '">' + esc(D.drugs[k]) + "</option>"; }).join("") + "</select></label>" +
+    '<div class="pf"><span>Status</span><div class="chips" id="pc-t"><button type="button" data-t="" aria-pressed="true">All</button><button type="button" data-t="I" aria-pressed="false">Table I</button><button type="button" data-t="II" aria-pressed="false">Table II</button><button type="button" data-t="S" aria-pressed="false">Not controlled</button></div></div>' +
+    "</div>" +
+    '<div id="pc-out"></div>' +
+    '<div class="pc-info"><div><b>Table I</b> holds the chemicals that become part of the drug (precursors) and designer pre-precursors. They face the strictest controls: governments use pre-export notification through <a href="https://www.incb.org/incb/en/precursors/" target="_blank" rel="noopener">PEN Online</a> and import authorisations.</div>' +
+    "<div><b>Table II</b> holds reagents, acids and solvents with large legitimate trade. Governments monitor trade and report suspicious orders.</div>" +
+    "<div><b>Not in the Tables</b> does not mean free to trade: many such chemicals are on the INCB <i>limited international special surveillance list</i> and are controlled nationally or by the EU. Salts of Table I and II substances are covered (except salts of hydrochloric and sulphuric acid).</div></div>" +
+    '<p class="hint" style="margin-top:12px;max-width:92ch">Sources: 1988 UN Convention against Illicit Traffic, Tables I and II as amended by the Commission on Narcotic Drugs up to its 67th session (March 2024, in force 3 December 2024) and the 2025 reorganisation of the PMK glycidate esters; <a href="https://www.incb.org/incb/uploads/documents/PRECURSORS/RED_LIST/RED_LIST_E.pdf" target="_blank" rel="noopener">INCB Red List</a> (official list with HS codes and CAS numbers); <a href="https://www.incb.org/incb/en/news/news_2024/scheduling-2024-precursors.html" target="_blank" rel="noopener">INCB on the 2024 additions</a>. ' +
+    'National lists can be stricter: <a href="https://taxation-customs.ec.europa.eu/customs-4/prohibitions-and-restrictions/drug-precursors_en" target="_blank" rel="noopener">EU drug precursor categories</a> · <a href="https://www.ecfr.gov/current/title-21/chapter-II/part-1310/section-1310.02" target="_blank" rel="noopener">US DEA List I / List II</a>. HS codes marked “indicative” are not named in the HS and depend on national classification. Use of a chemical is described at the level of the drug it is used for, for risk profiling only.</p>';
+
+  const st = { q: "", drug: "", t: "" };
+  function chipDrugs(r) { return r.drugs.map(function (k) { return '<button type="button" class="pc-drug" data-drug="' + k + '">' + esc(D.drugs[k]) + "</button>"; }).join(""); }
+  function badge(r) { return '<span class="pc-badge t-' + r.t + '">' + (r.t === "S" ? "Not in Tables I / II" : TBL[r.t][0]) + "</span>"; }
+  function card(r) {
+    const hsD = r.hsK.slice(0, 6);
+    const casFirst = (r.cas.match(/\d{2,7}-\d{2}-\d/) || [""])[0];
+    return '<article class="pc-card t-' + r.t + '"><div class="pc-status">' + (r.t === "S" ? "✕ " : "● ") + esc(TBL[r.t][1]) + (r.t !== "S" ? " · <b>" + TBL[r.t][0] + "</b> of the 1988 Convention" : " (1988 Convention)") + "</div>" +
+      '<h3 class="pc-name">' + esc(r.n) + "</h3>" + (r.syn ? '<p class="pc-syn">' + esc(r.syn) + "</p>" : "") +
+      '<div class="pc-grid"><div><span class="pc-k">Used to make</span><div class="pc-drugs">' + chipDrugs(r) + "</div></div>" +
+      '<div><span class="pc-k">Role</span>' + esc(r.role) + "</div>" +
+      '<div><span class="pc-k">CAS number</span>' + (r.cas ? r.cas.split(/;\s*/).map(function (c) { const m = c.match(/\d{2,7}-\d{2}-\d/); return m ? '<button type="button" class="code-btn" data-copy="' + m[0] + '">' + esc(m[0]) + "</button>" + esc(c.replace(m[0], "")) : esc(c); }).join("<br>") : "–") + "</div>" +
+      '<div><span class="pc-k">HS code</span>' + (r.hs ? '<button type="button" class="code-btn" data-copy="' + esc(r.hs.split(" ")[0]) + '">' + esc(r.hs.split(" ")[0]) + "</button>" + esc(r.hs.slice(r.hs.split(" ")[0].length)) + ' · <a href="#hs" data-hs="' + hsD + '">HS codes tab</a> · <a href="https://ec.europa.eu/taxation_customs/dds2/taric/measures.jsp?Lang=en&Taric=' + (hsD + "0000").slice(0, 10) + '" target="_blank" rel="noopener">EU TARIC</a>' : "–") + "</div>" +
+      (r.yr ? '<div><span class="pc-k">Under international control since</span>' + esc(r.yr) + "</div>" : "") + "</div>" +
+      (r.note ? '<p class="pc-note">' + esc(r.note) + "</p>" : "") +
+      '<p class="pc-links"><a href="https://pubchem.ncbi.nlm.nih.gov/#query=' + encodeURIComponent(casFirst || r.n) + '" target="_blank" rel="noopener">PubChem</a> · <a href="https://www.incb.org/incb/uploads/documents/PRECURSORS/RED_LIST/RED_LIST_E.pdf" target="_blank" rel="noopener">INCB Red List</a> · <a href="https://news.google.com/search?q=' + encodeURIComponent('"' + r.n.split(" and its")[0] + '" (seizure OR seized OR smuggling)') + '" target="_blank" rel="noopener">Seizure news</a></p></article>';
+  }
+  function filtered(list) { return list.filter(function (r) { return (!st.t || r.t === st.t) && (!st.drug || r.drugs.indexOf(st.drug) > -1); }); }
+  function search(q) {
+    const n = norm(q), digits = q.replace(/\D/g, "");
+    if (!n) return { kind: "none", list: [] };
+    const d = drugOf(n);
+    if (d) return { kind: "drug", drug: d, list: ROWS.filter(function (r) { return r.drugs.indexOf(d) > -1; }) };
+    if (/^\d{2,7}-?\d{2}-?\d$/.test(q.trim())) { const L = ROWS.filter(function (r) { return r.casK.indexOf(digits) > -1; }); if (L.length) return { kind: "cas", list: L }; }
+    if (/^\d{4}(\.?\d{2})?$/.test(q.trim())) { const L = ROWS.filter(function (r) { return r.hsK.indexOf(digits) === 0 || digits.indexOf(r.hsK) === 0; }); if (L.length) return { kind: "hs", list: L }; }
+    const words = q.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").split(/[\s,]+/).filter(function (w) { return w.length > 1; });
+    const part = n.length >= 3 ? ROWS.filter(function (r) { return r.keys.some(function (k) { return k.indexOf(n) > -1; }) || (words.length > 1 && words.every(function (w) { return r.text.indexOf(w) > -1; })); }) : [];
+    const exact = ROWS.filter(function (r) { return r.keys.indexOf(n) > -1; });
+    if (exact.length) return { kind: "chem", list: exact, related: part.filter(function (r) { return exact.indexOf(r) < 0; }) };
+    return { kind: part.length ? "chem" : "miss", list: part };
+  }
+  function overview(list) {
+    return '<div class="tbl-wrap ports-tbl"><table class="pc-table"><thead><tr><th>Substance</th><th style="width:120px">Status</th><th>Used to make</th><th style="width:150px">Role</th><th style="width:130px">CAS</th><th style="width:100px">HS</th></tr></thead><tbody>' +
+      list.map(function (r) { return '<tr><td><button type="button" class="pc-open" data-name="' + esc(r.n) + '">' + esc(r.n) + "</button>" + (r.syn ? '<br><span class="hint">' + esc(r.syn.length > 80 ? r.syn.slice(0, 78) + "…" : r.syn) + "</span>" : "") + "</td><td>" + badge(r) + "</td><td>" + r.drugs.map(function (k) { return esc(D.drugs[k].split(" (")[0].split(" / ")[0]); }).join(", ") + "</td><td>" + esc(r.role) + '</td><td class="mono">' + esc((r.cas.match(/\d{2,7}-\d{2}-\d/) || [""])[0]) + '</td><td class="mono">' + esc(r.hs.split(" ")[0]) + "</td></tr>"; }).join("") +
+      "</tbody></table></div>";
+  }
+  function render() {
+    const out = $("#pc-out"), res = search(st.q);
+    let h = "";
+    if (res.kind === "none") {
+      const L = filtered(ROWS);
+      h = '<p class="pc-count">' + L.length + " substance" + (L.length === 1 ? "" : "s") + (st.drug ? " used for " + esc(D.drugs[st.drug]) : "") + (st.t ? " · " + esc(TBL[st.t][0]) : "") + ' <span class="ports-actions"><button type="button" class="btn ghost" id="pc-copy">Copy list</button></span></p>' + overview(L);
+    } else if (res.kind === "miss") {
+      h = '<div class="pc-miss"><b>“' + esc(st.q) + '” is not in Table I or Table II of the 1988 Convention</b> (or is spelled differently: try the CAS number or another name).' +
+        "<ul><li>It may still be controlled <b>nationally or in the EU</b>, or be on the INCB <b>limited international special surveillance list</b> of non-scheduled chemicals.</li><li>Check the chemical's identity and CAS number, then the national list of the countries involved.</li></ul>" +
+        '<p class="pc-links"><a href="https://pubchem.ncbi.nlm.nih.gov/#query=' + encodeURIComponent(st.q) + '" target="_blank" rel="noopener">Look it up in PubChem</a> · <a href="https://www.incb.org/incb/en/precursors/" target="_blank" rel="noopener">INCB precursors (special surveillance list)</a> · <a href="https://taxation-customs.ec.europa.eu/customs-4/prohibitions-and-restrictions/drug-precursors_en" target="_blank" rel="noopener">EU categories</a> · <a href="https://www.ecfr.gov/current/title-21/chapter-II/part-1310/section-1310.02" target="_blank" rel="noopener">US List I / II</a></p></div>';
+    } else {
+      const L = filtered(res.list);
+      const head = res.kind === "drug" ? "Chemicals used to make <b>" + esc(D.drugs[res.drug]) + "</b>: " + L.filter(function (r) { return r.t !== "S"; }).length + " under international control" + (L.some(function (r) { return r.t === "S"; }) ? ", plus non-scheduled chemicals of concern" : "") : L.length + " match" + (L.length === 1 ? "" : "es") + " for “" + esc(st.q) + "”";
+      h = '<p class="pc-count">' + head + "</p>" + (L.map(card).join("") || '<p class="hint">No match with the current filters.</p>') +
+        (res.related && res.related.length ? '<p class="pc-related">Related: ' + res.related.map(function (r) { return '<button type="button" class="pc-open" data-name="' + esc(r.n) + '">' + esc(r.n) + "</button> " + badge(r); }).join(" · ") + "</p>" : "");
+    }
+    out.innerHTML = h;
+  }
+
+  let t = 0;
+  $("#pc-q").addEventListener("input", function () { const v = this.value; clearTimeout(t); t = setTimeout(function () { st.q = v.trim(); render(); }, 160); });
+  $("#pc-drug").addEventListener("change", function () { st.drug = this.value; render(); });
+  $("#pc-t").addEventListener("click", function (e) { const b = e.target.closest("button[data-t]"); if (!b) return; st.t = b.dataset.t; this.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); render(); });
+  host.addEventListener("click", function (e) {
+    const c = e.target.closest("[data-copy]"); if (c) { window.LE_OSINT.copy(c.dataset.copy); return; }
+    const o = e.target.closest("[data-name]"); if (o) { $("#pc-q").value = o.dataset.name; st.q = o.dataset.name; render(); window.scrollTo(0, host.getBoundingClientRect().top + window.scrollY - 80); return; }
+    const d = e.target.closest("[data-drug]"); if (d) { $("#pc-q").value = ""; st.q = ""; st.drug = d.dataset.drug; $("#pc-drug").value = st.drug; render(); return; }
+    const hs = e.target.closest("[data-hs]"); if (hs) { e.preventDefault(); const btn = document.querySelector('.topnav button[data-view="hs"]'); if (btn) btn.click(); if (window.LE_OSINT.hsSearch) window.LE_OSINT.hsSearch(hs.dataset.hs); window.scrollTo(0, 0); return; }
+    if (e.target.id === "pc-copy") {
+      const L = filtered(ROWS);
+      window.LE_OSINT.copy(["Substance\tStatus\tUsed to make\tRole\tCAS\tHS"].concat(L.map(function (r) { return [r.n, r.t === "S" ? "Not in Tables I/II" : "Table " + r.t, r.drugs.map(function (k) { return D.drugs[k]; }).join("; "), r.role, r.cas, r.hs].join("\t"); })).join("\n"));
+    }
+  });
+  window.LE_OSINT.precursorSearch = function (v) { $("#pc-q").value = v; st.q = v; render(); };
   render();
 })();
 
