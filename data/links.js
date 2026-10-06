@@ -4,6 +4,7 @@
   HOW TO EDIT (works fine in GitHub's web editor):
 
   # Category name                 -> top-level branch (add [LE+] to mark a law-enforcement addition)
+  # Country name [Country]        -> a country under "By country" (start each link with its type, e.g. "Companies: ...")
   ## Sub-category                 -> second level
   ### Sub-sub-category            -> third level
   > Note text                     -> guidance note shown under the current branch
@@ -31,7 +32,6 @@ window.LE_OSINT_DATA = String.raw`
 ## Username Search Engines
 WhatsMyName | https://whatsmyname.app/?q={q} | | user
 Namechk | https://namechk.com/ | |
-KnowEm | https://knowem.com/checkusernames.php?u={q} | | user
 Instant Username Search | https://instantusername.com/ | |
 UserSearch | https://usersearch.com/ | | | Reverse username, email, phone and picture lookups (free searches, no signup)
 Google (exact handle) | https://www.google.com/search?q=%22{q}%22 | D | user
@@ -85,7 +85,7 @@ Whoxy Reverse WHOIS | https://www.whoxy.com/ | |
 DNSDumpster | https://dnsdumpster.com/ | |
 SecurityTrails | https://securitytrails.com/domain/{q}/dns | R | domain
 crt.sh (certificates) | https://crt.sh/?q={q} | | domain
-DNSlytics | https://dnslytics.com/domain/{q} | | domain
+DNSlytics | https://dnslytics.com/ | |
 Robtex | https://www.robtex.com/dns-lookup/{q} | | domain
 MXToolbox | https://mxtoolbox.com/SuperTool.aspx?action=mx%3a{q} | | domain
 ViewDNS Reverse IP | https://viewdns.info/reverseip/?host={q}&t=1 | | domain,ip
@@ -185,7 +185,6 @@ YouTube Search | https://www.youtube.com/results?search_query={q} | | kw,name
 YouTube Geofind (videos by location) | https://mattw.io/youtube-geofind/ | |
 ## Reddit
 Reddit Search | https://www.reddit.com/search/?q={q} | | kw
-OSINT Combine Reddit Post Analyser | https://www.osintcombine.com/reddit-post-analyser | N | | Posting times and activity of a Reddit user
 Reveddit (removed content) | https://www.reveddit.com/y/{q}/ | | user
 Arctic Shift (Reddit archive) | https://arctic-shift.photon-reddit.com/ | |
 ## VK & Russian-language
@@ -198,8 +197,8 @@ Bluesky Search | https://bsky.app/search?q={q} | | kw,name,user
 Mastodon (instance search) | https://joinmastodon.org/servers | |
 
 ## Other Platforms (direct profile checks)
-Threads | https://www.threads.net/@{q} | | user
-Snapchat | https://www.snapchat.com/add/{q} | | user
+Threads | https://www.threads.com/@{q} | | user
+Snapchat | https://www.snapchat.com/@{q} | | user
 Facebook (vanity name) | https://www.facebook.com/{q} | | user
 Pinterest | https://www.pinterest.com/{q}/ | | user
 Tumblr | https://{q}.tumblr.com/ | | user
@@ -421,7 +420,7 @@ FATF Trade-Based Money Laundering | https://www.fatf-gafi.org/en/topics/methods-
 
 # Drug Intelligence [LE+]
 ## Reports & Data
-UNODC World Drug Report | https://www.unodc.org/unodc/en/data-and-analysis/world-drug-report.html | |
+UNODC World Drug Report 2026 | https://www.unodc.org/unodc/en/data-and-analysis/world-drug-report-2026.html | |
 UNODC Drugs Monitoring Platform | https://dmp.unodc.org/ | |
 EUDA (formerly EMCDDA) | https://www.euda.europa.eu/ | |
 EUDA Wastewater Analysis | https://www.euda.europa.eu/topics/wastewater_en | |
@@ -504,7 +503,7 @@ Bellingcat OSM Search | https://osm-search.bellingcat.com/ | |
 Overpass Turbo | https://overpass-turbo.eu/ | |
 GeoNames | https://www.geonames.org/search.html?q={q} | | place
 PeakVisor (mountain skylines) | https://peakvisor.com/ | |
-PeakFinder | https://www.peakfinder.org/ | N | | 360° mountain panoramas from any point to match skylines in photos
+PeakFinder | https://www.peakfinder.com/ | N | | 360° mountain panoramas from any point to match skylines in photos
 GeoHints | https://geohints.com/ | N | | Country clues: bollards, road signs, plates, utility poles
 TracePoint | https://kluter.github.io/TracePoint/ | N | | Find where a photo was taken by intersecting sight lines
 BBBike map compare | https://mc.bbbike.org/mc/ | N | | Compare the same spot on many map and satellite providers side by side
@@ -520,7 +519,7 @@ Zoom Earth | https://zoom.earth/ | |
 Satellites.pro | https://satellites.pro/ | N | | Satellite maps from several providers
 Google Earth Timelapse | https://earthengine.google.com/timelapse/ | N | | Satellite change over time since 1984
 Liveuamap | https://liveuamap.com/ | N | | Live incident maps for conflict areas
-Soar | https://soar.earth/ | |
+Soar Atlas | https://soaratlas.com/ | |
 ## Chronolocation & Weather
 SunCalc (sun position & shadows) | https://www.suncalc.org/ | |
 ShadowMap | https://shadowmap.org/ | N | | Shadows of real buildings at any date and time
@@ -573,7 +572,6 @@ archive.today | https://archive.ph/{q} | | url
 Internet Archive Search | https://archive.org/search?query={q} | | kw
 CachedView | https://cachedview.nl/ | |
 Arquivo.pt | https://arquivo.pt/ | |
-UK Web Archive | https://www.webarchive.org.uk/ | |
 Ghostarchive | https://ghostarchive.org/ | |
 
 # Language Translation
@@ -594,7 +592,7 @@ Metadata2Go | https://www.metadata2go.com/ | P |
 MediaInfo | https://mediaarea.net/en/MediaInfo | T |
 FOCA (document metadata) | https://github.com/ElevenPaths/FOCA | T |
 Metagoofil | https://github.com/opsdisk/metagoofil | T |
-Content Credentials (C2PA) Verify | https://contentcredentials.org/verify | |
+Content Credentials (C2PA) Verify | https://verify.contentauthenticity.org/ | |
 
 # Mobile Emulation
 Android Studio Emulator | https://developer.android.com/studio | T |
@@ -709,8 +707,7 @@ Awesome OSINT | https://github.com/jivoi/awesome-osint | |
 Hive AI-Generated Content Detection | https://hivemoderation.com/ai-generated-content-detection | |
 Illuminarty | https://illuminarty.ai/ | |
 AI or Not | https://www.aiornot.com/ | R |
-Deepware Scanner (deepfake video) | https://scanner.deepware.ai/ | |
-Content Credentials Verify | https://contentcredentials.org/verify | |
+Content Credentials Verify | https://verify.contentauthenticity.org/ | |
 ## Transcription (run locally)
 OpenAI Whisper | https://github.com/openai/whisper | T |
 ## Assistants
@@ -759,7 +756,7 @@ DNS Leak Test | https://www.dnsleaktest.com/ | |
 Firefox Multi-Account Containers | https://addons.mozilla.org/firefox/addon/multi-account-containers/ | T |
 Tails | https://tails.net/ | T |
 Whonix | https://www.whonix.org/ | T |
-Kasm Workspaces | https://www.kasmweb.com/ | T |
+Kasm Workspaces | https://kasm.com/ | T |
 ## Research Personas
 This Person Does Not Exist | https://thispersondoesnotexist.com/ | |
 Fake Name Generator | https://www.fakenamegenerator.com/ | |
@@ -929,87 +926,91 @@ Action Fraud (UK) | https://www.actionfraud.police.uk/ | |
 FBI IC3 (US) | https://www.ic3.gov/ | |
 APWG | https://apwg.org/ | |
 
-# Country Sources [LE+]
-> National company registers, gazettes, courts, wanted lists and the marketplaces people actually use. Search them with the subject's name and companies.
-## Belgium
-KBO / BCE company search | https://kbopub.economie.fgov.be/kbopub/zoeknaamfonetischform.html | |
-Belgian Official Gazette | https://www.ejustice.just.fgov.be/ | |
-Federal Police wanted persons | https://www.police.be/wanted/en/wanted/wanted-persons | |
-2dehands / 2ememain | https://www.2dehands.be/q/{q}/ | | kw
-FSMA warnings | https://www.fsma.be/en/warnings | |
-## Netherlands
-KVK company search | https://www.kvk.nl/zoeken/?source=all&q={q} | | org
-Rechtspraak uitspraken | https://uitspraken.rechtspraak.nl/ | |
-Politie gezocht | https://www.politie.nl/gezocht | |
-Marktplaats | https://www.marktplaats.nl/q/{q}/ | | kw
-## France
-Annuaire des Entreprises | https://annuaire-entreprises.data.gouv.fr/rechercher?terme={q} | | org,name
-Pappers | https://www.pappers.fr/recherche?q={q} | | org,name
-BODACC | https://www.bodacc.fr/ | |
-Leboncoin | https://www.leboncoin.fr/recherche?text={q} | | kw
-PagesBlanches | https://www.pagesjaunes.fr/pagesblanches | |
-## Germany
-Handelsregister | https://www.handelsregister.de/ | |
-North Data | https://www.northdata.com/ | |
-Das Telefonbuch | https://www.dastelefonbuch.de/ | |
-Kleinanzeigen | https://www.kleinanzeigen.de/s-{q}/k0 | | kw
-## Luxembourg
-North Data (RCS data) | https://www.northdata.com/ | |
-## United Kingdom
-Companies House | https://find-and-update.company-information.service.gov.uk/search?q={q} | | org,name
-Companies House officers | https://find-and-update.company-information.service.gov.uk/search/officers?q={q} | | name
-The Gazette | https://www.thegazette.co.uk/all-notices/notice?text={q} | | name,org
-BAILII | https://www.bailii.org/ | |
-NCA Most Wanted | https://www.nationalcrimeagency.gov.uk/most-wanted | |
-## Ireland
-CRO company search (CORE) | https://cro.ie/post-registration/company-search/ | |
-DoneDeal | https://www.donedeal.ie/ | |
-## Spain
-BORME (company gazette) | https://www.boe.es/diario_borme/ | |
-Wallapop | https://es.wallapop.com/app/search?keywords={q} | | kw
-## Portugal
-Publicações de Atos Societários | https://publicacoes.mj.pt/ | |
-OLX Portugal | https://www.olx.pt/ | |
-## Italy
-Registro Imprese | https://www.registroimprese.it/ | |
-Subito | https://www.subito.it/ | |
-## Poland
-KRS court register | https://prs.ms.gov.pl/krs | |
-Allegro | https://allegro.pl/listing?string={q} | | kw
-OLX Poland | https://www.olx.pl/ | |
-## Romania
-ONRC trade register | https://www.onrc.ro/index.php/en/ | |
-OLX Romania | https://www.olx.ro/ | |
-## Albania
-QKB business register | https://qkb.gov.al/en/business-register/ | |
-## Türkiye
-Ticaret Sicil Gazetesi | https://www.ticaretsicil.gov.tr/ | |
-sahibinden | https://www.sahibinden.com/ | |
-## Morocco
-Directinfo (OMPIC) | https://www.directinfo.ma/ | |
-Avito.ma | https://www.avito.ma/ | |
-## Nigeria
-CAC public search | https://icrp.cac.gov.ng/public-search/ | |
-Jiji | https://jiji.ng/ | |
-## United Arab Emirates
-Dubizzle | https://dubai.dubizzle.com/ | |
-## Colombia
-RUES company register | https://www.rues.org.co/ | |
-## Ecuador
-Superintendencia de Compañías | https://www.supercias.gob.ec/ | |
-## Brazil
-Receita Federal CNPJ | https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/cnpjreva_solicitacao.asp | |
-JusBrasil (court cases) | https://www.jusbrasil.com.br/ | |
-## United States
-TruePeopleSearch | https://www.truepeoplesearch.com/ | |
-CourtListener | https://www.courtlistener.com/?q={q} | | name,org
-Federal Inmate Locator | https://www.bop.gov/inmateloc/ | |
-FBI Most Wanted | https://www.fbi.gov/wanted | |
-## China
-Baidu | https://www.baidu.com/s?wd={q} | | kw,name,org
-Weibo | https://weibo.com/ | |
-## Russia
-Rusprofile | https://www.rusprofile.ru/search?query={q} | | org,name
-VK | https://vk.com/ | R |
-
+# Albania [Country]
+Companies: QKB business register | https://qkb.gov.al/en/business-register/ | | | National Business Centre: companies, owners, administrators
+# Belgium [Country]
+Companies: KBO / BCE | https://kbopub.economie.fgov.be/kbopub/zoeknaamfonetischform.html | | | Crossroads Bank for Enterprises: company number, address, directors, activities
+Gazette: Belgisch Staatsblad / Moniteur belge | https://www.ejustice.just.fgov.be/ | | | Official journal: company publications, appointments, legislation
+Courts: Juportal case law | https://juportal.be/ | | | Published Belgian court decisions
+Wanted: Federal Police wanted persons | https://www.police.be/wanted/en/wanted/wanted-persons | |
+Warnings: FSMA investment-fraud warnings | https://www.fsma.be/en/warnings | | | Fraudulent investment firms and websites
+Marketplace: 2dehands / 2ememain | https://www.2dehands.be/q/{q}/ | | kw
+# Brazil [Country]
+Companies: Receita Federal CNPJ | https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/cnpjreva_solicitacao.asp | | | Company registration by CNPJ number
+Courts: JusBrasil | https://www.jusbrasil.com.br/ | | | Court cases and legal news
+# China [Country]
+Companies: National Enterprise Credit Information (GSXT) | https://www.gsxt.gov.cn/ | | | Official company register (Chinese)
+Search: Baidu | https://www.baidu.com/s?wd={q} | | kw,name,org | Main Chinese search engine
+Social: Weibo | https://weibo.com/ | R |
+# Colombia [Country]
+Companies: RUES company register | https://www.rues.org.co/ | | | Single business and social register
+# Ecuador [Country]
+Companies: Superintendencia de Compañías | https://www.supercias.gob.ec/ | | | Companies, shareholders and directors
+# France [Country]
+Companies: Annuaire des Entreprises | https://annuaire-entreprises.data.gouv.fr/rechercher?terme={q} | | org,name | Official company directory (free)
+Companies: Pappers | https://www.pappers.fr/recherche?q={q} | | org,name | Companies, directors, accounts
+Gazette: BODACC | https://www.bodacc.fr/ | | | Official notices: sales, insolvencies, changes
+People: PagesBlanches | https://www.pagesjaunes.fr/pagesblanches | | | Phone directory
+Marketplace: Leboncoin | https://www.leboncoin.fr/recherche?text={q} | | kw
+# Germany [Country]
+Companies: Handelsregister | https://www.handelsregister.de/ | | | Official commercial register
+Companies: North Data | https://www.northdata.com/ | | | Company network, directors and filings (free basic use; also other EU countries)
+Insolvency: Insolvenzbekanntmachungen | https://neu.insolvenzbekanntmachungen.de/ | | | Official insolvency notices
+Wanted: BKA Fahndung | https://www.bka.de/DE/IhreSicherheit/Fahndungen/Personen/personen_node.html | | | Federal Criminal Police wanted persons
+People: Das Telefonbuch | https://www.dastelefonbuch.de/ | | | Phone directory
+Marketplace: Kleinanzeigen | https://www.kleinanzeigen.de/s-{q}/k0 | | kw
+# Ireland [Country]
+Companies: CRO company search (CORE) | https://cro.ie/post-registration/company-search/ | | | Companies Registration Office
+Marketplace: DoneDeal | https://www.donedeal.ie/ | |
+# Italy [Country]
+Companies: Registro Imprese | https://www.registroimprese.it/ | | | Chambers of commerce company register (basic search free)
+Marketplace: Subito | https://www.subito.it/ | |
+# Luxembourg [Country]
+Companies: Luxembourg Business Registers (RCS) | https://www.lbr.lu/ | | | Trade register, beneficial owners (RBE) and RESA publications
+Gazette: Legilux | https://legilux.public.lu/ | | | Official journal of Luxembourg
+# Morocco [Country]
+Companies: Directinfo (OMPIC) | https://www.directinfo.ma/ | | | Company information from the trade register
+Marketplace: Avito.ma | https://www.avito.ma/ | |
+# Netherlands [Country]
+Companies: KVK company search | https://www.kvk.nl/zoeken/?source=all&q={q} | | org | Chamber of Commerce register
+Courts: Rechtspraak uitspraken | https://uitspraken.rechtspraak.nl/ | | | Published Dutch court decisions
+Insolvency: Centraal Insolventieregister | https://insolventies.rechtspraak.nl/ | | | Bankruptcies and debt restructuring
+Wanted: Politie gezocht | https://www.politie.nl/gezocht | |
+Marketplace: Marktplaats | https://www.marktplaats.nl/q/{q}/ | | kw
+# Nigeria [Country]
+Companies: CAC public search | https://icrp.cac.gov.ng/public-search/ | | | Corporate Affairs Commission register
+Marketplace: Jiji | https://jiji.ng/ | |
+# Poland [Country]
+Companies: KRS court register | https://prs.ms.gov.pl/krs | | | National Court Register of companies
+Marketplace: Allegro | https://allegro.pl/listing?string={q} | | kw
+Marketplace: OLX Poland | https://www.olx.pl/ | |
+# Portugal [Country]
+Companies: Publicações de Atos Societários | https://publicacoes.mj.pt/ | | | Company acts and publications
+Marketplace: OLX Portugal | https://www.olx.pt/ | |
+# Romania [Country]
+Companies: ONRC trade register | https://www.onrc.ro/index.php/en/ | | | National Trade Register Office
+Marketplace: OLX Romania | https://www.olx.ro/ | |
+# Russia [Country]
+Companies: Rusprofile | https://www.rusprofile.ru/search?query={q} | | org,name | Company register data, directors, founders
+Social: VK | https://vk.com/ | R |
+# Spain [Country]
+Gazette: BORME (company gazette) | https://www.boe.es/diario_borme/ | | | Official companies gazette
+Marketplace: Wallapop | https://es.wallapop.com/app/search?keywords={q} | | kw
+# Türkiye [Country]
+Gazette: Ticaret Sicil Gazetesi | https://www.ticaretsicil.gov.tr/ | | | Trade registry gazette
+Marketplace: sahibinden | https://www.sahibinden.com/ | |
+# United Arab Emirates [Country]
+Companies: National Economic Register | https://ner.economy.ae/ | | | Ministry of Economy: licensed businesses in all emirates
+Marketplace: Dubizzle | https://dubai.dubizzle.com/ | |
+# United Kingdom [Country]
+Companies: Companies House | https://find-and-update.company-information.service.gov.uk/search?q={q} | | org,name
+Companies: Companies House officers | https://find-and-update.company-information.service.gov.uk/search/officers?q={q} | | name | Directors and their appointments
+Gazette: The Gazette | https://www.thegazette.co.uk/all-notices/notice?text={q} | | name,org | Official notices: insolvency, probate, companies
+Courts: BAILII | https://www.bailii.org/ | | | British and Irish case law
+Wanted: NCA Most Wanted | https://www.nationalcrimeagency.gov.uk/most-wanted | |
+# United States [Country]
+People: TruePeopleSearch | https://www.truepeoplesearch.com/ | P | | People search (addresses, phones, relatives)
+Courts: CourtListener | https://www.courtlistener.com/?q={q} | | name,org | Federal and state court opinions and dockets
+Prisons: Federal Inmate Locator | https://www.bop.gov/inmateloc/ | |
+Wanted: FBI Most Wanted | https://www.fbi.gov/wanted | |
 `;

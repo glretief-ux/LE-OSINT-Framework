@@ -2400,6 +2400,7 @@ label.f textarea { min-height: 60px; resize: vertical; }
   HOW TO EDIT (works fine in GitHub's web editor):
 
   # Category name                 -> top-level branch (add [LE+] to mark a law-enforcement addition)
+  # Country name [Country]        -> a country under "By country" (start each link with its type, e.g. "Companies: ...")
   ## Sub-category                 -> second level
   ### Sub-sub-category            -> third level
   > Note text                     -> guidance note shown under the current branch
@@ -2427,7 +2428,6 @@ window.LE_OSINT_DATA = String.raw`
 ## Username Search Engines
 WhatsMyName | https://whatsmyname.app/?q={q} | | user
 Namechk | https://namechk.com/ | |
-KnowEm | https://knowem.com/checkusernames.php?u={q} | | user
 Instant Username Search | https://instantusername.com/ | |
 UserSearch | https://usersearch.com/ | | | Reverse username, email, phone and picture lookups (free searches, no signup)
 Google (exact handle) | https://www.google.com/search?q=%22{q}%22 | D | user
@@ -2481,7 +2481,7 @@ Whoxy Reverse WHOIS | https://www.whoxy.com/ | |
 DNSDumpster | https://dnsdumpster.com/ | |
 SecurityTrails | https://securitytrails.com/domain/{q}/dns | R | domain
 crt.sh (certificates) | https://crt.sh/?q={q} | | domain
-DNSlytics | https://dnslytics.com/domain/{q} | | domain
+DNSlytics | https://dnslytics.com/ | |
 Robtex | https://www.robtex.com/dns-lookup/{q} | | domain
 MXToolbox | https://mxtoolbox.com/SuperTool.aspx?action=mx%3a{q} | | domain
 ViewDNS Reverse IP | https://viewdns.info/reverseip/?host={q}&t=1 | | domain,ip
@@ -2581,7 +2581,6 @@ YouTube Search | https://www.youtube.com/results?search_query={q} | | kw,name
 YouTube Geofind (videos by location) | https://mattw.io/youtube-geofind/ | |
 ## Reddit
 Reddit Search | https://www.reddit.com/search/?q={q} | | kw
-OSINT Combine Reddit Post Analyser | https://www.osintcombine.com/reddit-post-analyser | N | | Posting times and activity of a Reddit user
 Reveddit (removed content) | https://www.reveddit.com/y/{q}/ | | user
 Arctic Shift (Reddit archive) | https://arctic-shift.photon-reddit.com/ | |
 ## VK & Russian-language
@@ -2594,8 +2593,8 @@ Bluesky Search | https://bsky.app/search?q={q} | | kw,name,user
 Mastodon (instance search) | https://joinmastodon.org/servers | |
 
 ## Other Platforms (direct profile checks)
-Threads | https://www.threads.net/@{q} | | user
-Snapchat | https://www.snapchat.com/add/{q} | | user
+Threads | https://www.threads.com/@{q} | | user
+Snapchat | https://www.snapchat.com/@{q} | | user
 Facebook (vanity name) | https://www.facebook.com/{q} | | user
 Pinterest | https://www.pinterest.com/{q}/ | | user
 Tumblr | https://{q}.tumblr.com/ | | user
@@ -2817,7 +2816,7 @@ FATF Trade-Based Money Laundering | https://www.fatf-gafi.org/en/topics/methods-
 
 # Drug Intelligence [LE+]
 ## Reports & Data
-UNODC World Drug Report | https://www.unodc.org/unodc/en/data-and-analysis/world-drug-report.html | |
+UNODC World Drug Report 2026 | https://www.unodc.org/unodc/en/data-and-analysis/world-drug-report-2026.html | |
 UNODC Drugs Monitoring Platform | https://dmp.unodc.org/ | |
 EUDA (formerly EMCDDA) | https://www.euda.europa.eu/ | |
 EUDA Wastewater Analysis | https://www.euda.europa.eu/topics/wastewater_en | |
@@ -2900,7 +2899,7 @@ Bellingcat OSM Search | https://osm-search.bellingcat.com/ | |
 Overpass Turbo | https://overpass-turbo.eu/ | |
 GeoNames | https://www.geonames.org/search.html?q={q} | | place
 PeakVisor (mountain skylines) | https://peakvisor.com/ | |
-PeakFinder | https://www.peakfinder.org/ | N | | 360° mountain panoramas from any point to match skylines in photos
+PeakFinder | https://www.peakfinder.com/ | N | | 360° mountain panoramas from any point to match skylines in photos
 GeoHints | https://geohints.com/ | N | | Country clues: bollards, road signs, plates, utility poles
 TracePoint | https://kluter.github.io/TracePoint/ | N | | Find where a photo was taken by intersecting sight lines
 BBBike map compare | https://mc.bbbike.org/mc/ | N | | Compare the same spot on many map and satellite providers side by side
@@ -2916,7 +2915,7 @@ Zoom Earth | https://zoom.earth/ | |
 Satellites.pro | https://satellites.pro/ | N | | Satellite maps from several providers
 Google Earth Timelapse | https://earthengine.google.com/timelapse/ | N | | Satellite change over time since 1984
 Liveuamap | https://liveuamap.com/ | N | | Live incident maps for conflict areas
-Soar | https://soar.earth/ | |
+Soar Atlas | https://soaratlas.com/ | |
 ## Chronolocation & Weather
 SunCalc (sun position & shadows) | https://www.suncalc.org/ | |
 ShadowMap | https://shadowmap.org/ | N | | Shadows of real buildings at any date and time
@@ -2969,7 +2968,6 @@ archive.today | https://archive.ph/{q} | | url
 Internet Archive Search | https://archive.org/search?query={q} | | kw
 CachedView | https://cachedview.nl/ | |
 Arquivo.pt | https://arquivo.pt/ | |
-UK Web Archive | https://www.webarchive.org.uk/ | |
 Ghostarchive | https://ghostarchive.org/ | |
 
 # Language Translation
@@ -2990,7 +2988,7 @@ Metadata2Go | https://www.metadata2go.com/ | P |
 MediaInfo | https://mediaarea.net/en/MediaInfo | T |
 FOCA (document metadata) | https://github.com/ElevenPaths/FOCA | T |
 Metagoofil | https://github.com/opsdisk/metagoofil | T |
-Content Credentials (C2PA) Verify | https://contentcredentials.org/verify | |
+Content Credentials (C2PA) Verify | https://verify.contentauthenticity.org/ | |
 
 # Mobile Emulation
 Android Studio Emulator | https://developer.android.com/studio | T |
@@ -3105,8 +3103,7 @@ Awesome OSINT | https://github.com/jivoi/awesome-osint | |
 Hive AI-Generated Content Detection | https://hivemoderation.com/ai-generated-content-detection | |
 Illuminarty | https://illuminarty.ai/ | |
 AI or Not | https://www.aiornot.com/ | R |
-Deepware Scanner (deepfake video) | https://scanner.deepware.ai/ | |
-Content Credentials Verify | https://contentcredentials.org/verify | |
+Content Credentials Verify | https://verify.contentauthenticity.org/ | |
 ## Transcription (run locally)
 OpenAI Whisper | https://github.com/openai/whisper | T |
 ## Assistants
@@ -3155,7 +3152,7 @@ DNS Leak Test | https://www.dnsleaktest.com/ | |
 Firefox Multi-Account Containers | https://addons.mozilla.org/firefox/addon/multi-account-containers/ | T |
 Tails | https://tails.net/ | T |
 Whonix | https://www.whonix.org/ | T |
-Kasm Workspaces | https://www.kasmweb.com/ | T |
+Kasm Workspaces | https://kasm.com/ | T |
 ## Research Personas
 This Person Does Not Exist | https://thispersondoesnotexist.com/ | |
 Fake Name Generator | https://www.fakenamegenerator.com/ | |
@@ -3325,89 +3322,93 @@ Action Fraud (UK) | https://www.actionfraud.police.uk/ | |
 FBI IC3 (US) | https://www.ic3.gov/ | |
 APWG | https://apwg.org/ | |
 
-# Country Sources [LE+]
-> National company registers, gazettes, courts, wanted lists and the marketplaces people actually use. Search them with the subject's name and companies.
-## Belgium
-KBO / BCE company search | https://kbopub.economie.fgov.be/kbopub/zoeknaamfonetischform.html | |
-Belgian Official Gazette | https://www.ejustice.just.fgov.be/ | |
-Federal Police wanted persons | https://www.police.be/wanted/en/wanted/wanted-persons | |
-2dehands / 2ememain | https://www.2dehands.be/q/{q}/ | | kw
-FSMA warnings | https://www.fsma.be/en/warnings | |
-## Netherlands
-KVK company search | https://www.kvk.nl/zoeken/?source=all&q={q} | | org
-Rechtspraak uitspraken | https://uitspraken.rechtspraak.nl/ | |
-Politie gezocht | https://www.politie.nl/gezocht | |
-Marktplaats | https://www.marktplaats.nl/q/{q}/ | | kw
-## France
-Annuaire des Entreprises | https://annuaire-entreprises.data.gouv.fr/rechercher?terme={q} | | org,name
-Pappers | https://www.pappers.fr/recherche?q={q} | | org,name
-BODACC | https://www.bodacc.fr/ | |
-Leboncoin | https://www.leboncoin.fr/recherche?text={q} | | kw
-PagesBlanches | https://www.pagesjaunes.fr/pagesblanches | |
-## Germany
-Handelsregister | https://www.handelsregister.de/ | |
-North Data | https://www.northdata.com/ | |
-Das Telefonbuch | https://www.dastelefonbuch.de/ | |
-Kleinanzeigen | https://www.kleinanzeigen.de/s-{q}/k0 | | kw
-## Luxembourg
-North Data (RCS data) | https://www.northdata.com/ | |
-## United Kingdom
-Companies House | https://find-and-update.company-information.service.gov.uk/search?q={q} | | org,name
-Companies House officers | https://find-and-update.company-information.service.gov.uk/search/officers?q={q} | | name
-The Gazette | https://www.thegazette.co.uk/all-notices/notice?text={q} | | name,org
-BAILII | https://www.bailii.org/ | |
-NCA Most Wanted | https://www.nationalcrimeagency.gov.uk/most-wanted | |
-## Ireland
-CRO company search (CORE) | https://cro.ie/post-registration/company-search/ | |
-DoneDeal | https://www.donedeal.ie/ | |
-## Spain
-BORME (company gazette) | https://www.boe.es/diario_borme/ | |
-Wallapop | https://es.wallapop.com/app/search?keywords={q} | | kw
-## Portugal
-Publicações de Atos Societários | https://publicacoes.mj.pt/ | |
-OLX Portugal | https://www.olx.pt/ | |
-## Italy
-Registro Imprese | https://www.registroimprese.it/ | |
-Subito | https://www.subito.it/ | |
-## Poland
-KRS court register | https://prs.ms.gov.pl/krs | |
-Allegro | https://allegro.pl/listing?string={q} | | kw
-OLX Poland | https://www.olx.pl/ | |
-## Romania
-ONRC trade register | https://www.onrc.ro/index.php/en/ | |
-OLX Romania | https://www.olx.ro/ | |
-## Albania
-QKB business register | https://qkb.gov.al/en/business-register/ | |
-## Türkiye
-Ticaret Sicil Gazetesi | https://www.ticaretsicil.gov.tr/ | |
-sahibinden | https://www.sahibinden.com/ | |
-## Morocco
-Directinfo (OMPIC) | https://www.directinfo.ma/ | |
-Avito.ma | https://www.avito.ma/ | |
-## Nigeria
-CAC public search | https://icrp.cac.gov.ng/public-search/ | |
-Jiji | https://jiji.ng/ | |
-## United Arab Emirates
-Dubizzle | https://dubai.dubizzle.com/ | |
-## Colombia
-RUES company register | https://www.rues.org.co/ | |
-## Ecuador
-Superintendencia de Compañías | https://www.supercias.gob.ec/ | |
-## Brazil
-Receita Federal CNPJ | https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/cnpjreva_solicitacao.asp | |
-JusBrasil (court cases) | https://www.jusbrasil.com.br/ | |
-## United States
-TruePeopleSearch | https://www.truepeoplesearch.com/ | |
-CourtListener | https://www.courtlistener.com/?q={q} | | name,org
-Federal Inmate Locator | https://www.bop.gov/inmateloc/ | |
-FBI Most Wanted | https://www.fbi.gov/wanted | |
-## China
-Baidu | https://www.baidu.com/s?wd={q} | | kw,name,org
-Weibo | https://weibo.com/ | |
-## Russia
-Rusprofile | https://www.rusprofile.ru/search?query={q} | | org,name
-VK | https://vk.com/ | R |
-
+# Albania [Country]
+Companies: QKB business register | https://qkb.gov.al/en/business-register/ | | | National Business Centre: companies, owners, administrators
+# Belgium [Country]
+Companies: KBO / BCE | https://kbopub.economie.fgov.be/kbopub/zoeknaamfonetischform.html | | | Crossroads Bank for Enterprises: company number, address, directors, activities
+Gazette: Belgisch Staatsblad / Moniteur belge | https://www.ejustice.just.fgov.be/ | | | Official journal: company publications, appointments, legislation
+Courts: Juportal case law | https://juportal.be/ | | | Published Belgian court decisions
+Wanted: Federal Police wanted persons | https://www.police.be/wanted/en/wanted/wanted-persons | |
+Warnings: FSMA investment-fraud warnings | https://www.fsma.be/en/warnings | | | Fraudulent investment firms and websites
+Marketplace: 2dehands / 2ememain | https://www.2dehands.be/q/{q}/ | | kw
+# Brazil [Country]
+Companies: Receita Federal CNPJ | https://solucoes.receita.fazenda.gov.br/servicos/cnpjreva/cnpjreva_solicitacao.asp | | | Company registration by CNPJ number
+Courts: JusBrasil | https://www.jusbrasil.com.br/ | | | Court cases and legal news
+# China [Country]
+Companies: National Enterprise Credit Information (GSXT) | https://www.gsxt.gov.cn/ | | | Official company register (Chinese)
+Search: Baidu | https://www.baidu.com/s?wd={q} | | kw,name,org | Main Chinese search engine
+Social: Weibo | https://weibo.com/ | R |
+# Colombia [Country]
+Companies: RUES company register | https://www.rues.org.co/ | | | Single business and social register
+# Ecuador [Country]
+Companies: Superintendencia de Compañías | https://www.supercias.gob.ec/ | | | Companies, shareholders and directors
+# France [Country]
+Companies: Annuaire des Entreprises | https://annuaire-entreprises.data.gouv.fr/rechercher?terme={q} | | org,name | Official company directory (free)
+Companies: Pappers | https://www.pappers.fr/recherche?q={q} | | org,name | Companies, directors, accounts
+Gazette: BODACC | https://www.bodacc.fr/ | | | Official notices: sales, insolvencies, changes
+People: PagesBlanches | https://www.pagesjaunes.fr/pagesblanches | | | Phone directory
+Marketplace: Leboncoin | https://www.leboncoin.fr/recherche?text={q} | | kw
+# Germany [Country]
+Companies: Handelsregister | https://www.handelsregister.de/ | | | Official commercial register
+Companies: North Data | https://www.northdata.com/ | | | Company network, directors and filings (free basic use; also other EU countries)
+Insolvency: Insolvenzbekanntmachungen | https://neu.insolvenzbekanntmachungen.de/ | | | Official insolvency notices
+Wanted: BKA Fahndung | https://www.bka.de/DE/IhreSicherheit/Fahndungen/Personen/personen_node.html | | | Federal Criminal Police wanted persons
+People: Das Telefonbuch | https://www.dastelefonbuch.de/ | | | Phone directory
+Marketplace: Kleinanzeigen | https://www.kleinanzeigen.de/s-{q}/k0 | | kw
+# Ireland [Country]
+Companies: CRO company search (CORE) | https://cro.ie/post-registration/company-search/ | | | Companies Registration Office
+Marketplace: DoneDeal | https://www.donedeal.ie/ | |
+# Italy [Country]
+Companies: Registro Imprese | https://www.registroimprese.it/ | | | Chambers of commerce company register (basic search free)
+Marketplace: Subito | https://www.subito.it/ | |
+# Luxembourg [Country]
+Companies: Luxembourg Business Registers (RCS) | https://www.lbr.lu/ | | | Trade register, beneficial owners (RBE) and RESA publications
+Gazette: Legilux | https://legilux.public.lu/ | | | Official journal of Luxembourg
+# Morocco [Country]
+Companies: Directinfo (OMPIC) | https://www.directinfo.ma/ | | | Company information from the trade register
+Marketplace: Avito.ma | https://www.avito.ma/ | |
+# Netherlands [Country]
+Companies: KVK company search | https://www.kvk.nl/zoeken/?source=all&q={q} | | org | Chamber of Commerce register
+Courts: Rechtspraak uitspraken | https://uitspraken.rechtspraak.nl/ | | | Published Dutch court decisions
+Insolvency: Centraal Insolventieregister | https://insolventies.rechtspraak.nl/ | | | Bankruptcies and debt restructuring
+Wanted: Politie gezocht | https://www.politie.nl/gezocht | |
+Marketplace: Marktplaats | https://www.marktplaats.nl/q/{q}/ | | kw
+# Nigeria [Country]
+Companies: CAC public search | https://icrp.cac.gov.ng/public-search/ | | | Corporate Affairs Commission register
+Marketplace: Jiji | https://jiji.ng/ | |
+# Poland [Country]
+Companies: KRS court register | https://prs.ms.gov.pl/krs | | | National Court Register of companies
+Marketplace: Allegro | https://allegro.pl/listing?string={q} | | kw
+Marketplace: OLX Poland | https://www.olx.pl/ | |
+# Portugal [Country]
+Companies: Publicações de Atos Societários | https://publicacoes.mj.pt/ | | | Company acts and publications
+Marketplace: OLX Portugal | https://www.olx.pt/ | |
+# Romania [Country]
+Companies: ONRC trade register | https://www.onrc.ro/index.php/en/ | | | National Trade Register Office
+Marketplace: OLX Romania | https://www.olx.ro/ | |
+# Russia [Country]
+Companies: Rusprofile | https://www.rusprofile.ru/search?query={q} | | org,name | Company register data, directors, founders
+Social: VK | https://vk.com/ | R |
+# Spain [Country]
+Gazette: BORME (company gazette) | https://www.boe.es/diario_borme/ | | | Official companies gazette
+Marketplace: Wallapop | https://es.wallapop.com/app/search?keywords={q} | | kw
+# Türkiye [Country]
+Gazette: Ticaret Sicil Gazetesi | https://www.ticaretsicil.gov.tr/ | | | Trade registry gazette
+Marketplace: sahibinden | https://www.sahibinden.com/ | |
+# United Arab Emirates [Country]
+Companies: National Economic Register | https://ner.economy.ae/ | | | Ministry of Economy: licensed businesses in all emirates
+Marketplace: Dubizzle | https://dubai.dubizzle.com/ | |
+# United Kingdom [Country]
+Companies: Companies House | https://find-and-update.company-information.service.gov.uk/search?q={q} | | org,name
+Companies: Companies House officers | https://find-and-update.company-information.service.gov.uk/search/officers?q={q} | | name | Directors and their appointments
+Gazette: The Gazette | https://www.thegazette.co.uk/all-notices/notice?text={q} | | name,org | Official notices: insolvency, probate, companies
+Courts: BAILII | https://www.bailii.org/ | | | British and Irish case law
+Wanted: NCA Most Wanted | https://www.nationalcrimeagency.gov.uk/most-wanted | |
+# United States [Country]
+People: TruePeopleSearch | https://www.truepeoplesearch.com/ | P | | People search (addresses, phones, relatives)
+Courts: CourtListener | https://www.courtlistener.com/?q={q} | | name,org | Federal and state court opinions and dockets
+Prisons: Federal Inmate Locator | https://www.bop.gov/inmateloc/ | |
+Wanted: FBI Most Wanted | https://www.fbi.gov/wanted | |
 `;
 
 </script>
@@ -3615,7 +3616,7 @@ window.LE_OSINT_PLAYBOOKS = [
     { id: "money", name: "Money & companies", q: "Where is the money and who owns what?", cats: ["Business Records", "Financial Crime & Fraud", "Digital Currency", "Sanctions, PEPs & Watchlists"] },
     { id: "infra", name: "Digital infrastructure", q: "What is behind this website, IP or file?", cats: ["Domain Name", "IP & MAC Address", "Cyber Fraud & Phishing", "Malicious File Analysis", "Threat Intelligence", "Exploits & Advisories"] },
     { id: "place", name: "Places & media", q: "Where and when was this taken?", cats: ["Geolocation Tools / Maps", "Images / Videos / Docs", "Metadata", "AI Tools"] },
-    { id: "country", name: "By country", q: "National registers, courts, wanted lists, marketplaces", cats: ["Country Sources"] },
+    { id: "country", name: "By country", q: "National registers, courts, wanted lists, marketplaces", cats: [] },
     { id: "research", name: "General research", q: "Search, archive, translate, decode", cats: ["Search Engines", "Archives", "Language Translation", "Encoding / Decoding", "Tools", "Mobile Emulation"] },
     { id: "procedure", name: "Procedure & reporting", q: "Requests, cooperation, law and evidence", cats: ["LE Request Portals", "International Cooperation", "Exploitation & Trafficking Reporting", "Legal & Ethics", "OpSec", "Documentation / Evidence Capture", "Training"] }
   ];
@@ -3634,9 +3635,9 @@ window.LE_OSINT_PLAYBOOKS = [
       if (h) {
         const depth = h[1].length;
         let name = h[2].trim();
-        const leplus = /\[LE\+\]/.test(name);
-        name = name.replace(/\s*\[LE\+\]\s*/, "").trim();
-        const node = { id: ++id, name: name, children: [], notes: [], depth: depth, leplus: leplus };
+        const leplus = /\[LE\+\]/.test(name), isCountry = /\[Country\]/.test(name);
+        name = name.replace(/\s*\[(LE\+|Country)\]\s*/g, "").trim();
+        const node = { id: ++id, name: name, children: [], notes: [], depth: depth, leplus: leplus, country: isCountry };
         while (stack.length > depth) stack.pop();
         stack[stack.length - 1].children.push(node);
         stack.push(node);
@@ -3657,6 +3658,8 @@ window.LE_OSINT_PLAYBOOKS = [
     return root;
   }
   const DB = parse(window.LE_OSINT_DATA || "");
+  // "By country": every country is its own category, A to Z
+  (function () { const c = LANES.filter(function (l) { return l.id === "country"; })[0]; if (c) c.cats = DB.children.filter(function (n) { return n.country; }).map(function (n) { return n.name; }).sort(function (a, b) { return a.localeCompare(b); }); })();
   const LEAVES = [];
   (function walk(n) { n.children.forEach(function (c) { if (c.leaf) LEAVES.push(c); else walk(c); }); })(DB);
   const CAT_BY_NAME = {};
@@ -5271,9 +5274,9 @@ window.LE_LINES = {
     ["American President Lines", "APL", "APLU", "APLU", "C", "Ocean", "SG", "https://www.apl.com/", "https://www.apl.com/ebusiness/tracking", "", "CMA CGM brand (bought NOL/APL in 2016). US-flag services."],
     ["ANL Container Line", "ANL", "ANNU", "ANNU", "R", "", "AU", "https://www.anl.com.au/", "https://www.anl.com.au/ebusiness/tracking", "", "CMA CGM brand for Oceania."],
     ["CNC Line", "Cheng Lie Navigation", "", "", "R", "", "TW", "https://www.cnc-line.com/", "https://www.cnc-line.com/", "", "CMA CGM intra-Asia brand."],
-    ["Sealand (Maersk)", "Sealand Americas, Sealand Europe, Sealand Asia", "SEAU SEJJ", "", "R", "", "US", "https://www.sealandmaersk.com/", "https://www.sealandmaersk.com/tracking", "", "Maersk's regional (intra-region) container brand."],
-    ["Safmarine", "", "SAFM", "", "R", "", "ZA", "https://www.safmarine.com/", "https://www.safmarine.com/", "merged", "Maersk brand for Africa; operations integrated into Maersk."],
-    ["Hamburg Süd", "Hamburg Sud", "SUDU", "SUDU", "C", "", "DE", "https://www.hamburgsud.com/", "https://www.maersk.com/tracking/{q}", "merged", "Bought by Maersk 2017; brand retired into Maersk 2023. SUDU boxes still in service."],
+    ["Sealand (Maersk)", "Sealand Americas, Sealand Europe, Sealand Asia", "SEAU SEJJ", "", "R", "", "US", "https://www.maersk.com/sealand", "https://www.maersk.com/tracking/{q}", "", "Maersk's regional (intra-region) container brand."],
+    ["Safmarine", "", "SAFM", "", "R", "", "ZA", "https://www.maersk.com/", "https://www.maersk.com/tracking/{q}", "merged", "Maersk brand for Africa; operations integrated into Maersk."],
+    ["Hamburg Süd", "Hamburg Sud", "SUDU", "SUDU", "C", "", "DE", "https://www.maersk.com/", "https://www.maersk.com/tracking/{q}", "merged", "Bought by Maersk 2017; brand retired into Maersk 2023. SUDU boxes still in service."],
     ["Aliança Navegação", "Alianca", "", "", "R", "", "BR", "https://www.alianca.com.br/", "https://www.maersk.com/tracking/{q}", "merged", "Brazilian cabotage, part of Maersk (ex Hamburg Süd)."],
     ["SITC International", "SITC Container Lines", "", "SITU", "R", "", "HK", "https://www.sitcline.com/", "https://www.sitcline.com/", "", "Intra-Asia container carrier."],
     ["Korea Marine Transport Co.", "KMTC", "KMTU", "KMTU", "R", "", "KR", "https://www.ekmtc.com/", "https://www.ekmtc.com/", "", "Intra-Asia, India, Middle East."],
@@ -5292,26 +5295,26 @@ window.LE_LINES = {
     ["Antong Holdings", "Quanzhou Antong", "", "", "F", "", "CN", "https://www.antong56.com/", "https://www.antong56.com/", "", "Chinese domestic container carrier."],
     ["Gold Star Line", "", "GOSU", "", "R", "", "HK", "https://www.gslltd.com.hk/", "https://www.gslltd.com.hk/", "", "ZIM subsidiary."],
     ["Regional Container Lines", "RCL", "", "", "R", "", "TH", "https://www.rclgroup.com/", "https://www.rclgroup.com/", "", "Thailand; intra-Asia, Middle East, India."],
-    ["Samudera Shipping Line", "", "", "", "R", "", "SG", "https://www.samudera.com/", "https://www.samudera.com/", "", "Indonesian group, Singapore-listed."],
-    ["Meratus Line", "", "", "", "R", "", "ID", "https://www.meratusline.com/", "https://www.meratusline.com/", "", "Indonesia domestic and regional."],
+    ["Samudera Shipping Line", "", "", "", "R", "", "SG", "https://www.samudera.id/", "https://www.samudera.id/", "", "Indonesian group, Singapore-listed."],
+    ["Meratus Line", "", "", "", "R", "", "ID", "https://www.meratus.com/", "https://www.meratus.com/", "", "Indonesia domestic and regional."],
     ["Tanto Intim Line", "Tanto", "", "", "F", "", "ID", "https://www.tantonet.com/", "https://www.tantonet.com/", "", "Indonesia domestic."],
     ["Salam Pacific Indonesia Lines", "SPIL", "", "", "F", "", "ID", "https://www.spil.co.id/", "https://www.spil.co.id/", "", "Indonesia domestic."],
     ["Temas Line", "", "", "", "F", "", "ID", "https://www.temasline.com/", "https://www.temasline.com/", "", "Indonesia domestic."],
     ["Hai An Transport", "Haian", "", "", "F", "", "VN", "https://www.haiants.vn/", "https://www.haiants.vn/", "", "Vietnam."],
     ["SeaLead Shipping", "", "SQQY", "", "R", "", "SG", "https://www.sea-lead.com/", "https://www.sea-lead.com/", "", "Newer carrier; Asia, Middle East, Europe, Americas."],
     ["Emirates Shipping Line", "ESL", "", "", "R", "", "AE", "https://www.emiratesline.com/", "https://www.emiratesline.com/", "", ""],
-    ["Global Feeder Shipping", "GFS", "", "", "F", "", "AE", "https://www.gfsship.com/", "https://www.gfsship.com/", "", "Gulf, Red Sea, Indian subcontinent feeder."],
-    ["Simatech Shipping", "", "", "", "F", "", "AE", "https://www.simatech.com/", "https://www.simatech.com/", "", "Gulf / Indian subcontinent."],
+    ["Global Feeder Shipping", "GFS", "", "", "F", "", "AE", "", "", "", "Gulf, Red Sea, Indian subcontinent feeder; majority owned by AD Ports Group. Website not confirmed."],
+    ["Simatech Shipping", "", "", "", "F", "", "AE", "", "", "", "Gulf / Indian subcontinent. Website not confirmed."],
     ["Bahri", "National Shipping Co. of Saudi Arabia", "", "", "M", "", "SA", "https://www.bahri.sa/", "https://www.bahri.sa/", "", "Ro-ro / general cargo liner service (Bahri Logistics) plus tankers."],
     ["Shipping Corporation of India", "SCI", "", "", "R", "", "IN", "https://www.shipindia.com/", "https://www.shipindia.com/", "", "State-owned."],
-    ["Shreyas Shipping & Logistics", "", "", "", "F", "", "IN", "https://www.shreyas.co.in/", "https://www.shreyas.co.in/", "", "Indian coastal feeder."],
+    ["Shreyas Shipping & Logistics", "", "", "", "F", "", "IN", "", "", "", "Indian coastal feeder."],
     ["X-Press Feeders", "Sea Consortium", "", "", "F", "", "SG", "https://www.x-pressfeeders.com/", "https://www.x-pressfeeders.com/", "", "Largest independent feeder operator (Asia, Middle East, Europe, Americas)."],
-    ["Unifeeder", "", "", "", "F", "", "DK", "https://www.unifeeder.com/", "https://www.unifeeder.com/", "", "European feeder / short-sea; owned by DP World."],
+    ["Unifeeder", "", "", "", "F", "", "DK", "https://www.dpworld.com/", "https://www.dpworld.com/", "", "European feeder / short-sea; owned by DP World."],
     ["BG Freight Line", "", "", "", "F", "", "NL", "https://www.bgfreightline.com/", "https://www.bgfreightline.com/", "", "North Europe feeder (Eimskip / Samskip region)."],
     ["Samskip", "", "", "", "F", "", "NL", "https://www.samskip.com/", "https://www.samskip.com/", "", "European short-sea and multimodal."],
     ["Eimskip", "", "", "", "F", "", "IS", "https://www.eimskip.com/", "https://www.eimskip.com/", "", "Iceland, Faroes, Norway, North Atlantic."],
-    ["Containerships", "", "", "", "F", "", "FI", "https://www.containershipsgroup.com/", "https://www.containershipsgroup.com/", "", "CMA CGM short-sea brand (Baltic, North Sea, Med)."],
-    ["OPDR", "Oldenburg-Portugiesische", "", "", "F", "", "DE", "https://www.opdr.com/", "https://www.opdr.com/", "", "CMA CGM short-sea brand (Iberia, Canaries, Morocco)."],
+    ["Containerships", "", "", "", "F", "", "FI", "https://www.cma-cgm.com/", "https://www.cma-cgm.com/ebusiness/tracking", "merged", "Bought by CMA CGM (2018); services now run under the CMA CGM brand."],
+    ["OPDR", "Oldenburg-Portugiesische", "", "", "F", "", "DE", "https://www.cma-cgm.com/", "https://www.cma-cgm.com/ebusiness/tracking", "merged", "Bought by CMA CGM (2022); Iberia, Canaries, Morocco short-sea, now via CMA CGM."],
     ["WEC Lines", "", "", "", "F", "", "NL", "https://www.weclines.com/", "https://www.weclines.com/", "", "UK / Ireland / Iberia / Med / West Africa."],
     ["CLdN", "Cobelfret", "", "", "P", "", "LU", "https://www.cldn.com/", "https://www.cldn.com/", "", "Ro-ro freight: UK, Ireland, Belgium, Netherlands, Iberia, Scandinavia."],
     ["DFDS", "", "", "", "P", "", "DK", "https://www.dfds.com/", "https://www.dfds.com/", "", "Ro-ro and ro-pax freight in North Europe, Baltic, Med (Turkey)."],
@@ -5324,7 +5327,7 @@ window.LE_LINES = {
     ["Arkas Line", "Arkas Container Transport", "ARKU", "ARKU", "R", "", "TR", "https://www.arkasline.com.tr/", "https://www.arkasline.com.tr/", "", "Turkey; Med, Black Sea, West Africa, North Europe."],
     ["Turkon Line", "", "TRKU", "TRKU", "R", "", "TR", "https://www.turkon.com/", "https://www.turkon.com/", "", "Turkey – US East Coast."],
     ["Messina Line", "Ignazio Messina & C.", "", "", "M", "", "IT", "https://www.messinaline.it/", "https://www.messinaline.it/", "", "Ro-ro / con-ro Med – Middle East – Africa. MSC stake."],
-    ["Marfret", "Compagnie Maritime Marfret", "", "", "R", "", "FR", "https://www.marfret.fr/", "https://www.marfret.fr/", "", "France; Med, Caribbean, South America, Pacific islands."],
+    ["Marfret", "Compagnie Maritime Marfret", "", "", "R", "", "FR", "https://www.marfret.com/", "https://www.marfret.com/", "", "France; Med, Caribbean, South America, Pacific islands."],
     ["Nirint Shipping", "", "", "", "M", "", "NL", "https://www.nirint.com/", "https://www.nirint.com/", "", "North Europe – Caribbean / Cuba multipurpose liner."],
     ["Sallaum Lines", "", "", "", "V", "", "LB", "https://www.sallaumlines.com/", "https://www.sallaumlines.com/", "", "Ro-ro Europe / Americas – West Africa, Middle East."],
     ["Wallenius Wilhelmsen", "WW Ocean, Wallenius Wilhelmsen Logistics", "", "", "V", "", "NO", "https://www.walleniuswilhelmsen.com/", "https://www.walleniuswilhelmsen.com/", "", "Global vehicle and high-and-heavy (ro-ro) carrier."],
@@ -5350,8 +5353,8 @@ window.LE_LINES = {
     ["Westwood Shipping Lines", "", "WWSU", "", "M", "", "US", "https://www.westwoodshipping.com/", "https://www.westwoodshipping.com/", "", "US Pacific Northwest / Canada – Japan, Korea, China."],
     ["Independent Container Line", "ICL", "IILU", "", "R", "", "US", "https://www.icl-ltd.com/", "https://www.icl-ltd.com/", "", "US / Canada – North Europe."],
     ["Neptune Pacific Direct Line", "NPDL", "", "", "F", "", "FJ", "https://www.npdlship.com/", "https://www.npdlship.com/", "", "South Pacific islands."],
-    ["Ocean Africa Container Lines", "OACL", "", "", "F", "", "ZA", "https://www.oacl.co.za/", "https://www.oacl.co.za/", "", "Southern and East Africa feeder."],
-    ["Grindrod Shipping", "", "", "", "F", "", "ZA", "https://www.grindrodshipping.com/", "https://www.grindrodshipping.com/", "", "Africa-focused; bulk and container feeder (historic)."],
+    ["Ocean Africa Container Lines", "OACL", "", "", "F", "", "ZA", "", "", "", "Southern and East Africa feeder."],
+    ["Grindrod Shipping", "", "", "", "F", "", "ZA", "https://www.taylormaritime.com/", "", "merged", "Taken over by Taylor Maritime (2023)."],
     ["FESCO", "Far Eastern Shipping Company", "", "", "R", "", "RU", "https://www.fesco.ru/", "https://www.fesco.ru/", "", "Russia; Far East, rail-sea. Check current sanctions lists before dealing."],
     ["IRISL", "Islamic Republic of Iran Shipping Lines, HDS Lines", "", "", "R", "", "IR", "https://www.irisl.net/", "https://www.irisl.net/", "", "Iran. Designated under US sanctions; uses front companies and frequent ship renaming. Check sanctions lists."],
     ["Hanjin Shipping", "", "", "HJCU", "C", "", "KR", "", "", "defunct", "Bankrupt 2016–2017. Old B/Ls and boxes still appear in documents."],
@@ -5998,7 +6001,7 @@ window.LE_STOLEN = {
     ["BR", "Detran-SP: pesquisa de restrições", "https://www.detran.sp.gov.br", "plate", "São Paulo state traffic department", "São Paulo state; the app's basic search works without an account. Portuguese.", ""],
     ["CL", "Autoseguro", "https://www.autoseguro.gob.cl", "both", "Government with Registro Civil, Carabineros and PDI", "Shows instantly if the vehicle has an \"encargo por robo\" (theft report). Spanish.", ""],
     ["CO", "RUNT consulta", "https://www.runt.gov.co", "both", "Ministry of Transport registry", "Plate + owner ID, or VIN / SOAT. Shows DIJIN theft flags. Spanish.", ""],
-    ["PE", "SUNARP Alerta de Robo", "https://alertarobo.sunarp.gob.pe/alerta-robo/inicio", "plate", "SUNARP public registry", "Theft alert also appears in SUNARP Consulta Vehicular. Spanish.", ""],
+    ["PE", "SUNARP Alerta de Robo", "https://alertarobo.sunarp.gob.pe/", "plate", "SUNARP public registry", "Theft alert also appears in SUNARP Consulta Vehicular. Spanish.", ""],
     ["EC", "SIIPNE: vehículos robados / recuperados", "https://siipne.policia.gob.ec/patiosbodegapj/idxVerecid.php", "both", "National Police of Ecuador", "Stolen and recovered vehicles; security code. Spanish.", "u"],
     // ---- Middle East, Asia, Oceania
     ["IL", "Stolen vehicle check", "https://www.gov.il/apps/police/stolencar/", "plate", "Israel Police", "Plate only; shows reported thefts. Hebrew.", ""],
@@ -6350,7 +6353,7 @@ window.LE_PRECURSORS = {
     "<div><b>Table II</b> holds reagents, acids and solvents with large legitimate trade. Governments monitor trade and report suspicious orders.</div>" +
     "<div><b>Not in the Tables</b> does not mean free to trade: many such chemicals are on the INCB <i>limited international special surveillance list</i> and are controlled nationally or by the EU. Salts of Table I and II substances are covered (except salts of hydrochloric and sulphuric acid).</div></div>" +
     '<p class="hint" style="margin-top:12px;max-width:92ch">Sources: 1988 UN Convention against Illicit Traffic, Tables I and II as amended by the Commission on Narcotic Drugs up to its 67th session (March 2024, in force 3 December 2024) and the 2025 reorganisation of the PMK glycidate esters; <a href="https://www.incb.org/incb/uploads/documents/PRECURSORS/RED_LIST/RED_LIST_E.pdf" target="_blank" rel="noopener">INCB Red List</a> (official list with HS codes and CAS numbers); <a href="https://www.incb.org/incb/en/news/news_2024/scheduling-2024-precursors.html" target="_blank" rel="noopener">INCB on the 2024 additions</a>. ' +
-    'National lists can be stricter: <a href="https://taxation-customs.ec.europa.eu/customs-4/prohibitions-and-restrictions/drug-precursors_en" target="_blank" rel="noopener">EU drug precursor categories</a> · <a href="https://www.ecfr.gov/current/title-21/chapter-II/part-1310/section-1310.02" target="_blank" rel="noopener">US DEA List I / List II</a>. HS codes marked “indicative” are not named in the HS and depend on national classification. Use of a chemical is described at the level of the drug it is used for, for risk profiling only.</p>';
+    'National lists can be stricter: <a href="https://eur-lex.europa.eu/eli/reg/2004/273/oj" target="_blank" rel="noopener">EU drug precursor categories</a> · <a href="https://www.ecfr.gov/current/title-21/chapter-II/part-1310/section-1310.02" target="_blank" rel="noopener">US DEA List I / List II</a>. HS codes marked “indicative” are not named in the HS and depend on national classification. Use of a chemical is described at the level of the drug it is used for, for risk profiling only.</p>';
 
   const st = { q: "", drug: "", t: "" };
   function chipDrugs(r) { return r.drugs.map(function (k) { return '<button type="button" class="pc-drug" data-drug="' + k + '">' + esc(D.drugs[k]) + "</button>"; }).join(""); }
@@ -6396,7 +6399,7 @@ window.LE_PRECURSORS = {
     } else if (res.kind === "miss") {
       h = '<div class="pc-miss"><b>“' + esc(st.q) + '” is not in Table I or Table II of the 1988 Convention</b> (or is spelled differently: try the CAS number or another name).' +
         "<ul><li>It may still be controlled <b>nationally or in the EU</b>, or be on the INCB <b>limited international special surveillance list</b> of non-scheduled chemicals.</li><li>Check the chemical's identity and CAS number, then the national list of the countries involved.</li></ul>" +
-        '<p class="pc-links"><a href="https://pubchem.ncbi.nlm.nih.gov/#query=' + encodeURIComponent(st.q) + '" target="_blank" rel="noopener">Look it up in PubChem</a> · <a href="https://www.incb.org/incb/en/precursors/" target="_blank" rel="noopener">INCB precursors (special surveillance list)</a> · <a href="https://taxation-customs.ec.europa.eu/customs-4/prohibitions-and-restrictions/drug-precursors_en" target="_blank" rel="noopener">EU categories</a> · <a href="https://www.ecfr.gov/current/title-21/chapter-II/part-1310/section-1310.02" target="_blank" rel="noopener">US List I / II</a></p></div>';
+        '<p class="pc-links"><a href="https://pubchem.ncbi.nlm.nih.gov/#query=' + encodeURIComponent(st.q) + '" target="_blank" rel="noopener">Look it up in PubChem</a> · <a href="https://www.incb.org/incb/en/precursors/" target="_blank" rel="noopener">INCB precursors (special surveillance list)</a> · <a href="https://eur-lex.europa.eu/eli/reg/2004/273/oj" target="_blank" rel="noopener">EU categories</a> · <a href="https://www.ecfr.gov/current/title-21/chapter-II/part-1310/section-1310.02" target="_blank" rel="noopener">US List I / II</a></p></div>';
     } else {
       const L = filtered(res.list);
       const head = res.kind === "drug" ? "Chemicals used to make <b>" + esc(D.drugs[res.drug]) + "</b>: " + L.filter(function (r) { return r.t !== "S"; }).length + " under international control" + (L.some(function (r) { return r.t === "S"; }) ? ", plus non-scheduled chemicals of concern" : "") : L.length + " match" + (L.length === 1 ? "" : "es") + " for “" + esc(st.q) + "”";

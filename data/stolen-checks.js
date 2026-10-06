@@ -27,7 +27,7 @@ window.LE_STOLEN = {
     ["BR", "Detran-SP: pesquisa de restrições", "https://www.detran.sp.gov.br", "plate", "São Paulo state traffic department", "São Paulo state; the app's basic search works without an account. Portuguese.", ""],
     ["CL", "Autoseguro", "https://www.autoseguro.gob.cl", "both", "Government with Registro Civil, Carabineros and PDI", "Shows instantly if the vehicle has an \"encargo por robo\" (theft report). Spanish.", ""],
     ["CO", "RUNT consulta", "https://www.runt.gov.co", "both", "Ministry of Transport registry", "Plate + owner ID, or VIN / SOAT. Shows DIJIN theft flags. Spanish.", ""],
-    ["PE", "SUNARP Alerta de Robo", "https://alertarobo.sunarp.gob.pe/alerta-robo/inicio", "plate", "SUNARP public registry", "Theft alert also appears in SUNARP Consulta Vehicular. Spanish.", ""],
+    ["PE", "SUNARP Alerta de Robo", "https://alertarobo.sunarp.gob.pe/", "plate", "SUNARP public registry", "Theft alert also appears in SUNARP Consulta Vehicular. Spanish.", ""],
     ["EC", "SIIPNE: vehículos robados / recuperados", "https://siipne.policia.gob.ec/patiosbodegapj/idxVerecid.php", "both", "National Police of Ecuador", "Stolen and recovered vehicles; security code. Spanish.", "u"],
     // ---- Middle East, Asia, Oceania
     ["IL", "Stolen vehicle check", "https://www.gov.il/apps/police/stolencar/", "plate", "Israel Police", "Plate only; shows reported thefts. Hebrew.", ""],

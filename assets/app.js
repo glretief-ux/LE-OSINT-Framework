@@ -26,7 +26,7 @@
     { id: "money", name: "Money & companies", q: "Where is the money and who owns what?", cats: ["Business Records", "Financial Crime & Fraud", "Digital Currency", "Sanctions, PEPs & Watchlists"] },
     { id: "infra", name: "Digital infrastructure", q: "What is behind this website, IP or file?", cats: ["Domain Name", "IP & MAC Address", "Cyber Fraud & Phishing", "Malicious File Analysis", "Threat Intelligence", "Exploits & Advisories"] },
     { id: "place", name: "Places & media", q: "Where and when was this taken?", cats: ["Geolocation Tools / Maps", "Images / Videos / Docs", "Metadata", "AI Tools"] },
-    { id: "country", name: "By country", q: "National registers, courts, wanted lists, marketplaces", cats: ["Country Sources"] },
+    { id: "country", name: "By country", q: "National registers, courts, wanted lists, marketplaces", cats: [] },
     { id: "research", name: "General research", q: "Search, archive, translate, decode", cats: ["Search Engines", "Archives", "Language Translation", "Encoding / Decoding", "Tools", "Mobile Emulation"] },
     { id: "procedure", name: "Procedure & reporting", q: "Requests, cooperation, law and evidence", cats: ["LE Request Portals", "International Cooperation", "Exploitation & Trafficking Reporting", "Legal & Ethics", "OpSec", "Documentation / Evidence Capture", "Training"] }
   ];
@@ -45,9 +45,9 @@
       if (h) {
         const depth = h[1].length;
         let name = h[2].trim();
-        const leplus = /\[LE\+\]/.test(name);
-        name = name.replace(/\s*\[LE\+\]\s*/, "").trim();
-        const node = { id: ++id, name: name, children: [], notes: [], depth: depth, leplus: leplus };
+        const leplus = /\[LE\+\]/.test(name), isCountry = /\[Country\]/.test(name);
+        name = name.replace(/\s*\[(LE\+|Country)\]\s*/g, "").trim();
+        const node = { id: ++id, name: name, children: [], notes: [], depth: depth, leplus: leplus, country: isCountry };
         while (stack.length > depth) stack.pop();
         stack[stack.length - 1].children.push(node);
         stack.push(node);
@@ -68,6 +68,8 @@
     return root;
   }
   const DB = parse(window.LE_OSINT_DATA || "");
+  // "By country": every country is its own category, A to Z
+  (function () { const c = LANES.filter(function (l) { return l.id === "country"; })[0]; if (c) c.cats = DB.children.filter(function (n) { return n.country; }).map(function (n) { return n.name; }).sort(function (a, b) { return a.localeCompare(b); }); })();
   const LEAVES = [];
   (function walk(n) { n.children.forEach(function (c) { if (c.leaf) LEAVES.push(c); else walk(c); }); })(DB);
   const CAT_BY_NAME = {};
