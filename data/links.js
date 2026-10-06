@@ -956,7 +956,7 @@ Marketplace: Leboncoin | https://www.leboncoin.fr/recherche?text={q} | | kw
 Companies: Handelsregister | https://www.handelsregister.de/ | | | Official commercial register
 Companies: North Data | https://www.northdata.com/ | | | Company network, directors and filings (free basic use; also other EU countries)
 Insolvency: Insolvenzbekanntmachungen | https://neu.insolvenzbekanntmachungen.de/ | | | Official insolvency notices
-Wanted: BKA Fahndung | https://www.bka.de/DE/IhreSicherheit/Fahndungen/Personen/personen_node.html | | | Federal Criminal Police wanted persons
+Wanted: BKA Fahndungen | https://www.bka.de/ | | | Federal Criminal Police: open Fahndungen (wanted persons) from the home page
 People: Das Telefonbuch | https://www.dastelefonbuch.de/ | | | Phone directory
 Marketplace: Kleinanzeigen | https://www.kleinanzeigen.de/s-{q}/k0 | | kw
 # Ireland [Country]
@@ -1000,7 +1000,6 @@ Marketplace: Wallapop | https://es.wallapop.com/app/search?keywords={q} | | kw
 Gazette: Ticaret Sicil Gazetesi | https://www.ticaretsicil.gov.tr/ | | | Trade registry gazette
 Marketplace: sahibinden | https://www.sahibinden.com/ | |
 # United Arab Emirates [Country]
-Companies: National Economic Register | https://ner.economy.ae/ | | | Ministry of Economy: licensed businesses in all emirates
 Marketplace: Dubizzle | https://dubai.dubizzle.com/ | |
 # United Kingdom [Country]
 Companies: Companies House | https://find-and-update.company-information.service.gov.uk/search?q={q} | | org,name
