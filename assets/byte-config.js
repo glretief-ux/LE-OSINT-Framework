@@ -27,6 +27,9 @@ window.BYTE_CONFIG={
    go:[{label:'Open the Subject Profiler',href:'profiler.html'}]},
   {k:['offline','internet','single file','usb','air gapped','restricted','download'],
    a:'<p>The <i>dist</i> folder of the repository has a single-file version with all libraries inlined. Open it from disk or a USB stick; the tools and search work offline, though the links themselves need a connection.</p>'},
+  {k:['visa','visas','passport','entry requirements','travel requirements','visa free','visa on arrival','evisa','e-visa','eta','esta','border','travel document','nationality'],
+   a:'<p>The <b>Visas</b> tab shows what an ordinary passport needs to enter another country. Choose the country that issued the passport, then the country to visit: the map is coloured for that passport and you get the requirement (visa free, visa on arrival, eTA, e-visa, visa required or no admission), the permitted stay and links to confirm it. You can also click countries on the map, filter the full list and export it to CSV. Always confirm with the embassy or the IATA Travel Centre.</p>',
+   go:[{label:'Open the Visas tab',click:'.topnav button[data-view="visas"]'}]},
   {k:['legal','privacy','law','allowed','authorised','authorized','basis','safe','ethics','caution'],
    a:'<p>This site only opens public sources and local tools. You are responsible for the legal basis of each search. Watch the <b>A</b> (may alert the subject) and <b>P</b> (privacy or legal caution) flags.</p>'}
  ]};

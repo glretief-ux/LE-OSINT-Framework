@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Public+Sans:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="assets/vendor/leaflet.css?v=20261007a">
-<link rel="stylesheet" href="assets/style.css?v=20261007a">
+<link rel="stylesheet" href="assets/vendor/leaflet.css?v=20261101a">
+<link rel="stylesheet" href="assets/style.css?v=20261101a">
 </head>
 <body>
 <!--BODY-START-->
@@ -30,6 +30,7 @@
       <button type="button" data-view="stolen">Stolen vehicles</button>
       <button type="button" data-view="precursors">Precursors</button>
       <button type="button" data-view="air">Air cargo</button>
+      <button type="button" data-view="visas">Visas</button>
       <button type="button" data-view="risk">Risk checklist</button>
       <button type="button" data-view="case">Case summary</button>
       <button type="button" data-view="playbooks">Case playbooks</button>
@@ -55,6 +56,7 @@
         <button type="button" data-view="stolen">Stolen vehicles</button>
         <button type="button" data-view="precursors">Precursors</button>
       <button type="button" data-view="air">Air cargo</button>
+      <button type="button" data-view="visas">Visas</button>
       <button type="button" data-view="risk">Risk checklist</button>
       <button type="button" data-view="case">Case summary</button>
         <button type="button" data-view="playbooks">Playbooks</button>
@@ -325,6 +327,8 @@
 
       <section class="view" id="view-air" hidden><div id="air"></div></section>
 
+      <section class="view" id="view-visas" hidden><div id="visas"></div></section>
+
       <section class="view" id="view-risk" hidden><div id="risk"></div></section>
 
       <section class="view" id="view-case" hidden><div id="case"></div></section>
@@ -374,30 +378,33 @@
 </div>
 <!--BODY-END-->
 
-<script src="assets/vendor/exifr.full.umd.js?v=20261007a"></script>
-<script src="data/links.js?v=20261007a"></script>
-<script src="data/playbooks.js?v=20261007a"></script>
-<script src="assets/app.js?v=20261007a"></script>
-<script src="data/owners.js?v=20261007a"></script>
-<script src="assets/toolbox.js?v=20261007a"></script>
-<script src="data/ports.js?v=20261007a"></script>
-<script src="assets/ports.js?v=20261007a"></script>
-<script src="data/hs.js?v=20261007a"></script>
-<script src="assets/hs.js?v=20261007a"></script>
-<script src="data/shipping-lines.js?v=20261007a"></script>
-<script src="assets/lines.js?v=20261007a"></script>
-<script src="assets/vendor/leaflet.js?v=20261007a"></script>
-<script src="assets/flights.js?v=20261007a"></script>
-<script src="data/stolen-checks.js?v=20261007a"></script>
-<script src="assets/stolen.js?v=20261007a"></script>
-<script src="data/precursors.js?v=20261007a"></script>
-<script src="assets/precursors.js?v=20261007a"></script>
-<script src="data/airlines.js?v=20261007a"></script>
-<script src="data/airports.js?v=20261007a"></script>
-<script src="assets/aircargo.js?v=20261007a"></script>
-<script src="data/risk.js?v=20261007a"></script>
-<script src="assets/risk.js?v=20261007a"></script>
-<script src="assets/case.js?v=20261007a"></script>
+<script src="assets/vendor/exifr.full.umd.js?v=20261101a"></script>
+<script src="data/links.js?v=20261101a"></script>
+<script src="data/playbooks.js?v=20261101a"></script>
+<script src="assets/app.js?v=20261101a"></script>
+<script src="data/owners.js?v=20261101a"></script>
+<script src="assets/toolbox.js?v=20261101a"></script>
+<script src="data/ports.js?v=20261101a"></script>
+<script src="assets/ports.js?v=20261101a"></script>
+<script src="data/hs.js?v=20261101a"></script>
+<script src="assets/hs.js?v=20261101a"></script>
+<script src="data/shipping-lines.js?v=20261101a"></script>
+<script src="assets/lines.js?v=20261101a"></script>
+<script src="assets/vendor/leaflet.js?v=20261101a"></script>
+<script src="assets/flights.js?v=20261101a"></script>
+<script src="data/stolen-checks.js?v=20261101a"></script>
+<script src="assets/stolen.js?v=20261101a"></script>
+<script src="data/precursors.js?v=20261101a"></script>
+<script src="assets/precursors.js?v=20261101a"></script>
+<script src="data/airlines.js?v=20261101a"></script>
+<script src="data/airports.js?v=20261101a"></script>
+<script src="assets/aircargo.js?v=20261101a"></script>
+<script src="data/visas.js?v=20261101a"></script>
+<script src="data/world.js?v=20261101a"></script>
+<script src="assets/visas.js?v=20261101a"></script>
+<script src="data/risk.js?v=20261101a"></script>
+<script src="assets/risk.js?v=20261101a"></script>
+<script src="assets/case.js?v=20261101a"></script>
 <script src="assets/byte-config.js"></script>
 <script src="assets/byte.js"></script>
 </body>
