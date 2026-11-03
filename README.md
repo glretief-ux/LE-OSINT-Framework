@@ -66,6 +66,16 @@ An open-source intelligence (OSINT) desk for **law enforcement investigators**. 
 6. After a minute the site is live at `https://<your-username>.github.io/LE-OSINT-Framework/`.
 7. Optional: **Actions → Weekly link check → Run workflow** to run the first link check now.
 
+## Byte, the helper
+
+The blue robot in the corner answers questions from the data built into the site (nothing is sent anywhere, no AI service is called). Examples:
+
+- Paste a **container number**: Byte checks the ISO 6346 check digit, identifies the owner (BIC register) and the carrier, and opens the carrier's own tracking page (number filled in where the page allows it, otherwise copied to the clipboard). Lessor prefixes go to a multi-carrier tracker.
+- **B/L number** (carrier found from its SCAC), **IMO / MMSI**, **AWB** (check digit, airline, tracking page), **flight number**, **VIN**: sent to the right tab or source.
+- Data questions: "how many shipping lines are there?", "which lines are in the Gemini alliance?", "port code for Antwerp", "airport code for Brussels", "which airline has AWB prefix 235?", "HS code for cocaine", "is acetic anhydride a precursor?", "which sources can check a Telegram username?", "company registers in Germany".
+
+Byte cannot read live tracking status itself: carrier sites do not allow other sites to pull their data, so it opens the right page for you. The logic is in `assets/byte-brain.js` (hooks `brain` and `brainFallback` of `byte.js`); it only uses the files in `data/`, so updating those updates Byte too.
+
 ## Optional: live flight data proxy
 
 1. Sign in at [dash.cloudflare.com](https://dash.cloudflare.com/) (free account), open **Workers & Pages → Create → Create Worker**, give it a name and click **Deploy**.

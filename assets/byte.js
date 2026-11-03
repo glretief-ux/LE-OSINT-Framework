@@ -66,11 +66,17 @@
     log.appendChild(d);scrollLog();}
   function ask(q){
     q=(q||'').trim();if(!q)return;
-    addUser(q);var m=best(q);
+    addUser(q);
+    /* optional smarter layer (byte-brain.js): C.brain answers selectors and data questions first, C.brainFallback runs when no FAQ matched */
+    var ctx={A:A,close:closeH,ask:ask},br=null;
+    try{br=C.brain?C.brain(q,ctx):null;}catch(e){br=null;}
+    var m=br?null:best(q),fbr=null;
+    if(!br&&!m){try{fbr=C.brainFallback?C.brainFallback(q,ctx):null;}catch(e){fbr=null;}}
     var typ=addTyping();
     setTimeout(function(){
       if(typ.parentNode)typ.parentNode.removeChild(typ);
-      if(m){addByte(m.a,m.act);speakText(m.a);}
+      if(br||fbr){var bx=br||fbr;addByte(bx.html,bx.acts);speakText(bx.html);}
+      else if(m){addByte(m.a,m.act);speakText(m.a);}
       else{var acts=[];if(C.search&&q.length<=60){acts.push(A('Search for "'+q+'"',function(){if(setQ(q))go(function(){return document.querySelector(C.search);},true);}));}
         var fb=C.fallback||'<p>I don\'t have an answer for that one yet. Try a shorter question, or tap one of the suggestions below.</p>';
         speakText(fb);addByte(fb,acts);}
