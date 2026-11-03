@@ -119,9 +119,11 @@
   function trackAct(info, label) {
     return act(label, function () { if (!info.deep && O().copy) O().copy(info.v); openUrl(info.url); });
   }
+  /* Track-Trace (track-trace.com) is a free multi-carrier container page; I have not verified that it takes the number from a link, so copy it and open the page */
+  function trackTraceAct(v) { return act("Track-Trace (any carrier)", function () { if (O().copy) O().copy(v); openUrl("https://www.track-trace.com/container"); }); }
   function searatesAct(v) {
     var l = leaves("cont", 6).filter(function (x) { return /searates/i.test(x.name); })[0];
-    return act("Multi-carrier tracker", function () { openUrl(l ? fill(l.url, v) : "https://www.searates.com/container/tracking/?number=" + encodeURIComponent(v)); });
+    return act("SeaRates (any carrier)", function () { openUrl(l ? fill(l.url, v) : "https://www.searates.com/container/tracking/?number=" + encodeURIComponent(v)); });
   }
   function answerContainers(list) {
     var infos = list.map(contInfo);
@@ -129,8 +131,8 @@
       var items = infos.map(function (i) {
         return "<b>" + fmtCont(i.v) + "</b>: " + (i.line ? esc(i.line.n) : (i.own ? esc(i.own.owner) + " (" + esc(i.own.type) + ")" : "owner not in my list")) + (i.ok ? "" : ' <b>(check digit wrong)</b>');
       });
-      var acts = infos.slice(0, 4).map(function (i) { return i.line ? trackAct(i, "Track " + i.v + " (" + sh(shortName(i.line), 12) + ")") : searatesAct(i.v); });
-      return R(P("I found " + infos.length + " container numbers:") + UL(items) + P("Each button opens the carrier's own tracking page (or a multi-carrier tracker when the prefix belongs to a lessor). I copy the number first where the page cannot take it from a link."), acts);
+      var acts = infos.slice(0, 4).map(function (i) { return i.line ? trackAct(i, "Track " + i.v + " (" + sh(shortName(i.line), 12) + ")") : trackTraceAct(i.v); });
+      return R(P("I found " + infos.length + " container numbers:") + UL(items) + P("Each button opens the carrier's own tracking page (or Track-Trace when the prefix belongs to a lessor). I copy the number first where the page cannot take it from a link."), acts);
     }
     var i = infos[0], h = P("<b>" + fmtCont(i.v) + "</b>: check digit " + (i.ok ? "<b>valid</b>." : "<b>does not match</b> (it should be " + i.exp + "). The number may be mistyped, or it may not be a genuine container number, which is worth noting in a seizure case."));
     var acts = [];
@@ -145,9 +147,10 @@
       h += P("Carrier: <b>" + esc(i.line.n) + "</b>. " + (i.deep ? "The button opens its tracking page with the number filled in." : "Its tracking page cannot take the number from a link, so the button copies the number first and opens the page: paste it into the box."));
       acts.push(trackAct(i, "Track on " + sh(shortName(i.line), 22)));
       if (i.cs.length > 1) { var o2 = i.cs.filter(function (r) { return r !== i.line && (r.trk || r.web); })[0]; if (o2) { var inf2 = { v: i.v, deep: (o2.trk || o2.web).indexOf("{q}") > -1, url: fill(o2.trk || o2.web, i.v) }; acts.push(trackAct(inf2, "Or " + sh(shortName(o2), 20))); } }
-      acts.push(searatesAct(i.v));
+      acts.push(trackTraceAct(i.v));
     } else {
-      h += P("A leasing company owns this box, so the prefix does not say which shipping line is moving it. The bill of lading or booking shows the line. Meanwhile a multi-carrier tracker tries many lines at once.");
+      h += P("A leasing company owns this box, so the prefix does not say which shipping line is moving it. The bill of lading or booking shows the line. Meanwhile Track-Trace (and SeaRates) look the number up across many lines. Track-Trace asks for the number, so I copy it: paste it into the box.");
+      acts.push(trackTraceAct(i.v));
       acts.push(searatesAct(i.v));
     }
     acts.push(act("Identify in Shipping lines tab", goView("lines", function () { if (O().linesSearch) O().linesSearch(i.v); })));
