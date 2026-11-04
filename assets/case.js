@@ -40,7 +40,6 @@
       ["test", "Field test and samples", "t", "Kit used, result, sample numbers"]
     ]],
     ["Assessment and action", [
-      ["risk", "Risk indicators", "a", "Use 'Add to case summary' in the Risk checklist tab, or type here"],
       ["actions", "Actions taken", "a", "e.g. container held, prosecutor informed, controlled delivery considered"],
       ["exhibits", "Exhibits and photos", "a", "Exhibit numbers, photo numbers, chain of custody"],
       ["next", "Next steps / requests", "a", "e.g. request to origin via CCP / Interpol / liaison"],
@@ -73,7 +72,7 @@
   host.innerHTML =
     '<header class="desk-head"><div><p class="eyebrow">Reporting</p><h2>Case summary</h2>' +
     '<p class="hint" style="margin:4px 0 0;max-width:84ch">A one-page summary of a control or seizure for the file, a hand-over or a request to a partner. It saves as you type, in this browser only, and nothing is sent anywhere. Use <b>Print / save as PDF</b> to keep a copy (on iPad: Print, then share the preview as PDF).</p></div></header>' +
-    '<div class="rk-actions" style="margin-bottom:12px"><button type="button" class="btn primary" id="cs-print">Print / save as PDF</button><button type="button" class="btn ghost" id="cs-copy">Copy as text</button><button type="button" class="btn ghost" id="cs-addrisk">Insert ticked risk indicators</button><button type="button" class="btn ghost" id="cs-new">New case</button></div>' +
+    '<div class="rk-actions" style="margin-bottom:12px"><button type="button" class="btn primary" id="cs-print">Print / save as PDF</button><button type="button" class="btn ghost" id="cs-copy">Copy as text</button><button type="button" class="btn ghost" id="cs-new">New case</button></div>' +
     FORM.map(function (g) { return '<fieldset class="cs-group"><legend>' + esc(g[0]) + '</legend><div class="cs-grid">' + g[1].map(field).join("") + "</div></fieldset>"; }).join("") +
     '<p class="hint">Handle this summary under your agency’s rules for sensitive or classified information. Clear it with <b>New case</b> on shared devices.</p>';
 
@@ -122,18 +121,10 @@
     try { window.print(); } catch (e) { done(); window.LE_OSINT.copy(asText()); alert("Printing is blocked here. The summary was copied as text instead."); }
     setTimeout(done, 60000);
   }
-  function addRisk(t) {
-    if (!t) return;
-    // replace an earlier inserted list; keep anything the officer typed
-    const own = String(data.risk || "").split(/\n\s*\n/).filter(function (p) { return !/^(Sea container|Air cargo \/ express) risk indicators \(\d+\):/.test(p.trim()); }).join("\n\n").trim();
-    data.risk = t + (own ? "\n\n" + own : "");
-    save(); const el = $("#cs-risk"); if (el) el.value = data.risk;
-  }
   host.addEventListener("click", function (e) {
     const id = e.target.id;
     if (id === "cs-print") printIt();
     else if (id === "cs-copy") window.LE_OSINT.copy(asText());
-    else if (id === "cs-addrisk") { const t = window.LE_OSINT.riskText ? window.LE_OSINT.riskText() : ""; if (t) addRisk(t); else alert("No indicators ticked yet. Open the Risk checklist tab first."); }
     else if (id === "cs-new") {
       if (!confirm("Clear this case summary and start a new one?")) return;
       data = { when: nowBrussels() }; save();
@@ -144,5 +135,4 @@
   contHint();
 
   window.LE_OSINT = window.LE_OSINT || {};
-  window.LE_OSINT.caseAddRisk = addRisk;
 })();
