@@ -367,6 +367,7 @@ Google (exact container / vessel / IMO) | https://www.google.com/search?q=%22{q}
 BIC Code Register (owner prefixes) | https://www.bic-code.org/ | R |
 ## Container Tracking (carriers)
 Shipping lines directory (in this tool) | #lines | N | | 110+ ocean carriers with SCAC codes, container prefixes, alliances and tracking pages; identifies the line from a container or B/L number
+Manifest and booking risk checklist (in this tool) | #risk | N | | 40 sea-container and 15 air-cargo risk indicators from Europol, EUDA, WCO and UNODC sources, with a one-page case summary you can print or save as PDF
 Maersk | https://www.maersk.com/tracking/{q} | | cont
 MSC | https://www.msc.com/en/track-a-shipment | |
 CMA CGM | https://www.cma-cgm.com/ebusiness/tracking | |
